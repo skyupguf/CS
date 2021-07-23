@@ -19,6 +19,14 @@ const changeForm = s => {
         .map(el => el.split(',').map(el => parseInt(el)))
         .sort((a, b) => a.length - b.length);
 }
+// 정규표현식 사용
+// const changeForm = s => {
+//     const forms = s.match(/{[\d,]+}/g);
+//     return forms
+//         .map(form => form.match(/[\d]+,?/g)
+//         .map(el => parseInt(el)))
+//         .sort((a, b) => a.length - b.length);
+// }
 const getTupple = arr => {
     const tupple = [];
     arr.forEach(el => el.forEach(el => {
