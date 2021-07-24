@@ -23,5 +23,8 @@
 2021-08-09
 - toy/coplit_26_LSCS
 
+2021-07-24
+- programmers/Lv.1_제일_작은_수_제거하기
+
 2021-07-23
 - programmers/Lv.2_괄호변환
