@@ -1,2 +1,3 @@
 # algorithm
-Learn to algorithm and data structure with code test
+practice Algorithm log 2021-08-09
+- toy coplit_26. LSCS
