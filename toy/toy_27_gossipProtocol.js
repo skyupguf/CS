@@ -15,7 +15,6 @@ const gossipProtocol = function (village, row, col) {
     let front = 0;
     let rear = 0;
     const isValid = (row, col) => row >= 0 && row < village.length && col >= 0 && col < village[0].length;
-    const isEmpty = (queue) => front === rear;
   
     const enqueue = (queue, position) => {
         queue[rear] = position;
@@ -31,7 +30,7 @@ const gossipProtocol = function (village, row, col) {
     enqueue(queue, [row, col]);
     matrix[row][col] = 0;
   
-    while(isEmpty(queue) === false) {
+    while(rear > front) {
         const [row, col] = dequeue(queue);
         cnt = matrix[row][col];
   
