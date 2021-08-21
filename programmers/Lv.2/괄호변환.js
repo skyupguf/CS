@@ -28,6 +28,7 @@ const solution = p => {
 }
  
 /*
+문제요약
 A형 : 균형 형태(open과 close 괄호 갯수가 균등)
 B형 : 올바른 형태(A형이면서 open, close가 제대로 배치)
 
