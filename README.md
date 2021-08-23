@@ -1,4 +1,10 @@
 # Coding test log
+2021-08-23
+- programmers/Lv.2_소수찾기
+
+2021-08-21
+- programmers/Lv.2_다리를 지나는 트럭
+
 2021-08-20
 - programmers/Lv.2_타겟넘버
 
