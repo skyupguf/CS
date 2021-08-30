@@ -19,14 +19,7 @@ const changeForm = s => {
         .map(el => el.split(',').map(el => parseInt(el)))
         .sort((a, b) => a.length - b.length);
 }
-// 정규표현식 사용
-// const changeForm = s => {
-//     const forms = s.match(/{[\d,]+}/g);
-//     return forms
-//         .map(form => form.match(/[\d]+,?/g)
-//         .map(el => parseInt(el)))
-//         .sort((a, b) => a.length - b.length);
-// }
+
 const getTupple = arr => {
     const tupple = [];
     arr.forEach(el => el.forEach(el => {
@@ -55,4 +48,8 @@ const getTupple = arr => {
 풀이#2
 1. flat을 사용하지 않고 tupple 배열에 포함되지 않은 경우만 이중반복
 2. 풀이#1보다 더 빠른 시간 복잡도
+
+보충사항
+- 구체적인 시간복잡도 계산
+- 정규표현식 학습으로 코드 이해 필요
 */
