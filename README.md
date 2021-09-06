@@ -1,4 +1,7 @@
 # Coding test log
+2021-08-20
+- programmers/Lv.2_타겟넘버
+
 2021-08-18
 - basic/data_structure_BFS&DFS
 
