@@ -7,7 +7,8 @@ function solution(s) {
     return stack.length === 0 ? 1 : 0
 }
 
-/* 
+/*
+문제요약
 baabaa, cdcd
 1. bbaa
 2. aa
