@@ -1,8 +1,8 @@
-// 문제요약
-// 1. 길이가 1~100인 숫자배열 d와 1~10,000,000이하의 자연수 budget이 있다.
-// 2. 숫자 배열 d의 요소들을 조합해서 더한 값은 sum이다.
-// 3. sum <= budget 일 때, d의 요소 몇개를 더해서 budget의 근사치에 가장 가까운지 알아내라.
-// 4. d = [1,3,2,5,4], budget =	9, return 3 / d = [2,2,3,3], budget = 10, return 4
+//  문제요약
+//  1. 길이가 1~100인 숫자배열 d와 1~10,000,000이하의 자연수 budget이 있다.
+//  2. 숫자 배열 d의 요소들을 조합해서 더한 값은 sum이다.
+//  3. sum <= budget 일 때, d의 요소 몇개를 더해서 budget의 근사치에 가장 가까운지 알아내라.
+//  4. d = [1,3,2,5,4], budget =	9, return 3 / d = [2,2,3,3], budget = 10, return 4
 
 //  코드
 const countElForCondition = (d, budget) => {

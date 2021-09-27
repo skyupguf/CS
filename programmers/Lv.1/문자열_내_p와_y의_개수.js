@@ -1,6 +1,6 @@
-// 문제요약
-// 1. 대소문자가 모두 포함된 문자열s에서 'p'와 'y'의 개수를 세고 같으면 true, 다르면 false를 리턴한다.
-// 2. 예를 들어 s가 "pPoooyY"면 true를 "Pyy"라면 false를 return한다.
+//  문제요약
+//  1. 대소문자가 모두 포함된 문자열s에서 'p'와 'y'의 개수를 세고 같으면 true, 다르면 false를 리턴한다.
+//  2. 예를 들어 s가 "pPoooyY"면 true를 "Pyy"라면 false를 return한다.
 
 //  코드
 const compareWordCount = (s) => {

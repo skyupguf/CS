@@ -1,7 +1,7 @@
-// 문제요약
-// 1. 1~100,000 길이를 가진 participant 배열과 participant의 요소 하나가 제거된 completion 배열이 존재한다.
-// 2. 요소들은 알파벳소문자이며 양쪽 배열의 짝을 하나씩 맞출 경우 남는 하나의 요소를 리턴하라.
-// 3. participant = ["mislav", "stanko", "mislav", "ana"], completion = ["stanko", "ana", "mislav"], return "mislav"
+//  문제요약
+//  1. 1~100,000 길이를 가진 participant 배열과 participant의 요소 하나가 제거된 completion 배열이 존재한다.
+//  2. 요소들은 알파벳소문자이며 양쪽 배열의 짝을 하나씩 맞출 경우 남는 하나의 요소를 리턴하라.
+//  3. participant = ["mislav", "stanko", "mislav", "ana"], completion = ["stanko", "ana", "mislav"], return "mislav"
 
 //  코드
 const findRemainderEl = (participant, completion) => {

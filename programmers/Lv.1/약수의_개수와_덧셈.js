@@ -1,5 +1,5 @@
-// 문제요약
-// 1. 1 ≤ left ≤ right ≤ 1,000, left부터 right까지 약수개수가 짝수면 덧셈누적, 홀수면 뺄셈누적 한다.
+//  문제요약
+//  1. 1 ≤ left ≤ right ≤ 1,000, left부터 right까지 약수개수가 짝수면 덧셈누적, 홀수면 뺄셈누적 한다.
 
 //  코드
 const accumulateInputNum = (left, right) => {
