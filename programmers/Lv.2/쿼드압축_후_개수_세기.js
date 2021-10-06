@@ -12,7 +12,8 @@ const countCompressedArr = (arr) => {
 /*
 풀이
 1. 정사각이 나뉘는 단위 2^n x 2^n 이므로 행, 열의 길이 모두 arr.length다.
-2. 행렬이 2 x 2가 될 때까지 행과 열을 arr.length/2 씩 재배치해서 요소를 비교하고 
+2. 행렬이 2 x 2가 될 때까지 행과 열을 arr.length/2 씩 재배치해서 요소를 비교하고 압축해야한다.
+3. 아래와 같은 입력이 주어질 때
 [
     [1,1,1,1,1,1,1,1],
     [0,1,1,1,1,1,1,1],
@@ -23,4 +24,24 @@ const countCompressedArr = (arr) => {
     [0,0,0,0,1,0,0,1],
     [0,0,0,0,1,1,1,1]
 ]
+8 x 8 크기로 행과 열을 4칸씩 재배치 해서 비교하면
+for r < arr.length/2 temp1.push(arr.slice(0, arr[r].length/2-1))
+temp1 = [
+    arr[0][0], arr[0][1], arr[0][2], arr[0][3],
+    arr[1][0], arr[1][1], arr[1][2], arr[1][3],
+    arr[2][0], arr[2][1], arr[2][2], arr[2][3],
+    arr[3][0], arr[3][1], arr[3][2], arr[3][3]
+]
+temp1 = [temp1.flat()] if temp.length === 1 temp1 = temp[0]
+tmep2 = [                   
+    arr[0][0], arr[0][1],
+    arr[1][0], arr[1][1]
+]
+tmep3 = [
+    arr[0][2], arr[0][3],
+    arr[1][2], arr[1][3]
+]
+temp.length
+
+
 */
