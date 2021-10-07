@@ -1,4 +1,11 @@
-// #풀이1
+//  문제요약
+//  1. bridge_length가 1~10,000, weight가 1~10,000, truck_weights가 1~10,000 다.
+//  2. 1 <= truck =< weight 이면 정해진 truck_weights 순서대로 bridge를 건널 경우 걸리는 시간을 알아내라.
+//  3. 2	10	[7,4,5,6]	8
+//  100	100	[10]	101
+// 100	100	[10,10,10,10,10,10,10,10,10,10]	110
+
+//  코드
 const timeToCrossBridge = (bridge_length, weight, truck_weights) => {
     let time = 0, sum = 0, bridge = [];
     while(bridge.length < bridge_length) bridge.push(0);
