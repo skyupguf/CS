@@ -35,26 +35,29 @@ const countCompressedArr = (arr) => {
     10. 완성된 count객체의 값만 배열화 하여 리턴한다.
 
     시간복잡도#1
-    
+    flat과 set으로 전체 배열을 순회하면서 배열을 펼치고 중복 체크 제거한다, O(N) x O(N)
+    배열의 각 구간을 나눌 때 전체 배열을 전부 순회 하지 않고 배열 전체가 할당되는 c를 제외 O(N), O(N/2), O(N/2)
+    2n이므로 각 구간의 재귀 함수 호출이 O(logN) 씩 수행된다.
+    ??
 */
 
 //  코드#2
-// const countCompressedArr = (arr) => {
-//     const count = {0: 0, 1: 0}
+const countCompressedArr = (arr) => {
+    const count = {0: 0, 1: 0}
 
-//     const isValid = (arr, l, i) => {
-//         return l === i ? 'a' : new Set(arr[i]).size == 1 &&
-//         [...new Set(arr[i])][0] == arr[0][0] ? isValid(arr, l, i + 1): false
-//     }
+    const isValid = (arr, l, i) => {
+        return l === i ? 'a' : new Set(arr[i]).size == 1 &&
+        [...new Set(arr[i])][0] == arr[0][0] ? isValid(arr, l, i + 1): false
+    }
 
-//     const makePart = (arr, l) => [[0, 0], [0, l], [l, 0], [l, l]].map((v) => 
-//         new Array(l).fill('b').map((_, i) => arr[v[0] + i].slice(v[1], v[1] + l))
-//     );
+    const makePart = (arr, l) => [[0, 0], [0, l], [l, 0], [l, l]].map((v) => 
+        new Array(l).fill('b').map((_, i) => arr[v[0] + i].slice(v[1], v[1] + l))
+    );
     
-//     const execute = (arr, l) => isValid(arr, l, 0) ? (count[arr[0][0]] += 1) 
-//         : makePart(arr, l/2).forEach((particle) => execute(particle, l/2)
-//     );
+    const execute = (arr, l) => isValid(arr, l, 0) ? (count[arr[0][0]] += 1) 
+        : makePart(arr, l/2).forEach((particle) => execute(particle, l/2)
+    );
     
-//     execute(arr, arr.length)
-//     return Object.values(count);
-// }
+    execute(arr, arr.length)
+    return Object.values(count);
+}
