@@ -35,29 +35,43 @@ const countCompressedArr = (arr) => {
     10. 완성된 count객체의 값만 배열화 하여 리턴한다.
 
     시간복잡도#1
-    flat과 set으로 전체 배열을 순회하면서 배열을 펼치고 중복 체크 제거한다, O(N) x O(N)
-    배열의 각 구간을 나눌 때 전체 배열을 전부 순회 하지 않고 배열 전체가 할당되는 c를 제외 O(N), O(N/2), O(N/2)
-    2n이므로 각 구간의 재귀 함수 호출이 O(logN) 씩 수행된다.
-    ??
+    각 구간들 재귀호출 하기전 전체 배열의 중복 요소체크를 하기 때문에 O(2N)이 소요된다.
+    이후 네 개의 구간을 splice로 나누는데 O(N) 이 소요되고 각 구간들을 재귀호출하면서 4logN번 연산한다.
+
+    리팩토링
+    flat()으로 중복배열을 펼치는 과정에서 행렬의 크기가 클 수록 연산이 크게 증가한다.
 */
 
 //  코드#2
 const countCompressedArr = (arr) => {
-    const count = {0: 0, 1: 0}
-
-    const isValid = (arr, l, i) => {
-        return l === i ? 'a' : new Set(arr[i]).size == 1 &&
-        [...new Set(arr[i])][0] == arr[0][0] ? isValid(arr, l, i + 1): false
+    const count = {0: 0, 1: 0};
+    
+    const checkEl = (arr, l, i) => {
+        const check = [...new Set(arr[i])];
+        return l === i ? true : check.length === 1 && check[0] === arr[0][0]
+            ? checkEl(arr, l, i+1) : false;
     }
+    const compressArr = (arr, l) => {
+        const a = arr.splice(0, l), b = a.map(e => e.splice(l));
+        const c = arr, d = c.map(e => e.splice(l));
+        return [a, b, c, d];
+    }
+    const countZip = (arr, l) => checkEl(arr, l, 0) ? count[arr[0][0]] += 1
+        : compressArr(arr, l/2).forEach(e => countZip(e, l/2));
 
-    const makePart = (arr, l) => [[0, 0], [0, l], [l, 0], [l, l]].map((v) => 
-        new Array(l).fill('b').map((_, i) => arr[v[0] + i].slice(v[1], v[1] + l))
-    );
-    
-    const execute = (arr, l) => isValid(arr, l, 0) ? (count[arr[0][0]] += 1) 
-        : makePart(arr, l/2).forEach((particle) => execute(particle, l/2)
-    );
-    
-    execute(arr, arr.length)
+    countZip(arr, arr.length);
     return Object.values(count);
 }
+/*
+    풀이#2
+    1. flat으로 전체배열을 펼쳐서 중복체크를 하면 중복검사를 할 때 마다 호출되는 행렬을 끝까지 루프해야 된다.
+    2. 각 행을 하나 씩 체크해 만일 끝까지 모든 요소가 동일하면 count가 되고 아니면 도중에 중단되어야 한다.
+    3. 함수를 기능별로 재 구분한다, 요소체크함수 = checkEl, 압축함수 = compressArr, 카운터함수 = countZip으로 분리한다.
+    4. countZip이 중복체크 함수를 호출하고 true면 count를 하고 false면 압축함수를 호출하는 사이클 로직으로 만든다.
+    5. 중복체크함수 checkEl은 flat대신 각 행을 순회하면서 요소가 모두 동일하거나 각 행의 동일값이 가장 첫 arr[0][0]와 같은지 비교한다.
+    6. 모든 행을 체크하기 위해 인덱스를 늘려가며 함수를 재호출하고 인덱스가 배열의 길이와 같아지는 순간 압축이 가능하므로 true를 리턴한다.
+    7. 이렇게 되면 요소가 동일하지 않을 때 루프를 끝까지 돌지않고 탈출해 압축함수로 바로 넘어갈 수 있다.
+
+    시간복잡도
+    기존 코드 보다 big(O)는 달라지지 않지만 실제 행렬을 모두 펼치지 않고 루프를 도중에 중단 하므로 더 효율적이다.
+*/
