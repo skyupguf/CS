@@ -41,6 +41,6 @@ const multiMatrix = (arr1, arr2) => arr1.map(r =>
     arr2[0].map((_, l) => r.reduce((a, c, i) => a + c * arr2[i][l], 0))
 );
 /*
-    풀이
+    풀이#2
     1. 메소드 변환풀이, 반복문을 사용하는 것과 별반 차이는 없다.
 */
