@@ -4,7 +4,7 @@
 //  3. location은 선택한 원소의 인덱스를 나타내며 location에 위치한 원소가 몇 번째로 인쇄 되는지 구하라.
 //  4. priorities = [1, 1, 9, 1, 1, 1], location = 0, return 5
 
-//  코드#1
+//  코드
 const findOrderOfDoc = (priorities, location) => {
     const order = [] 
     let max = Math.max(...priorities), i = location;
@@ -23,7 +23,7 @@ const findOrderOfDoc = (priorities, location) => {
     }
 }
 /*
-    풀이#1
+    풀이
     1. priorities에서 최대값을 구해 max변수에 할당한다.
     2. order변수를 선언하고 프린트된 원소를 삽입할 배열을 할당한다.
     3. 원소가 반드시 리턴되기 때문에 while문을 조건없이 순회한다.
@@ -36,30 +36,10 @@ const findOrderOfDoc = (priorities, location) => {
     10. 아닐경우 order배열에 check를 push하고  max값을 남은 priorities에서 다시 구한다.
     11. 그리고 location-1을 해 location을 갱신한다.
 
+    에러핸들링
+    1. 반드시 order를 완성 시킬 필요가 없다, 완성까지 연산하면 Math.max가 push될 때 마다 발생한다.
+    2. order로 push되는 값이 location값이면 바로 리턴
+
     시간복잡도
     while문 안의 메소드들이 priorities while루프마다 수행되지 않기 때문에 O(N^2)이 될 수 없다. O(N)
-    다만 Math.max를 원소 하나가 order로 push될 때 마다 발생하기 때문에 이를 개선하면 연산 수를 더 줄일 수 있을 것 같다.
 */
-
-//  코드#2
-function solution(priorities, location) {
-    var arr = priorities.map((priority, index) => {
-        return {
-            index: index, priority: priority
-        };
-    });
-
-    var queue = [];
-
-    while(arr.length > 0) {
-        var firstEle = arr.shift();
-        var hasHighPriority = arr.some(ele => ele.priority > firstEle.priority);
-        if (hasHighPriority) {
-            arr.push(firstEle);
-        } else {
-            queue.push(firstEle);
-        }
-    }
-
-    return queue.findIndex(queueEle => queueEle.index === location) + 1;
-}
