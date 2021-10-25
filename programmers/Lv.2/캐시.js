@@ -20,7 +20,7 @@ const calLRU = (size, arr) => {
         if(idx !== -1) t++, cache.splice(idx, 1);
         else if(cache.length === size) cache.shift();
 
-        cache.push(el);
+        cache.push(e);
         return t;
     }, 0);
 }
