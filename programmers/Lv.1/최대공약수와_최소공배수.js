@@ -1,21 +1,21 @@
 //  문제요약
-//  1. 입력받은 두 수 n과 m의 최대공약수(GCF)와 최소공배수(GCM)을 [GCF, GCM] 형태로 리턴하라.
+//  1. 입력받은 두 수 n과 m의 최대 공약수(GCD)와 최소 공배수(LCM)을 [GCD, LCM] 형태로 리턴하라.
 //  2. n = 3, m = 12, return [3, 12] / n = 2, m = 5, return [1, 10]
 
 //  코드#1
-const calGcfAndGcm = (n, m) => {
-    let GCF, GCM;
+const calGcdAndLcm = (n, m) => {
+    let GCD, LCM;
     const min = Math.min(n, m), max = Math.max(n, m);
 
     for(let i=min; i>=1; i--) if(min%i===0 && max%i===0) {
-        GCF = i;
+        GCD = i;
         break;
     }
     for(let j=max; j<=min*max; j++) if(i%min===0 && i%max===0) {
-        GCM = i;
+        LCM = i;
         break;
     }
-    return [GCF, GCM];
+    return [GCD, LCM];
 }
 /*
     풀이#1
@@ -30,10 +30,15 @@ const calGcfAndGcm = (n, m) => {
 */
 
 //  코드#2
-const calGcfAndGcm = (n, m) => {
-    
-}
+const GCD = (n, m) => m ? calGcd(m, n % m) : n;
+const calGcdLcm = (n, m) => [GCD(n, m), n*m/GCD(n, m)];
 /*
-풀이#2
-1. 
+    풀이#2
+    1. 최대공약수를 유클리드 호제법을 활용해 n % m 값이 0이 될 때 까지 재귀호출 한다.
+    2. n과 m에서 더 큰 수를 가릴 필요 없이 n을 m인자로 호출하고 m을 n % m 인자로 호출한다.
+    3. 따라서, m이 0에 도달할 경우 n이 최대 공약수가 된다.
+    4. 최소 공배수는 두 수의 최대 공약수가 두 수의 곱의 약수가 되므로 두 수의 곱 / 최대공약수를 하면된다.
+    
+    시간복잡도#2
+    m이 0이 될 때까지 호출되지만 상수연산이 되므로 O(1) 이다.
 */
