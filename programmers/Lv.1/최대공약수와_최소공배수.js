@@ -30,7 +30,7 @@ const calGcdAndLcm = (n, m) => {
 */
 
 //  코드#2
-const GCD = (n, m) => m ? calGcd(m, n % m) : n;
+const GCD = (n, m) => m ? GCD(m, n % m) : n;
 const calGcdLcm = (n, m) => [GCD(n, m), n*m/GCD(n, m)];
 /*
     풀이#2
