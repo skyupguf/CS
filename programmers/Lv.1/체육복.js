@@ -7,16 +7,13 @@
 
 //  코드
 const rentGymSuit = (n, lost, reserve) => {
-    reserve.sort((a, b) => a - b);
-
     return n - lost.sort((a, b) => a - b).map(e => {
         let i = reserve.indexOf(e);
         if(i !== -1) reserve.splice(i, 1);
         else return e;
     }).filter(e => {
-        let j;
         let check1 = reserve.indexOf(e-1);
-        let check2 = reserve.indexOf(e+1);
+        let check2 = reserve.indexOf(e+1), j;
         check1 !== -1 ? j = check1 : check2 !== -1 ? j = check2 : j = -1;
         
         if(j !== -1) reserve.splice(j, 1);
@@ -38,4 +35,8 @@ const rentGymSuit = (n, lost, reserve) => {
 
     시간복잡도
     정렬 메소드가 사용되 최대 O(NlogN) 이 소요된다.
+
+    리팩토링
+    1. sort로 오름차순 정렬은 루프하는 배열만 하면된다, 다른 배열은 indexOf로 탐색하기 때문에 두번 정렬을 할 필요가 없다.
+
 */
