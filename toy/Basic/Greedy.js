@@ -7,12 +7,12 @@
 
 //  코드
 const useMinimumBox = (stuff, limited) => {
-    let box = 0;
+    let box = 0, i = 0;
     stuff.sort((a, b) => a - b);
 
-    while(stuff.length > 0) {
-        let s = stuff[0], b = stuff.pop();
-        limited >= s+b ? s = stuff.shift() : s = 0;
+    while(stuff.length > i) {
+        let s = stuff[i], b = stuff.pop();
+        if(limited >= s+b) i++;
         box++;
     }
     return box;
@@ -26,4 +26,9 @@ const useMinimumBox = (stuff, limited) => {
 
     시간복잡도
     while문은 한번에 1개씩 박스에 담길 경우 O(N)이므로 sort의 O(NlogN)을 넘지 못한다.
+
+    리팩토링
+    1. if(limited >= s+b) stuff.shift() 에서 shift메소드의 시간 복잡도는 최대 O(N)이다.
+    2. stuff[0]을 굳이 제거할 필요 없이 전역에 변수 i = 0 를 선언하고 if(limited >= s+b) i++ 을 한다.
+    3. while문의 조건을 stuff.length > i 로 주면 마지막 요소들이 pop 되어 length와 i가 교체 될 때 루프를 종료시킨다.
 */
