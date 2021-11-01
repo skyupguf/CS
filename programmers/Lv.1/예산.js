@@ -22,5 +22,5 @@ const countElForCondition = (d, budget) => {
     3. d배열의 요소를 루프로 순회하면서 sum에 누적하고 budget보다 같거나 작을 때까지 누적 수만 큼 카운트
 
     시간복잡도
-    break로 중간에 탈출은 하나 최대 한번의 순회가 기본이므로 O(N) 
+    sort메소드로 정렬, O(NlogN) 
 */
