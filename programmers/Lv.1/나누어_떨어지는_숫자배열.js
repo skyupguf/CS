@@ -14,5 +14,5 @@ const makeMultipleOfDivisor = (arr, divisor) => {
     3. 0이 아닐 경우 오름차순 정렬을 하고 리턴한다.
 
     시간복잡도
-    sort 메소드와 filter가 사용되었고 최대인 filter의 O(n)의 시간복잡도를 따른다.
+    arr의 모든 요소가 나누어 떨어지는 수이면 그대로 정렬되기 때문에 최대 O(NlogN)
 */
