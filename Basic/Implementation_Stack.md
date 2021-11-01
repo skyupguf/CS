@@ -1,7 +1,5 @@
 # Implementation Stack
 
-<br>
-
 ## **문제**
 
 Stack 구현을 위한 기본적인 코드 완성해 보기
