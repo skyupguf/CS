@@ -46,9 +46,9 @@ const calDartScore = (dartResult) => {
 
 //  코드#2
 const calDartScore = (dartResult) => {
+    let round = -1;
     const dartRound = new Array(3).fill(0);
     
-    let round = -1;
     for(let i=0; i<dartResult.length; i++) {
         let dart = dartResult[i];
         
