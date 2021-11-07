@@ -30,45 +30,45 @@
 
 //  코드
 const findIntersectionPoint = (line) => {
-    const coordinates = [];
-    let maxR = -100000, minR = 100000, distR = 0, r0Index;
-    let maxC = -100000, minC = 100000, distC = 0, c0Index;
+    const points = [], infinity = Number.MAX_SAFE_INTEGER;
+
+    let [ maxX, minX, distX ] = [ -infinity, infinity ];
+    let [ maxY, minY, distY ] = [ -infinity, infinity ];
 
     for(let i=0; i<line.length; i++) for(let j=i+1; j<line.length; j++) {
-        let denominator = line[i][0]*line[j][1] - line[i][1]*line[j][0];
+        let [A, B, E] = line[i], [C, D, F] = line[j];
+        let denominator = A*D - B*C;
         if(!denominator) continue;
 
-        let x = (line[i][1]*line[j][2] - line[i][2]*line[j][1]) / denominator;
-        let y = (line[i][2]*line[j][0] - line[i][0]*line[j][2]) / denominator;
+        let x = (B*F - E*D) / denominator;
+        let y = (E*C - A*F) / denominator;
         if(x - parseInt(x) || y - parseInt(y)) continue;
         
-        maxR = Math.max(maxR, y), minR = Math.min(minR, y);
-        maxC = Math.max(maxC, x), minC = Math.min(minC, x);
-        coordinates.push([x, y]);
+        maxX = Math.max(maxX, x), minX = Math.min(minX, x);
+        maxY = Math.max(maxY, y), minY = Math.min(minY, y);
+        points.push([x, y]);
     }
-    distR = maxR - minR, distC = maxC - minC;
-    r0Index = distR - maxR, c0Index = distC - maxC;
+    distX = maxX - minX, distY = maxY - minY;
 
-    const points = new Array(distR+1).fill('.'.repeat(distC+1));
-    coordinates.forEach(([a, b]) => {
-        let x = a < 0 ? c0Index + a :  c0Index - a;
-        let y = b < 0 ? r0Index + b :  r0Index - b;
-        let pointedRow = points[y].split('');
-        pointedRow[x] = '*', points[y] = pointedRow.join('');
-    });
-    return points;
+    const CP = Array.from({length: distY+1}, () => new Array(distX+1).fill('.'));
+    points.forEach(([x, y]) => {CP[maxY-y][x-minX] = '*'});
+    return CP.map(arr => arr.join(''));
 }
 /*
-풀이
-1. 이중루프로 각 교차점의 좌표를 모두 얻는다, 이 때, x 혹은 y값이 정수가 아닌 경우는 저장하지 않아야 한다.
-2. 좌표값은 배열로 저장하고 각 배열에서 가장 높은 x, y값과 가장 작은 x, y값을 추출한다.
-3. 두 값중 양과 음의 정수로 나뉘었을 경우 x+y+1의 길이만큼 행렬을 만들어야 한다.
-4. 만들어진 행렬의 좌표에 *로 대체하고 리턴한다.
-5. 음수의 좌표와 양수의 좌표를 어떻게 배열안의 문자열로 넣을 것인가가 관건
-6. row[1]이 0보다 작을 경우 어디가
+    풀이
+    1. 이중루프로 각 교차점의 좌표를 모두 얻는다, 이 때, x 혹은 y값이 정수가 아닌 경우는 저장하지 않아야 한다.
+    2. 좌표값은 배열로 저장하고 교차점간의 거리를 구하기 위해 가장 높은 x, y값과 가장 작은 x, y값을 저장해야한다.
+    3. 교점의 좌표는 -값이 올 수 있기 때문에 x가 3일 경우 -4와 4사이의 좌표에 있다면, 인덱스 7에 점이 찍혀야 한다.
+    4. 이중루프로 교점의 좌표 공식을 통해 값을 구하고 정수가 아닌 경우를 parseInt로 체크해 예외사항을 건너뛴다.
+    5. max와 min 값을 교점좌표를 찾을 경우 비교해서 저장하고 해당 교점 좌표는 points배열에 push한다.
+    6. 루프가 종료되면 x와 y를 각 최대, 최소 값으로 구하고 이차원 배열을 x의 길이만큼 '.'을 채워 생성한다.
+    7. 3번에서와 같이 좌표를 구해 이차원 배열의 교점위치에 '*'로 변경하고 이차원 배열의 원소를 루프하면서 join으로 문자열화 한다.
 
-에러핸들링
-1. 분모가 0이 올 경우 정의되지 않은 수로 NaN 혹은 -Infinity를 반환하고 배열을 생성하지 못한다.
-2. 분모를 먼저 구하고 0인 경우 continue로 다음 수를 루프한다.
-3. row와 col값을 바꿔서 할당함, x가 col y가 row다.
+    에러핸들링
+    1. 분모가 0이 올 경우 정의되지 않은 수로 NaN 혹은 -Infinity를 반환하고 배열을 생성하지 못하므로 예외처리 해줘야 한다.
+    2. 배열의 길이는 0을 포함하므로 x와 y의 길이에서 모두 +1을 해줘야 한다.
+    3. row값인 y의 경우 수가 수가 클 수록 0번째 인덱스에 가까워야 좌표평면에서 큰 수가 되므로 max값에서 현재 y를 -해준다.
+
+    시간복잡도
+    주어진 전체 좌표를 이중루프하면서 각 원소끼리 곱을 구하므로 O(N^2)
 */
