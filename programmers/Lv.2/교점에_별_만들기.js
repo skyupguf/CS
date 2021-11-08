@@ -28,7 +28,7 @@
 //  7. 교점은 1,000 * 1,000 크기 이내에서 표현되며, 별이 한 개 이상 그려지는 입력만 주어진다.
 //  8. line = [[0, 1, -1], [1, 0, -1], [1, 0, 1]], return ["*.*"] / line = [[1, -1, 0], [2, -1, 0]], return ["*"]
 
-//  코드
+//  코드#1
 const findIntersectionPoint = (line) => {
     const points = [], infinity = Number.MAX_SAFE_INTEGER;
 
@@ -37,6 +37,7 @@ const findIntersectionPoint = (line) => {
 
     for(let i=0; i<line.length; i++) for(let j=i+1; j<line.length; j++) {
         let [A, B, E] = line[i], [C, D, F] = line[j];
+
         let denominator = A*D - B*C;
         if(!denominator) continue;
 
@@ -48,14 +49,15 @@ const findIntersectionPoint = (line) => {
         maxY = Math.max(maxY, y), minY = Math.min(minY, y);
         points.push([x, y]);
     }
-    distX = maxX - minX, distY = maxY - minY;
 
+    distX = maxX - minX, distY = maxY - minY;
     const CP = Array.from({length: distY+1}, () => new Array(distX+1).fill('.'));
+
     points.forEach(([x, y]) => {CP[maxY-y][x-minX] = '*'});
     return CP.map(arr => arr.join(''));
 }
 /*
-    풀이
+    풀이#1
     1. 이중루프로 각 교차점의 좌표를 모두 얻는다, 이 때, x 혹은 y값이 정수가 아닌 경우는 저장하지 않아야 한다.
     2. 좌표값은 배열로 저장하고 교차점간의 거리를 구하기 위해 가장 높은 x, y값과 가장 작은 x, y값을 저장해야한다.
     3. 교점의 좌표는 -값이 올 수 있기 때문에 x가 3일 경우 -4와 4사이의 좌표에 있다면, 인덱스 7에 점이 찍혀야 한다.
@@ -71,4 +73,37 @@ const findIntersectionPoint = (line) => {
 
     시간복잡도
     주어진 전체 좌표를 이중루프하면서 각 원소끼리 곱을 구하므로 O(N^2)
+*/
+
+//  코드#2
+const getPoints = (l) => {
+    const num = Number.MAX_SAFE_INTEGER;
+    let [ maxX, maxY, minX, minY ] = [ -num, -num, num, num ];
+
+    const arr = l.reduce((a, [A, B, E], i, arr) => arr.slice(i+1).reduce((b, [C, D, F]) => {
+        const [x, y] = [(B*F - E*D) / (A*D - B*C), (E*C - A*F) / (A*D - B*C)];
+        if(Number.isInteger(x) && Number.isInteger(y)) {
+            maxX = Math.max(maxX, x), minX = Math.min(minX, x);
+            maxY = Math.max(maxY, y), minY = Math.min(minY, y);
+            b.push([x, y]);
+        } 
+        return b;
+    }, a), []);
+
+    arr.push([minX, maxY, maxX-minX, maxY-minY]);
+    return arr;
+}
+
+const drawPoints = (line) => {
+    const points = getPoints(line);
+    const [X, Y, xl, yl] = points.pop();
+    const CP = Array.from({length: yl+1}, () => new Array(xl+1).fill('.'));
+
+    points.forEach(([x, y]) => {CP[Y-y][x-X] = '*'});
+    return CP.map(coordinate => coordinate.join(''));
+}
+/*
+    리팩토링
+    1. 교점의 좌표와 좌표길이를 구하기 위한 함수를 모듈로 분리해 가독성을 높인다.
+    2. reduce 메소드를 활용해 이중루프를 하는 배열을 arr[i+1] 인덱스부터 복사해 루프해 연산을 줄인다.
 */
