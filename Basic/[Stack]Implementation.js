@@ -8,19 +8,25 @@
 
 //  코드
 class Stack {
-    constructor() {
+    constructor(size) {
         this.storage = {};
         this.top = 0;
+        this.max = size;
     }
     size() {
         return this.top;
     }
+    peek(index) {
+        return this.storage[index] === undefined 
+            ? undefined : this.storage[index];
+    }
     push(element) {
+        if(this.size() <= this.max) return 'overflow';
         this.storage[this.top] = element;
         this.top++;
     }
     pop() {
-        if(this.size <= 0) return;
+        if(this.size() <= 0) return;
         const temp = this.storage[this.top-1];
         delete this.storage[this.top-1], this.top--;
         return temp;
@@ -37,4 +43,8 @@ class Stack {
     에러핸들링
     1. top을 0부터 시작하도록 조건이 주어져 있으므로 push가 된 후 top에 1이 누적 되어 마지막 포인터+1이 되어 있다.
     2. pop메서드에서 this.top-1을 키로 가진 값을 리턴하고, 삭제해야 한다.
+
+    리팩토링
+    1. 스택생성 시 크기를 입력받아 해당 크기 만큼 데이터가 들어오지 못하도록 제한한다.
+    2. 인덱스를 입력받아 해당 인덱스에 해당하는 값을 리턴하는 메서드를 추가한다.
 */
