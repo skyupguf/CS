@@ -16,6 +16,9 @@ class Stack {
     size() {
         return this.top;
     }
+    top() {
+        return this.storage[this.top-1];
+    }
     peek(index) {
         return this.storage[index];
     }
@@ -46,4 +49,5 @@ class Stack {
     리팩토링
     1. 스택생성 시 크기를 입력받아 해당 크기 만큼 데이터가 들어오지 못하도록 제한한다.
     2. 인덱스를 입력받아 해당 인덱스에 해당하는 값을 리턴하는 메서드를 추가한다.
+    3. 현재 top에 위치한 데이터를 출력하도록 top 메서드를 추가한다.
 */
