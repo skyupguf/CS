@@ -11,14 +11,13 @@ class Stack {
     constructor(size) {
         this.storage = {};
         this.top = 0;
-        this.max = size;
+        this.max = size || 0;
     }
     size() {
         return this.top;
     }
     peek(index) {
-        return this.storage[index] === undefined 
-            ? undefined : this.storage[index];
+        return this.storage[index];
     }
     push(element) {
         if(this.size() <= this.max) return 'overflow';
