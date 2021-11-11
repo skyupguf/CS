@@ -23,7 +23,7 @@ class Stack {
         return this.storage[index];
     }
     push(element) {
-        if(this.size() <= this.max) return 'overflow';
+        if(this.size() >= this.max) return 'Maximum stack size exceeded';
         this.storage[this.top] = element;
         this.top++;
     }
