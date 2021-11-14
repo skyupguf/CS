@@ -11,7 +11,7 @@ class Stack {
     constructor(size) {
         this.storage = {};
         this.top = 0;
-        this.max = size || 0;
+        this.max = size || MAX_SAFE_INTEGER;
     }
     size() {
         return this.top;
@@ -23,7 +23,7 @@ class Stack {
         return this.storage[index];
     }
     push(element) {
-        if(this.size() >= this.max) return console.log(new Error("스택이 가득찼습니다."))
+        if(this.size() >= this.max) return new Error("스택이 가득찼습니다.");
         this.storage[this.top] = element;
         this.top++;
     }
