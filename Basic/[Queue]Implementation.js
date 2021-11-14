@@ -179,3 +179,8 @@ class Deque {
         return this.rear && this.rear.value;
     }
 }
+/*
+    풀이
+    1. 이중 연결리스트는 객체와 다르게 포인터 계산없이 노드의 next와 prev관계만 유의해 연결해주면 된다.
+    2. 
+*/
