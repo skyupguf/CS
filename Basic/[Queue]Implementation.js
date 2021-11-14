@@ -76,7 +76,7 @@ class CircleQueue {
     }
     peek(index) {
         return index < this.qSize ? 
-            this.storage[(this.front+index) % this.qSize] : undefined;
+        this.storage[(this.front+index) % this.qSize] : undefined;
     }
 }
 /*
@@ -98,7 +98,7 @@ class Deque {
     constructor(size) {
         this.storage = {};
         this.front = 0;
-        this.rear = 0;
+        this.rear = 1;
         this.nSize = 0;
         this.dSize = size || MAX_SAFE_INTEGER;
     }
@@ -182,5 +182,9 @@ class Deque {
 /*
     풀이
     1. 이중 연결리스트는 객체와 다르게 포인터 계산없이 노드의 next와 prev관계만 유의해 연결해주면 된다.
-    2. 
+    2. addFront()와 addRear()모두 포인터가 undefined일 때 전달받은 인자값 value를 front와 rear에 모두 할당한다.
+    3. front가 존재할 경우 front.prev = {value, next: front}를 front에 할당해 prev를 현재 front로 변경한다.
+    4. rear가 존재할 경우 rear.next = {value, prev: rear}를 rear를 할당해 next를 현재 rear로 변경한다.
+    5. deleteFront()와 deleteRear()는 두 add의 반대로 수행하면 된다.
+    6. 이중 연결리스트를 활용할 경우 size를 정하지 않아도 덱을 O(1)으로 구현할 수 있다.
 */
