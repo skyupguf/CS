@@ -20,7 +20,6 @@ class LinkedList {
 
     insertNode(value, index) {
         if(index < 0 || index >= this.size) return new Error('비유효한 범위');
-        if(!this.size) return this.addNode(value);
         
         let now = this.head;
         if(!index) this.head = { value, next: now };
@@ -127,15 +126,12 @@ class DoublyLinkedList {
     }
 
     insertNode(value, index) {
-        if(index < 0 || index >= this.size) return new Error('유효한 범위가 아닙니다.');
+        if(index < 0 || index >= this.size) return new Error('비유효한 범위');
+        if(!index) return this.addFront(value);
         
         let prev, now = this.head;
-        if(!index) this.head = this.head.prev = { value, next: now };
-        
-        else {
-            while(index) prev = now, now = now.next, index--;
-            prev.next = now.prev = { value, prev: prev, next: now };
-        }
+        while(index) prev = now, now = now.next, index--;
+        prev.next = now.prev = { value, prev: prev, next: now };
         this.size++;
     }
 
@@ -154,25 +150,12 @@ class DoublyLinkedList {
     }
 
     deleteNode(index) {
-        if(index < 1 || index >= this.size-1) return new Error('유효한 범위가 아닙니다.');
+        if(index < 1 || index >= this.size-1) return new Error('비유효한 범위');
 
         let prev, now = this.head;
-        
         while(index) prev = now, now = now.next, index--;
         now.next.prev = prev, prev.next = now.next, this.size--;
         return now.value;
-    }
-
-    printList() {
-        let result = '', now = this.head;
-        if(now) {
-            while(now.next) {
-                result += `${now.value} | `; 
-                now = now.next;
-            } 
-            result += now.value;
-        }
-        return result;
     }
 }
 /*
@@ -195,21 +178,21 @@ class DoublyLinkedList {
     
     5. deleteNode()의 경우 front와 back을 따로 구현했으니 index 1부터 마지막 인덱스-1 까지의 범위로 한정한다.
 
-    6. changeNode()와 searchNode()는 단일 열결리스트와 동일하며, search의 경우 앞, 뒤로 구현이 가능하다.
-
-    7. pirntList()를 추가해 현재 연결리스트의 모든 노드들의 vlaue를 연결된 순서대로 문자열로 출력한다.
+    6. searchNode()와 pirntList() 단일 열결리스트와 동일하며, search의 경우 앞, 뒤로 구현이 가능하다.
 */
 
 //  원형 연결리스트 코드
-class CircleLinkedList {
+class CycleLinkedList {
     constructor() {
         this.head;
         this.size = 0;
     }
 
     addNext(value) {
-        if(!this.size) this.head = { value }, this.head.next = this.head;
-        else {
+        if(!this.size) {
+            this.head = { value }, this.head.next = this.head;
+        
+        } else {
             let now = this.head;
             while(now.next !== this.head) now = now.next;   
             now.next = { value, next: this.head };
@@ -221,14 +204,17 @@ class CircleLinkedList {
         if(index < 0 || index >= this.size) return new Error('비 유효한 범위');
         if(!this.size) return this.addNext(value);
         
-        let prev, now = this.head, i = index;
+        let now = this.head;
         
         if(index) {
+            let prev, i = index;
             while(i) prev = now, now = now.next, i--;
             prev.next = { value, next: now };
+        
         } else {
             while(now.next !== this.head) now = now.next;
-            this.head = { value, next: this.head }, now.next = this.head;
+            this.head = { value, next: this.head };
+            now.next = this.head;
         }
         this.size++;
     }
@@ -237,17 +223,18 @@ class CircleLinkedList {
         if(index < 0 || index >= this.size) return new Error('비 유효한 범위');
         if(!this.size) return new Error('존재하지 않는 노드');
         
-        let prev, now = this.head, i = index;
+        let now = this.head;
         if(this.size === 1) this.head = undefined;
 
         else if(index) {
+            let prev, i = index;
             while(i) prev = now, now = now.next, i--;
             prev.next = now.next === this.head ? this.head : now.next;
+        
         } else {
-            prev = this.head;
-            while(now.next !== this.head) now = now.next;
-            this.head = this.head.next, now.next = this.head;
-            now = prev;
+            let current = now;
+            while(current.next !== this.head) current = current.next;
+            this.head = this.head.next, current.next = this.head;
         }
         this.size--;
         return now.value;
