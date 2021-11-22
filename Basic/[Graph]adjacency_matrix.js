@@ -1,127 +1,83 @@
-// Implementation Graph
-// Graph 구현을 위한 기본적인 코드가 작성되어 있습니다. Graph 자료구조의 특성을 이해하고 FILL_ME_IN 을 채워 테스트를 통과해 주세요.
+//  문제요약
+//  1. 비가중치 그래프를 인접행렬로 구현하라.
+//  2. 멤버변수 : 빈배열이 할당된 matrix
+//  3. 메서드
+//		3-1. 정점을 추가할 수 있어야 한다.
+//		3-2. 정점을 삭제할 수 있어야 한다.
+// 		3-3. 정점의 존재를 확인할 수 있어야 한다.
+// 		3-4. 간선을 추가할 수 있어야 한다.
+// 		3-5. 간선을 삭제할 수 있어야 한다.
+//		3-6. 간선의 존재를 확인할 수 있어야 한다.
 
-// 맴버 변수
-// 정점(버텍스)와 간선을 담을 Array 타입의 matrix
-// 메서드
-// addVertex(): 그래프에 정점를 추가해야 합니다.
-// contains(vertex): 그래프에 해당 정점가 존재하는지 여부를 Boolean으로 반환해야 합니다.
-// addEdge(from, to): fromVertex와 toVertex 사이의 간선을 추가합니다.
-// hasEdge(from, to): fromVertex와 toVertex 사이의 간선이 존재하는지 여부를 Boolean으로 반환해야 합니다.
-// removeEdge(from, to): fromVertex와 toVertex 사이의 간선을 삭제해야 합니다.
-// 주의사항
-// 인접 행렬 방식으로 구현해야 합니다.
-// 구현해야 하는 그래프는 방향 그래프입니다.
-// 구현해야 하는 그래프는 비가중치 그래프입니다.
-// 구현해야 하는 그래프는 이해를 돕기 위해 기존 배열의 인덱스를 정점으로 사용합니다. (0, 1, 2, ... --> 정점)
-// 인접 행렬 그래프는 정점이 자주 삭제되는 경우에는 적합하지 않기 때문에 정점을 지우는 메소드는 생략합니다.
-// 사용 예시
-// const adjMatrix = new GraphWithAdjacencyMatrix();
-// adjMatrix.addVertex();
-// adjMatrix.addVertex();
-// adjMatrix.addVertex();
-// console.log(adjMatrix.matrix);
-// /*
-// 							TO
-// 		 	  	 0  1  2
-// 		  	0	[0, 0, 0],
-// 	FROM 	1	[0, 0, 0],
-// 		  	2	[0, 0, 0]
-// */
-// let zeroExists = adjMatrix.contains(0);
-// console.log(zeroExists); // true
-// let oneExists = adjMatrix.contains(1);
-// console.log(oneExists); // true
-// let twoExists = adjMatrix.contains(2);
-// console.log(twoExists); // true
-
-// adjMatrix.addEdge(0, 1);
-// adjMatrix.addEdge(0, 2);
-// adjMatrix.addEdge(1, 2);
-
-// let zeroToOneEdgeExists = adjMatrix.hasEdge(0, 1);
-// console.log(zeroToOneEdgeExists); // true
-// let zeroToTwoEdgeExists = adjMatrix.hasEdge(0, 2);
-// console.log(zeroToTwoEdgeExists); // true
-// let oneToZeroEdgeExists = adjMatrix.hasEdge(1, 0);
-// console.log(oneToZeroEdgeExists); // false
-
-// console.log(adjMatrix.matrix);
-// /*
-// 							TO
-// 		 	  	 0  1  2
-// 		  	0	[0, 1, 1],
-// 	FROM 	1	[0, 0, 1],
-// 		  	2	[0, 0, 0]
-// */
-
-// adjMatrix.removeEdge(1, 2);
-// adjMatrix.removeEdge(0, 2);
-// let oneToTwoEdgeExists = adjMatrix.hasEdge(1, 2);
-// console.log(oneToTwoEdgeExists); // false
-// zeroToTwoEdgeExists = adjMatrix.hasEdge(0, 2);
-// console.log(zeroToTwoEdgeExists); // false
-
-// console.log(adjMatrix.matrix);
-/*
-							TO
-		 	  	 0  1  2
-		  	0	[0, 1, 0],
-	FROM 	1	[0, 0, 0],
-		  	2	[0, 0, 0]
-*/
-
-
-// directed graph (방향 그래프)
-// unweighted (비가중치)
-// adjacency matrix (인접 행렬)
-// 이해를 돕기 위해 기존 배열의 인덱스를 정점으로 사용합니다 (0, 1, 2, ... --> 정점)
-
-class GraphWithAdjacencyMatrix {
+//  코드
+class AdjacencyMatrix {
 	constructor() {
 		this.matrix = [];
 	}
 
-	addVertex() {
-        //버텍스를 추가합니다.
-		const currentLength = this.matrix.length;
-		for (let i = 0; i < currentLength; i++) {
-			this.matrix[i].push(0);
+	addVertex(num) {
+		if (typeof(num) !== 'number') return new Error('추가할 정점의 개수를 입력하세요');
+
+		const length = this.matrix.length;
+		const newRows = Array.from({length: num}, () => new Array(length + num).fill(0));
+		this.matrix = this.matrix.map(row => [...row, ...new Array(num).fill(0)]);
+		this.matrix = [...this.matrix, ...newRows];
+	}
+
+	deleteVertex(num) {
+		if (typeof(num) !== 'number') return new Error('제거할 정점의 개수를 입력하세요');
+		this.matrix = this.matrix.slice(0, -num).map(row => row.slice(0, -num));
+	}
+
+	checkVertex(vertex) {
+		return !!this.matrix[vertex];
+	}
+
+	connectEdge(src, dst) {
+		const range = this.matrix.length;
+		if (src >= 0 && dst >= 0 && src < range && dst < range) {
+			this.matrix[src][dst] = 1;
+			return;	
 		}
-		this.matrix.push(new Array(currentLength + 1).fill(0));
+		return new Error('존재하지 않는 정점입니다');
 	}
 
-	contains(vertex) {
-        //TODO: 버텍스가 있는지 확인합니다.
-	}
-
-	addEdge(from, to) {
-		const currentLength = this.matrix.length;
-		if (from === undefined || to === undefined) {
-			console.log("2개의 인자가 있어야 합니다.");
+	cutOffEdge(src, dst) {
+		const range = this.matrix.length;
+		if (src >= 0 && dst >= 0 && src < range && dst < range) {
+			this.matrix[src][dst] = 0;
 			return;
 		}
-        //TODO: 간선을 추가할 수 없는 상황에서는 추가하지 말아야 합니다.
-		if ("FILL_ME_IN" + 1 > currentLength || "FILL_ME_IN" + 1 > currentLength || "FILL_ME_IN" < 0 || "FILL_ME_IN" < 0) {
-			console.log("범위가 매트릭스 밖에 있습니다.");
-			return;
-		}
-        //TODO: 간선을 추가해야 합니다.
+		return new Error('존재하지 않는 정점입니다');
 	}
 
-	hasEdge(from, to) {
-		//TODO: 두 버텍스 사이에 간선이 있는지 확인합니다.
-	}
-
-	removeEdge(from, to) {
-		const currentLength = this.matrix.length;
-		if (from === undefined || to === undefined) {
-			console.log("2개의 인자가 있어야 합니다.");
-			return;
-		}
-        //TODO: 간선을 지울 수 없는 상황에서는 지우지 말아야 합니다.
-		if ("FILL_ME_IN") {
-		}
-        //TODO: 간선을 지워야 합니다.
+	checkEdge(src, dst) {
+		return this.matrix[src][dst] === 1;
 	}
 }
+/*
+	풀이
+	1. 인접행렬이 할당될 멤버변수 this.matrix를 빈배열로 선언한다.
+	
+	2. addVertex(num) 메서드는 입력받은 num개 만큼의 정점을 생성해야 한다.
+		2-1. num이 숫자가 아닌 경우 에러처리한다.
+		2-2. 정점이 추가될 때 마다 2차원 배열이기 때문에 전체 원소의 개수는 n^2이 된다.
+		2-3. 우선 각 row의 원소를 num만큼 증가시키고 증가된 row의 길이만큼 num개의 row를 만들어 matrix에 삽입한다.
+	
+	3. deleteVertex(num)은 입력받은 num개 만큼의 정점을 삭제해야 한다.
+		3-1. num이 숫자가 아닌 경우 에러처리한다.
+		3-2. matrix에서 num만큼의 행을 제거하고 남은 각 행마다 num만큼을 원소를 제거한다.
+	
+	4. connectEdge(src, dst)는 해당 인덱스에 원소 1을 할당해 간선을 추가한다.
+		4-1. 정점을 가리키는 값이 아니거나 범위를 벗어난 경우 에러처리한다.
+		4-2. matrix[src][dst]에 1을 할당해 간선을 추가한다.
+	
+	5. cutOffEdge(src, dst)는 해당 인덱스에 원소 0을 할당해 간선을 삭제한다.
+		5-1. 마찬가지로 에러처리를 하고 해당 인덱스에 0을 할당한다.
+	
+	6. checkVertex(vertex)는 matrix.length-1이하일 경우 true, checkEdge(src, dst)는 1값인지 아닌지 boolean으로 리턴
+
+	에러핸들링
+	1. 행렬길이로 존재확인으로 하면 음수값 입력시 true가 리턴됨 낫연산자를 두번 사용해서 boolean으로 변형한다.
+	2. connectEdge와 cutOffEdge에서 undefined 에러처리를 안함, 조건을 덜쓰기 위해 오히려 참일 땍 값할당, 나머지 에러처리한다.
+*/
