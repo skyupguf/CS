@@ -1,107 +1,57 @@
+//  문제요약
+//  1. 비가중치 그래프를 인접리스트로 구현하라
+//  2. 멤버변수 : 정점과 간선을 담을 수 있는 Object
+//  3. 메서드
+//		3-1. 정점을 추가할 수 있어야 한다.
+// 		3-2. 정점의 존재를 확인할 수 있어야 한다.
+// 		3-3. 간선을 추가할 수 있어야 한다.
+//		3-4. 간선의 존재를 확인할 수 있어야 한다.
+// 		3-5. 간선을 삭제할 수 있어야 한다.
+//		3-6. 정점을 삭제할 수 있어야 한다.
+//  4. 무향으로도 구현해 보자.
 
-// Graph 구현을 위한 기본적인 코드가 작성되어 있습니다. Graph 자료구조의 특성을 이해하고 FILL_ME_IN 을 채워 테스트를 통과해 주세요.
-
-// 맴버 변수
-// 버텍스와 간선을 담을 수 있는 Object 타입의 vertices
-// 메서드
-// addVertex(vertex): 그래프에 버텍스를 추가해야 합니다.
-// contains(vertex): 그래프에 해당 버텍스가 존재하는지 여부를 Boolean으로 반환해야 합니다.
-// addEdge(fromVertex, toVertex): fromVertex와 toVertex 사이의 간선을 추가합니다.
-// hasEdge(fromvertex, toVertex): fromVertex와 toVertex 사이의 간선이 존재하는지 여부를 Boolean으로 반환해야 합니다,
-// removeEdge(fromVertex, toVertex): fromVertex와 toVertex 사이의 간선을 삭제해야 합니다.
-// removeVertex(vertex): 그래프에서 버텍스를 삭제합니다.
-// 주의사항
-// 인접 리스트 방식으로 구현해야 합니다.
-// 구현해야 하는 그래프는 무방향 그래프입니다.
-// 사용 예시
-// const adjList = new GraphWithAdjacencyList();
-// adjList.addVertex("Seoul");
-// adjList.addVertex("Daejeon");
-// adjList.addVertex("Busan");
-
-// adjList.contains("Seoul"); // true
-// adjList.contains("Jeonju"); // false
-
-// adjList.addEdge("Daejeon", "Seoul");
-// adjList.hasEdge("Seoul", "Daejeon"); //true
-
-// adjList.removeVertex("Seoul");
-// adjList.hasEdge("Seoul", "Daejeon"); //false
-// ...
-
-
-
-
-
-// undirected graph (무향 그래프)
-// adjacency list (인접 리스트)
-class GraphWithAdjacencyList {
+//  코드
+class AdjacencyList {
 	constructor() {
-		this.vertices = {};
+		this.list = {};
 	}
 
-	addVertex(vertex) {
-		// TODO: 정점을 추가합니다.
-		// 넘겨받은 인자(정점)은 키가 되며, 빈 배열을 값으로 할당합니다.
-		// 이미 존재하는 정점이라면, 덮어 씌워지지 않아야 합니다.
-		this.vertices["FILL_ME_IN"] = "FILL_ME_IN";
-	}
-
-	contains(vertex) {
-		// 인자로 넘겨받은 정점의 존재여부를 반환합니다.
+    checkVertex(vertex) {
 		return !!this.vertices[vertex];
 	}
 
-	addEdge(fromVertex, toVertex) {
-		// TODO: 간선을 추가합니다.
-		// - fromVertex의 인접 리스트에 toVertex를 추가하고
-		// - toVertex의 인접 리스트에 fromVertex를 추가합니다.
-		// 넘겨받은 2개의 정점 모두 존재하는 정점이어야 합니다.
-
-		if (!this.contains("FILL_ME_IN") || !this.contains("FILL_ME_IN")) {
-			return;
-		}
-
-		if (!this.hasEdge("FILL_ME_IN", "FILL_ME_IN")) {
-		}
-
-		if (!this.hasEdge("FILL_ME_IN", "FILL_ME_IN")) {
-		}
+	addVertex(vertex) {
+        this.checkVertex(vertex) ? vertex : this.list[vertex] = [];
 	}
 
-	hasEdge(fromVertex, toVertex) {
-		// 만약 정점(fromVertex)이 존재하지 않는다면
-		if (!this.contains(fromVertex)) {
-			// false를 반환합니다
-			return false;
-		}
-		// 존재한다면 해당 정점의 리스트에 toVertex가 포함되어있는지 반환합니다
-		return !!this.vertices[fromVertex].includes(toVertex);
+    checkEdge(src, dst) {
+		return this.checkVertex(src) ? this.list[src].indexOf(dst) : false;
 	}
 
-	removeEdge(fromVertex, toVertex) {
-		// TODO: 간선을 삭제합니다.
-		// 인자로 넘겨받은 두 정점이 모두 존재한다면
-		// - fromVertex의 인접 리스트에 있는 toVertex를 삭제하고
-		// - toVertex의 인접 리스트에 있는 fromVertex를 삭제합니다.
-
-		if (!this.contains("FILL_ME_IN") || !this.contains("FILL_ME_IN")) {
-			return;
-		}
-
-		if (this.hasEdge("FILL_ME_IN", "FILL_ME_IN")) {
-			const index = this.vertices["FILL_ME_IN"].indexOf("FILL_ME_IN");
-			this.vertices["FILL_ME_IN"].splice(index, 1);
-		}
-		// TODO:  두번째 정점의 인접 리스트에 첫번째 정점이 있을 경우
+	connectEdge(vertex1, vertex2) {
+		if (!this.checkVertex(vertex1) || !this.checkVertex(vertex2)) return;
+		if (this.checkEdge(vertex1, vertex2) === -1) this.list[vertex1].push(vertex2);
+		if (this.checkEdge(vertex2, vertex1) === -1) this.list[vertex2].push(vertex1);
 	}
 
-	removeVertex(vertex) {
-		// TODO: 정점을 삭제합니다.
-		// 인자로 넘겨받은 정점(A)이 존재한다면
-		// - 이 정점(A)을 삭제함은 물론,
-		// - 다른 모든 정점들의 리스트를 순회하며 넘겨받은 정점(A)과 이어져 있는 간선을 제거합니다
-		if (this.contains(vertex)) {
-		}
+	cutOffEdge(vertex1, vertex2) {
+		if (!this.checkVertex(vertex1) || !this.checkVertex(vertex2)) return;
+
+        let index1 = this.checkEdge(vertex1, vertex2);
+        let index2 = this.checkEdge(vertex2, vertex1);
+
+        index1 === -1 ? vertex1 : this.list[vertex1].splice(index1, 1);
+        index2 === -1 ? vertex2 : this.list[vertex2].splice(index2, 1);
+	}
+
+	deleteVertex(vertex) {
+        for (let key in this.list) {
+            if(this.checkEdge(vertex, key) !== -1) this.cutOffEdge(vertex, key);
+        }
+		if (this.checkVertex(vertex)) delete this.list[vertex];
 	}
 }
+/*
+    풀이
+    1. 
+*/
