@@ -44,4 +44,7 @@ class Tree {
         3-6. checkNode로 child의 노드를 재귀호출 하면 value와 데이터가 동일하면 if탈출조건에서 true를 리턴한다.
         3-7. 이 때 자식노드가 child배열안에 자식을 또 가지고 있으면 존재하는 높이까지 타고 들어가 탐색한다.
         3-8. child배열을 전부 루프해도 value가 data와 일치하지 않으면 false를 리턴한다.
+    
+    시간복잡도
+    checkNode로 노드 value를 탐색할 때 child배열의 모든 노드를 재귀호출하고 루프를 하기 때문에 최악의 경우 O(N!)
 */
