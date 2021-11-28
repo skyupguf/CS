@@ -13,55 +13,72 @@
 class BinarySearchTree {
     constructor(data) {
         this.value = data;
-        this.left = null;
-        this.right = null;
+        this.left;
+        this.right;
     }
 
-    addChildNode(data) {
+    addNode(data) {
+        if (!this.value) return new BinarySearchTree(data);
+
         if (data < this.value) {
-            this.left ? 
-            this.left.addChildNode(data) : this.left = new BinarySearchTree(data);
+            this.left 
+            ? this.left.addNode(data)
+            : this.left = new BinarySearchTree(data);
         
         } else if (data > this.value) {
-            this.right ?
-            this.right.addChildNode(data) : this.right = new BinarySearchTree(data);
+            this.right 
+            ? this.right.addNode(data) 
+            : this.right = new BinarySearchTree(data);
             
         } else return;
     }
     
     checkNode(data) {
         if (data === this.value) return true;
-        if (data < this.value && this.left) return this.left.checkNode(data);
-        if (data > this.value && this.right) return this.right.checkNode(data);
-        return false;
+        else if (data < this.value && this.left) return this.left.checkNode(data);
+        else if (data > this.value && this.right) return this.right.checkNode(data);
+        else return false;
     }
 
-    deleteNode(data) {
-        if (data === this.value) {
-            if (this.left && this.right) {}
-            else if (this.left) {}
+    deleteNode(root, data) {
+        if (data < root.value) {
+            root.left = root.left.deleteNode(data);
+        
+        } else if (data > this.value) {
+            this.right = this.right.deleteNode(data);
+        
+        } else {
+            if (!this.left) return this.right;
+            else if (!this.right) return this.left;
+            else {
+                let min = this.right;
+                while (min.left) min = min.left;
+                [ this.value, min.value ] = [ min.value, this.value ];
+                this.right = this.right.deleteNode(data);
+            }
         }
-        if (data < this.value && this.left) this.left.deleteNode(data);
-        if (data > this.value && this.right) this.right.deleteNode(data);
-        return;
+        return root;
     }
     
     preorder(callback) {
-        callback(this.value);
-        if (this.left) this.left.preorder(callback);
-        if (this.right) this.right.preorder(callback);
+        const root = this.root;
+        callback(root.value);
+        if (root.left) root.left.preorder(callback);
+        if (root.right) root.right.preorder(callback);
     }
   
     inorder(callback) {
-        if (this.left) this.left.inorder(callback);
-        callback(this.value);
-        if (this.right) this.right.inorder(callback);
+        const root = this.root;
+        if (root.left) root.left.inorder(callback);
+        callback(root.value);
+        if (root.right) root.right.inorder(callback);
     }
   
     postorder(callback) {
-        if (this.left) this.left.postorder(callback);
-        if (this.right) this.right.postorder(callback);
-        callback(this.value);
+        const root = this.root;
+        if (root.left) root.left.postorder(callback);
+        if (root.right) root.right.postorder(callback);
+        callback(root.value);
     }
 }
 /*
@@ -96,4 +113,90 @@ class BinarySearchTree {
         6-2. 후위순회는 callback을 가장 마지막에 위치시킨다.
         6-3. 중위는 left => root => right 순으로 원소를 callback함수에 전달한다.
         6-4. 후위는 left => right => root 순으로 원소를 callback함수에 전달한다.
+    
+    에러핸들링
+    1. checkNode에서 존재하지 않는 노드의 원소를 찾을 때 null값을 만나는 경우 null.포인터로 재귀호출 불가
+    2. 하위트리 분기에서 left와 right가 둘다 존재하는지 && 조건으로 추가한다.
 */
+class Node {
+    constructor(data) {
+        this.value = data;
+        this.left;
+        this.right;
+    }
+}
+
+class BinarySearchTree {
+    constructor(data) {
+        this.root = new Node(data);
+    }
+
+    addNode(data) {
+        const root = this.root;
+        
+        if (!root.value) root = new BinarySearchTree(data);
+
+        if (data < root.value) {
+            root.left 
+            ? root.left.addNode(data) 
+            : root.left = new BinarySearchTree(data);
+        
+        } else if (data > root.value) {
+            root.right 
+            ? root.right.addNode(data) 
+            : root.right = new BinarySearchTree(data);
+            
+        } else return;
+    }
+    
+    checkNode(data) {
+        const root = this.root;
+        if (data === root.value) return true;
+        else if (data < root.value && root.left) return root.left.checkNode(data);
+        else if (data > root.value && root.right) return root.right.checkNode(data);
+        else return false;
+    }
+
+    deleteNode(data) {
+        const root = this.root;
+
+        if (data < root.value) {
+            root.left.root = root.left.deleteNode(data);
+        
+        } else if (data > root.value) {
+            root.right.root = root.right.deleteNode(data);
+        
+        } else {
+            if (!root.left) return root.right;
+            else if (!root.right) return root.left;
+            else {
+                let min = root.right.root;
+                while (min.left) min = min.left.root;
+                [ root.value, min.value ] = [ min.value, root.value ];
+                root.right = root.right.deleteNode(data);
+            }
+        }
+        return root;
+    }
+    
+    preorder(callback) {
+        const root = this.root;
+        callback(root.value);
+        if (root.left) root.left.preorder(callback);
+        if (root.right) root.right.preorder(callback);
+    }
+  
+    inorder(callback) {
+        const root = this.root;
+        if (root.left) root.left.inorder(callback);
+        callback(root.value);
+        if (root.right) root.right.inorder(callback);
+    }
+  
+    postorder(callback) {
+        const root = this.root;
+        if (root.left) root.left.postorder(callback);
+        if (root.right) root.right.postorder(callback);
+        callback(root.value);
+    }
+}
