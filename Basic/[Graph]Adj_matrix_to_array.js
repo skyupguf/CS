@@ -23,7 +23,7 @@ const createAdjMatrix = (edges) => {
     const matrix = Array.from({length: size}, () => new Array(size).fill(0));
 
 	edges.forEach(([src, dst, edge]) => {
-        matrix[src][dst] = 1        
+        matrix[src][dst] = 1;    
         if (edge === 'undirected') matrix[dst][src] = 1;
     });
     return matrix;
