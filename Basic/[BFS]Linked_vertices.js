@@ -2,22 +2,18 @@ const countComponent = (edges) => {
     let count = 0;
     const visited = {};
     const maxNode = Math.max(...edges.flat());
-    //const visited = new Array(maxNode).fill(false);
     const adjList = makeAdjacencyList(edges, maxNode);
-    //const adjMatrix = makeAdjacencyMatrix(edges, maxNode);
+    
     for(let node=0; node<=maxNode; node++) {
         if(!visited[node]) {
-            useBfs(adjList, node, visited); 
-            //useDfs(adjList, node, visited);
-            //useBfs(adjMatrix, node, visited); 
-            //useDfs(adjMatrix, node, visited);
+            useBfs(adjList, node, visited); // 1. 인접리스트 사용
+            //useBfs(adjMatrix, node, visited); // 2. 인접행렬 사용
             count++;
         }
     }
     return count;
 }
-
-/////////////////* 1. 리스트 그래프 */////////////////
+//  1. 인접리스트 생성
 function makeAdjacencyList(edges, maxNode) {
     const adjList = {};
     for(let i=0; i<=maxNode; i++) {
@@ -29,7 +25,19 @@ function makeAdjacencyList(edges, maxNode) {
     });
     return adjList;
 }
-// 1-1. 넓이우선 접근
+//  2. 인접행렬 생성
+function makeAdjacencyMatrix(edges, maxNode) {
+    const matrix = [];
+    for(let i=0; i<=maxNode; i++) {
+        matrix.push(new Array(maxNode).fill(0));
+    }
+    edges.forEach(el => {
+        matrix[el[0]][el[1]] = 1;
+        matrix[el[1]][el[0]] = 1;
+    });
+    return matrix;
+}
+//  인접리스트로 너비우선 탐색
 function useBfs(adjList, node, visited) {
     const queue = [node];
     visited[node] = true;
@@ -43,30 +51,7 @@ function useBfs(adjList, node, visited) {
         }
     }
 }
-// 1-2. 깊이우선 접근
-function useDfs(adjList, node, visited) {
-    visited[node] = true;
-    for(let i=0; i<adjList[node].length; i++) {
-        if(!visited[adjList[node][i]]) {
-            useDfs(adjList, adjList[node][i], visited);
-        }
-    }
-}
-
-
-//////////////////* 2. 행렬 그래프 *///////////////////
-function makeAdjacencyMatrix(edges, maxNode) {
-    const matrix = [];
-    for(let i=0; i<=maxNode; i++) {
-        matrix.push(new Array(maxNode).fill(0));
-    }
-    edges.forEach(el => {
-        matrix[el[0]][el[1]] = 1;
-        matrix[el[1]][el[0]] = 1;
-    });
-    return matrix;
-}
-// 2-1. 넓이우선 접근
+//  인접행렬로 너비우선 탐색
 function useBfs(adjMatrix, node, visited) {
     const queue = [node];
     visited[node] = true;
@@ -77,15 +62,6 @@ function useBfs(adjMatrix, node, visited) {
                 queue.push(i);
                 visited[i] = true;
             }
-        }
-    }
-}
-// 2-1. 깊이우선 접근
-function useDfs(adjMatrix, node, visited) {
-    visited[node] = true;
-    for(let i=0; i<adjMatrix[node].length; i++) {
-        if(adjMatrix[node][i] === 1 && !visited[i]) {
-            useDfs(adjMatrix, i, visited);
         }
     }
 }
