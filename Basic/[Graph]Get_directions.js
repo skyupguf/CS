@@ -65,22 +65,21 @@ const checkValidRoute = (matrix, from, to) => {
 */
 
 //  리팩토링1(재귀)
-const stack = [];
 const checkValidRoute = (matrix, from, to) => {
-    if (from === to) return true;
-    
-    let check;
-    stack.push(from);
+    const visited = {};
 
-    for (let i=0; i<matrix[from].length; i++) {
-        let edge = matrix[from][i];
-
-        if (edge && !stack[i] && from !== i) {
-            check = checkValidRoute(matrix, i, to);
+    function useDfs(src) {
+        if (src === to) return true;
+        visited[src] = true;
+        
+        let check;
+        for (let v=0; v<matrix[src].length; v++) {
+            let edge = matrix[src][v];
+            if (edge && !visited[v]) check = useDfs(v);
         }
-        if (i === matrix[from].length - 1) stack.pop();
+        return check ? true : false;
     }
-    return check ? true : false;
+    return useDfs(from);
 }
 /*
     풀이
@@ -88,16 +87,11 @@ const checkValidRoute = (matrix, from, to) => {
         1-1. while문은 중간에 탐색이 완료되지 않은 row로 돌아왔을 때 다시 0부터 재탐색하는 반복을 한다.
         1-2. 방문한 정점에 0을 할당하기 위해 인접행렬을 복사하는데 걸리는 소요시간이 크다.
     
-    2. stack배열을 함수 바깥에 배치해 방문처리하고 재귀를 통해 index를 초기화하지 않고 row를 처음부터 재탐색하지 않는다.
-        2-1. stack을 함수 외부에 놓고 재귀호출 됐을 때 탈출조건인 from === to 는 함수안 최상단에 배치한다.
-        2-2. 재귀호출된 리턴값을 할당할 check변수를 빈 상태로 선언하고 stack에 탐색할 노드인 from을 push한다.
-        2-3. for문으로 from의 row를 루프하면서 간선 1이 존재하는지 확인한다.
-        2-4. 간선이 1이고 방문하지 않은(stack에 존재하지 않는) 정점이며 자기 루프를 하지 않을 경우 현재 i를 from으로 재귀호출한다.
-    
-    3. stack에 정점 i가 존재할 시, from이 i 일 시 재방문을 하면 안된다.
-        3-1. stack에 push된 from이 재귀호출 될 때마다 쌓이게 되는데 해당 정점은 이미 방문했기에 재탐색을 하면 안된다.
-        3-2. from === i 인 경우 재귀호출이 되면 자기루프를 돌게 되며 무한 재귀호출이 되버린다.
-        3-3. 따라서 간선이 존재하고, 아직 방문하지 않았으며, 자기루프가 되지 않을 때, 재귀호출을 해야 한다.
+    2. 방문처리할 visited를 object를 할당해 선언하고 재귀호출을 위한 내부함수 useDfs를 선언한다.
+        2-1. 재귀호출이 됐을 때 탈출조건인 src === to 는 함수안 최상단에 배치하고 시작정점 src를 visited에 true로 방문처리한다.
+        2-2. 재귀호출된 리턴값을 할당할 check변수를 빈 상태로 선언하고 src노드인 row를 루프한다.
+        2-3. 간선이 존재하는지 확인하고 방문처리가 되어있지 않을 경우 check에 src를 간선이 존재하는 정점으로 재귀호출하며 할당한다.
+        2-4. check가 undefined거나 false면 false를 아닐경우 true를 리턴한다.
     
     4. 해당 정점의 row를 끝까지 순회를 했으면 stack에서 제거한다.
 

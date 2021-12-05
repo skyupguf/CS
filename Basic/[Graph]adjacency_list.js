@@ -17,7 +17,7 @@ class AdjacencyList {
 	}
 
     checkVertex(vertex) {
-		return !!this.vertices[vertex];
+		return !!this.list[vertex];
 	}
 
 	addVertex(vertex) {
