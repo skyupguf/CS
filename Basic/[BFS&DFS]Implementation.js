@@ -1,7 +1,7 @@
 //  문제요약
 //  1. BFS와 DFS로 그래프를 탐색하는 자료구조를 구현하라.
 //  2. 리스트와 행렬 둘 다 구현해보기
-//  3. 멤버변수 : 리스트의 경우 정점의 간선을 할당할 Object, 행렬의 경우 행렬을 생성할 Array
+//  3. 멤버변수 : 인접리스트의 경우 정점의 간선을 할당할 Object, 행렬의 경우 인접행렬을 생성할 Array
 //  4. 메서드
 //      4-1. 정점의 존재여부를 체크한다.
 //      4-2. 정점을 추가할 수 있어야 한다.
@@ -68,14 +68,14 @@ class AdjacencyList {
         if (!this.checkVertex(src)) return;
         const visited = {};
 
-        function useDfs(src) {
+        function useDfs(src, list) {
             visited[src] = true;
             console.log(`traversal sequence : ${src}`);
 
-            for (let adjVertex in this.list[src]) {
-                if (!visited[adjVertex]) Dfs(adjVertex);
+            for (let adjVertex in list[src]) {
+                if (!visited[adjVertex]) useDfs(adjVertex, list);
             }
         }
-        useDfs(src);
+        useDfs(src, this.list);
     }
 }
