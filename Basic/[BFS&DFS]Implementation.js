@@ -174,10 +174,9 @@ class AdjacencyMatrix {
         function useDfs(src, matrix) {
             let row = matrix[src];
             visited[src] = true;
-
             console.log(`traversal sequence : ${src}`);
+            
             for (let col=0; col<row.length; col++) {
-
                 if (row[col] && !visited[col]) useDfs(col, matrix)
             }
         }
