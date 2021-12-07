@@ -92,8 +92,6 @@ const checkValidRoute = (matrix, from, to) => {
         2-2. 재귀호출된 리턴값을 할당할 check변수를 빈 상태로 선언하고 src노드인 row를 루프한다.
         2-3. 간선이 존재하는지 확인하고 방문처리가 되어있지 않을 경우 check에 src를 간선이 존재하는 정점으로 재귀호출하며 할당한다.
         2-4. check가 undefined거나 false면 false를 아닐경우 true를 리턴한다.
-    
-    4. 해당 정점의 row를 끝까지 순회를 했으면 stack에서 제거한다.
 
     시간복잡도
     앞선 코드처럼 인접행렬을 복사하지도 생성하지도 않으며, 인접행렬의 row를 index=0부터 재탐색하지도 않는다.
