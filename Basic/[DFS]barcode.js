@@ -14,23 +14,24 @@ const leastBarcode = (len) => {
     let barcode = '1';
 
     function useDfs(barcode) {
-        if (barcode.length === len) return;
+        if (barcode.length === len) return barcode;
 
         for (let num=1; num<4; num++) {
-            if (barcode[barcode.length-1] === num) continue;
-            let i=1, check = true;
-            let now = barcode + `${num}`;
-            let last = barcode.slice(-i);
+            let last = `${num}`;
+            if (barcode[barcode.length-1] === last) continue;
 
-            while (last.length < (now.length)/2) {
-                let fixed = barcode.slice(barcode.length-i*2, -i);
+            let i=1, check = true;
+            let now = barcode + last;
+
+            while (last.length <= (now.length)/2) {
+                let fixed = now.slice(now.length-i*2, -i);
                 if (last === fixed) check = false;
-                i++;
+                i++, last = now.slice(-i);
             }
-            
+            if (check) return useDfs(now);
         }
     }
-    useDfs(barcode);
+    return useDfs(barcode);
 }
 /*
     풀이
