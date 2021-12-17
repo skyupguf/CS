@@ -23,7 +23,7 @@ class MinHeap {
     
     getChildIndexR = (index) => (index * 2) + 2;
     
-    getParentIndex = (index) => Math.floor(index - 1) / 2;
+    getParentIndex = (index) => Math.floor((index - 1) / 2);
 
     addNode(element) {
         this.heap.push(element);
