@@ -25,7 +25,7 @@ const useMinimumBox = (stuff, limited) => {
     4. 이 과정을 반복하고 stuff의 길이가 0가 되면 box를 리턴한다.
 
     시간복잡도
-    while문은 한번에 1개씩 박스에 담길 경우 O(N)이므로 sort의 O(NlogN)을 넘지 못한다.
+    while문은 최악일 경우 모든 요소를 루프하므로 O(N), 따라서 정렬을 수행하는 O(NlogN)이 시간복잡도가 된다.
 
     리팩토링
     1. if(limited >= s+b) stuff.shift() 에서 shift메소드의 시간 복잡도는 최대 O(N)이다.
