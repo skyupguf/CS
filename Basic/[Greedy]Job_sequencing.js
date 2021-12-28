@@ -11,11 +11,11 @@ const listMaxProfitSequence = (jobs) => {
     jobs.sort((a, b) => a[1] - b[1]);
 
     while (jobs.length) {
-        stack.push(jobs.pop());
-        let i = jobs.length-1;
+        let [ job, limit, profit ] = jobs.pop();
+        stack.push([job, profit]);
 
-        if (jobs.length === 0 || stack[stack.length-1][1] !== jobs[i][1]) {
-            stack.sort((a, b) => a[2] - b[2]);
+        if (jobs.length === 0 || jobs[jobs.length-1][1] !== limit) {
+            stack.sort((a, b) => a[1] - b[1]);
             result.unshift(stack.pop());
         }
     }
@@ -63,7 +63,7 @@ const listMaxProfitSequence = (jobs) => {
         while (nowIndex) {
             let parentIndex = Math.floor((nowIndex - 1) / 2);
 
-            if (node[2] > heap[parentIndex][2]) {
+            if (node[1] > heap[parentIndex][1]) {
                 heap[nowIndex] = heap[parentIndex];
                 nowIndex = parentIndex;
 
@@ -109,5 +109,5 @@ const listMaxProfitSequence = (jobs) => {
 }
 /*
     풀이
-    1. 위 코드를 힙 구조를 이용해 직접 구현해보자.
+    1. 위 코드를 풀어서 힙구조로 직접구현 시 입, 출력에 일관적으로 O(logN)이 적용 가능하다.
 */
