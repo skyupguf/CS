@@ -7,18 +7,19 @@
 
 //  코드
 const listMaxProfitSequence = (jobs) => {
-    jobs.sort((a, b) => b[1] - a[1]);
+    const stack = [], result = [];
+    jobs.sort((a, b) => a[1] - b[1]);
 
-    const priority = [];
-    jobs.forEach(([job, limit, profit]) => {
+    while (jobs.length) {
+        stack.push(jobs.pop());
+        let i = jobs.length-1;
 
-    })
-
-    getChildIndexL = (index) => (index * 2) + 1;
-    
-    getChildIndexR = (index) => (index * 2) + 2;
-    
-    getParentIndex = (index) => Math.floor((index - 1) / 2);
+        if (jobs.length === 0 || stack[stack.length-1][1] !== jobs[i][1]) {
+            stack.sort((a, b) => a[2] - b[2]);
+            result.unshift(stack.pop());
+        }
+    }
+    return result.map(e => e[0]);
 }
 /*
     풀이#1
@@ -27,26 +28,86 @@ const listMaxProfitSequence = (jobs) => {
         1-2. 5번 테스트케이스처럼 기한1 작업들이 기한2 작업들 보다 모두 이익이 낮을 경우 기한2 작업들을 이틀에 걸쳐 하는게 더 이익이 크다.
         1-3. 따라서, 이 문제는 해당 기한끼리의 대소비교가 아닌 기한안에 최선을 선택하는 그리디의 접근법이 올바르다.
     
-    2. 기한3의 작업은 0, 1, 2 모든 인덱스에 배치가 가능하다, 기한2면 0, 1, 기한1은 0번째 인덱스에만 배정이 가능하다.
-        2-1. 우선 단계를 나누기 위해 기한별로 정렬한다. 이유는 최대기한은 이익이 작더라도 반드시 시행되기 때문이다.
-        2-2. 예를 들어 기한3의 경우 이익이 기한2와 1보다 작더라도 3일째 되는 날 유일하게 남아 있는 작업이기 때문이다.
+    2. 그리디를 사용하려면 주어진 기한이 가장 높은 순으로 최대이익을 찾아 리턴할 result배열의 슬롯을 채워야 한다.
+        2-1. 기한이 같은 경우가 한 단계이며 기한이 가장 큰 순으로 먼저 탐색해야 하므로 기한별로 오름차순으로 정렬한다.
+        2-2. 기한이 같은 작업들을 이제 stack배열에 새로 push하고 이들 중 최대이익이 나는 작업을 하나 result에 push한다.
+        2-3. 왜 하나만 push하냐면 기한3이 최대일 경우 기한3의 작업은 기한2, 기한1보다 이익이 작아도 3일째는 3일 작업들만 남기 때문이다.
+        2-4. 이렇게 슬롯하나를 채웠으면 기한2들도 stack에 push해 이제 기한3들과 섞어서 비교해도 된다.
+        2-5. 왜냐하면 2일째는 2일, 3일 작업들이 둘다 남아있기 때문이다, 이를 반복 수행하면 기한 순으로 최대이익 작업들을 구할 수 있다.
+    
+    3. 작업들을 같은 기한간 이익으로 비교하기 위한 stack배열과 결과를 리턴할 result배열을 선언하고 빈 배열을 할당한다. 
+        3-1. jobs배열을 기한순으로 오름차순 배열을 한다.
+        3-2. 이제 jobs배열의 작업들이 stack에서 전부 비교될 때 까지 루프해야 하므로 while(jobs.length)까지 루프한다.
 
-    3. 그리디로 각 단계의 최선의 선택을 한다. 기한3의 작업이 3개 있을 경우 최선의 선택은 3작업을 모두 새 배열에 push하는 것이다.
-        3-1. 만일 기한3의 작업이 4개일 경우 배열에서 가장 작은 이익의 작업보다 클 경우 교체해야 한다.
+    4. 같은 기한의 작업들을 stack에 모아 이익을 기준으로 오름차순 정렬하여 가장 큰 작업을 result에 push한다. 이게 하나의 단계이다.
+        4-1. jobs.pop()의 값을 stack에 push하고 현재 jobs의 가장 뒤의 인덱스를 i변수를 선언하고 할당한다.
+        4-2. jobs의 현재 인덱스의 기한과 스택의 마지막 요소의 기한이 다를 때 까지 stack에 작업을 push한다.
+        4-3. 기한이 다를 경우, stack을 이익을 기준으로 오름차순 정렬 후 가장 뒤의 요소를 result에 unshift한다.
+        4-4. jobs배열이 빈 배열일 경우 비교하면 인덱스 에러가 생기므로 조건으로 job가 빈 배열일 경우도 포함한다.
+
+    5. 루프가 종료되면 result배열에서 작업명만 배열로 리턴한다.
+
+    시간복잡도
+    while루프는 jobs의 작업을 한번 만 루프하므로 jobs배열 전체를 sort메서드로 정렬하는 O(NlogN)을 넘지 못한다.
 */
 
-// 위 솔루션 의 시간 복잡도 는 O(n 2 )입니다. Priority Queue(max heap) 를 사용하여 최적화할 수 있습니다 .
+//  코드#2
+const listMaxProfitSequence = (jobs) => {
+    const heap = [], result = [];
+    jobs.sort((a, b) => a[1] - b[1]);
 
-// 알고리즘은 다음과 같이 진행됩니다.
+    const insertNode = (node) => {
+        heap.push(node);
+        let nowIndex = heap.length - 1;
 
-// 마감일을 기준으로 작업을 정렬합니다.
-// 끝에서 반복하고 두 개의 연속 마감일 사이에 사용 가능한 슬롯을 계산합니다. 최대 힙에 i번째 작업의 이익, 기한 및 작업 ID를 포함합니다.
-// 슬롯을 사용할 수 있고 최대 힙에 작업이 남아 있는 동안 결과에 최대 이익과 기한이 있는 작업 ID를 포함합니다.
-// 기한을 기준으로 결과 배열을 정렬합니다.
-// 다음은 위 알고리즘의 구현입니다.
+        while (nowIndex) {
+            let parentIndex = Math.floor((nowIndex - 1) / 2);
 
-// 시간 복잡도 : O(nlog(n))
+            if (node[2] > heap[parentIndex][2]) {
+                heap[nowIndex] = heap[parentIndex];
+                nowIndex = parentIndex;
 
-// 공간 복잡도 : O(n)
+            } else break;
+        }
+        heap[nowIndex] = node;
+    }
 
-// Disjoint Set Data Structure를 사용하여 최적화할 수도 있습니다. 자세한 사항은 아래 포스팅을 참고해주세요.
+    const extractMax = () => {
+        let nowIndex = 0;
+        let max = heap.pop();
+        let nodes = heap.length;
+
+        if (heap[0]) [ max, heap[0] ] = [ heap[0], max ];
+
+        while (nodes > nowIndex * 2 + 1) {
+            let leftIndex = nowIndex * 2 + 1;
+            let rightIndex = nowIndex * 2 + 2;
+
+            let maxIndex = 
+                rightIndex < nodes && heap[rightIndex][1] > heap[leftIndex][1]
+                ? rightIndex : leftIndex;
+            
+            if (heap[nowIndex][1] <= heap[maxIndex][1]) {
+                [ heap[nowIndex], heap[maxIndex] ] = 
+                [ heap[maxIndex], heap[nowIndex] ];
+                nowIndex = maxIndex;
+            
+            } else break;
+        }
+        return max;
+    }
+
+    while (jobs.length) {
+        let [ job, limit, profit ] = jobs.pop();
+        insertNode([job, profit]);
+
+        if (jobs.length === 0 || jobs[jobs.length-1][1] !== limit) {
+            result.unshift(extractMax());
+        }
+    }
+    return result.map(job => job[0]);
+}
+/*
+    풀이
+    1. 위 코드를 힙 구조를 이용해 직접 구현해보자.
+*/
