@@ -1,37 +1,11 @@
-function maxDivide(a , b) {
-    while (a % b == 0)
-        a = a / b;
-    return a;
+//  divide & conquer code
+const getFiboNum = (n) => {
+    if (n <= 1) return n;
+    return getFiboNum(n-1) + getFiboNum(n-2);
 }
 
-/*
- * Function to check if a number is ugly or not
- */
-function isUgly(no) {
-    no = maxDivide(no, 2);
-    no = maxDivide(no, 3);
-    no = maxDivide(no, 5);
-
-    return (no == 1) ? 1 : 0;
-}
-
-/*
- * Function to get the nth ugly number
- */
-function getNthUglyNo(n)
-{
-    var i = 1;
-
-    // ugly number count
-    var count = 1;
-
-    // check for all integers
-    // until count becomes n
-    while (n > count)
-    {
-        i++;
-        if (isUgly(i) == 1)
-            count++;
-    }
-    return i;
+//  memoization code
+const getFiboNum = (n, m = []) => {
+    return n <= 1 ? n : m[n] ? m[n]
+    : m[n] = getFiboNum(n-1, m) + getFiboNum(n-2, m);
 }
