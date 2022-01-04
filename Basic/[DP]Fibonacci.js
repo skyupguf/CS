@@ -23,14 +23,17 @@ const calFibo = (n, m) => {
 }    
 const getFiboNum = (n) => n <= 1 ? n : calFibo(n, [0, 1]);
 
+
 // 3. tabulation code
 const getFiboToTab = (n) => {
-    const fibo = [0, 1, 1];
+    if (n <= 1) return n;
 
-    for (let i=fibo.length; i<=n; i++) {
-        fibo[i] = fibo[i-1] + fibo[i-2];
+    let fibo1 = 0, fibo2 = 1, sum;
+    for (let i=2; i<=n; i++) {
+        sum = fibo1 + fibo2;
+        [ fibo1, fibo2 ] = [ fibo2, sum ];
     }
-    return fibo[n];
+    return sum;
 }
 
 //  3-2. tabulation closer code
