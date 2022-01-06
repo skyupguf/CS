@@ -43,5 +43,54 @@ const calCatalan = (n) => {
     4. sum에 모든 경우가 누적되면 루프가 종료되고 sum을 리턴한다.
 
     시간복잡도
-    O(2^n)보다 더 가파르게 시간 복잡도가 상승한다.
+    O(C^n)로 n이 지수로 시간복잡도가 기하급수로 증가한다.
+*/
+
+//  DP) Memoization 코드
+const calCatalan = (n, m = [1, 1]) => {
+    if (m[n]) return m[n];
+    let sum = 0;
+
+    for (let i=0; i<n; i++) {
+        sum += calCatalan(i, m) * calCatalan(n-1-i, m);
+    }
+    return m[n] = sum;
+}
+/*
+    풀이
+    1. memoization을 활용하기 위해 인자로 배열 m을 활용한다.
+        1-1. 분할 가능한 가장 최소 단위가 n = 0, 1 두 경우이므로 m = [1, 1]로 초기화 해둔다.
+        1-2. 각 단계의 솔루션 값들이 존재하면 리턴 받도록 m[n]이 존재하면 바로 리턴 시킨다.
+
+    2. n = 2 부터 1로 부터 상태전이를 받아 최적 부분 구조에서 솔루션을 확장해 m에 2번째 인덱스 부터 메모를 한다.
+        2-1. 모든 경우를 찾아서 가지수를 누적해야 하므로 sum을 선언한다.
+        2-2. 루프안에서 재귀는 동일하고 누적된 sum은 n = 2의 솔루션 이므로 m[n] = sum 을 할당하고 리턴한다.
+    
+    시간복잡도
+    가장 큰 쌍을 가지는 i를 한 번만 수행하면 memoization이 완성된다. 한 번 계산된 값은 저장되므로 n^2을 넘지 않고
+    나머지 조합은 memoization값을 참조하면 되므로 선형으로 탐색이 된다. 결과적으로 O(n^2)에 수렴한다.
+*/
+
+//  DP) Tabulation 코드
+const calCatalan = (n) => {
+    const catalan = [1, 1];
+    
+    for (let i=2; i<=n; i++) {
+        catalan[i] = 0;
+
+        for (let k=0; k<i; k++) {
+            catalan[i] += catalan[k] * catalan[i-1-k];
+        }
+    }
+    return catalan[n];
+}
+/*
+    풀이
+    1. 테이블을 최상단에 설정해야 하므로 catalan배열에 [1, 1]을 할당한다.
+
+    2. catalan의 인덱스 2부터 n까지 값을 추가해야 하므로 루프를 사용해야 한다.
+        2-1. for루프는 i=2부터 시작하며 누적할 변수 설정을 위해 catalan[i]에 0을 할당한다.
+    
+    3. 이제 조합의 경우의 수를 구하기 위해 이중루프를 활용해야 한다.
+        3-1. 0부터 i까지 조합쌍을 for문으로 찾아가면서 catalan[i]에 누적한다.
 */
