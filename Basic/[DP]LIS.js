@@ -1,19 +1,45 @@
 //  문제요약
 //  1. Longest increasing subsequence문제는 수열의 모든 요소가 오름차순 정렬되도록 가장 긴 부분 수열의 길이를 찾는 것이다.
-//  2. 입력된 arr을 정렬을 사용하지 않고 오름차순으로 만들 수 있는 최장 수열을 리턴하라.
-//  2. 입력 : arr = [10, 22, 9, 33, 21, 50, 41, 60, 80], 출력 : [10, 22, 33, 50, 60, 80]
-//  3. 입력 : arr = [3, 10, 2, 1, 20], 출력 : [30, 10, 20]
-//  4. 입력 : arr = [3, 2], 출력: [3] or [2]
-//  5. 입력 : arr = [50, 3, 10, 7, 40, 80], 출력: [3, 7, 40, 80]
+//  2. 입력된 arr을 정렬을 사용하지 않고 오름차순으로 만들 수 있는 최장 증가 부분수열을 리턴하라.
+//  3. 입력 : arr = [10, 22, 9, 33, 21, 50, 41, 60, 80], 출력 : [10, 22, 33, 50, 60, 80]
+//  4. 입력 : arr = [1, 2, 6, 8, 14, 5, 9, 11, 13], 출력 : [1, 2, 6, 8, 9, 11, 13]
+//  5. 입력 : arr = [3, 10, 2, 1, 20], 출력 : [30, 10, 20]
+//  6. 입력 : arr = [3, 2], 출력: [3] or [2]
+//  7. 입력 : arr = [50, 3, 10, 7, 40, 80], 출력: [3, 7, 40, 80]
 
 //  일반 코드
-const getLIS = (arr) => {
-    let LIS = [];
+const getLIS = (arr, i) => {
+    let i = 1;
+    let LIS = [], a = [arr[0]];
+
+    while (i < arr.length) {
+        if (a[a.length-1] <= arr[i]) a.push(arr[i]);
+        else {
+            let copied = arr.slice(i);
+            copied.unshift(a.slice(0, -1).pop());
+            getLIS(copied.slice(i-1));
+        }
+    }
 
     arr.forEach((e, i) => {
-        let a = [e];
-        for (let j=i+1; j<arr.length; j++) {
+        let j = i + 1;
+        let a = [e], temp = [];
+
+        while (j < arr.length) {
             if (a[a.length-1] <= arr[j]) a.push(arr[j]);
+            else {
+                let copy = arr.slice(j-2);
+                copy.splice(1, 1);
+                a.slice(0, -1).concat(getLIS())
+            }
+            
+            result.length < a.length ? result = a : a;
+            j++;
+        }
+
+        for (let j=i+1; j<arr.length; j++) {
+            
+            
         }
         if (LIS.length < a.length) LIS = a;
     });
@@ -37,11 +63,17 @@ const getLIS = (arr) => {
 
 //  재귀 코드
 const recursiveLIS = (arr) => {
-    if (arr.length === 1) return arr[0];
+    if (arr.length === 1) return arr;
     
+    let LIS = [];
     for (let i=0; i<arr.length; i++) {
-        arr.slice(1)
+        let a = [arr[i]];
+        let b = recursiveLIS(arr.slice(i+1));
+
+        if (a[a.length-1] < b[0]) a = a.concat(b);
+        if (LIS.length < a.length) LIS = a;
     }
+    return LIS;
 }
 /*
     풀이
