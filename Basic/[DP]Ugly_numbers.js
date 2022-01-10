@@ -46,16 +46,16 @@ const getUglyNum = (n) => {
         table[i] = nowValue;
         
         if (nowValue === p['2'][1]) {
-            nowIndex = p['2'][0] = p['2'][0] + 1;
-            p['2'][1] = table[nowIndex] * 2;
+            let index2 = p['2'][0] = p['2'][0] + 1;
+            p['2'][1] = table[index2] * 2;
         }
         if (nowValue === p['3'][1]) {
-            nowIndex = p['3'][0] = p['3'][0] + 1;
-            p['3'][1] = table[nowIndex] * 3;
+            let index3 = p['3'][0] = p['3'][0] + 1;
+            p['3'][1] = table[index3] * 3;
         }
         if (nowValue === p['5'][1]) {
-            nowIndex = p['5'][0] = p['5'][0] + 1;
-            p['5'][1] = table[nowIndex] * 5;
+            index5 = p['5'][0] = p['5'][0] + 1;
+            p['5'][1] = table[index5] * 5;
         }
     }
     return table[n-1];
