@@ -146,3 +146,13 @@ const LongestCommonSubsequence = (str1, str2) => {
         4-5. 만일 두 값과 동일하지 않으면 해당 인덱스는 중복이 되어 누적이 시작된 값이된다.
         4-6. 해당 인덱스의 문자를 빈 배열에 삽입하고 i-1, j-1로 이동하고 len을 -1 차감한다.
 */
+
+//  단순 길이를 조합을 찾는 방식으로 코드하면 재귀를 활용하여 표현하면 아래와 같다.
+const recursiveLCS = (str1, str2, x, y) => {
+    if (x === 0 || y === 0) return 0;
+    if (str1[x-1] === str2[y-1]) return 1 + recursiveLCS(str1, str2, x-1, y-1);
+    else return Math.max(recursiveLCS(str1, str2, x-1, y), recursiveLCS(str1, str2, x, y-1));
+}
+/*
+    하지만 지나치게 많은 연산이 지수로 증가해 버리게 되므로 DP를 활용해야 한다.
+*/
