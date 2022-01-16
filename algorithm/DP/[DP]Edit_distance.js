@@ -86,15 +86,22 @@ const costOfEditedDistance = (str1, str2, i, j) => {
 
 //  Tabulation 코드
 const costOfEditedDistance = (str1, str2, i, j) => {
-    const table = [];
-    for (let i=0; i<str1.length; i++) {
-        let arr = [0];
-        for (let j=0; j<str2.length; j++) {
-            if (!i && j > 0) arr[j] = arr[j-1] + 1;
-        }
-        table[i] = arr;
-    }
+    const table = Array.from({length: i+1}, (_, index) => {
+        return index 
+        ? new Array(j+1).fill(0).fill(index, 0, 1) 
+        : Array.from({length: j+1}, (_, cost) => cost);
+    });
 
+    for (let i=0; i<str1.length; i++)
+        for (let j=0; j<str2.length; j++) {
+            
+            if (str1[i] === str2[j]) {
+                table[i+1][j+1] = table[i][j];
+                
+            } else table[i+1][j+1] = 
+                Math.min(table[i+1][j], table[i][j+1], table[i][j]) + 1;
+        }
+    return table[i][j];
 }
 /*
     접근방법
@@ -106,15 +113,15 @@ const costOfEditedDistance = (str1, str2, i, j) => {
     이제 문자열을 추가, 삭제, 변경하는 3가지 방법으로 테이블에 비용을 직접 할당해 본다.
 
     [  ''  s  u  n  d  a  y
-    '' [0, 1, 2, 3, 4, 5, 6]  // 동일한 문자가 없으면 비용이 i나 j중 더 작은 값에서 1씩 증가한다.
-    s  [1, 0, 1, 2, 3, 4, 5]  // 동일한 문자가 있으면 i와 j의 이전 인덱스의 비용을 상태전이한다. 
-    a  [2, 1, 1, 2, 3, 3, 4]  
+    '' [0, 1, 2, 3, 4, 5, 6]
+    s  [1, 0, 1, 2, 3, 4, 5]
+    a  [2, 1, 1, 2, 3, 3, 4] 
     t  [3, 2, 2, 2, 3, 4, 4]
     u  [4, 3, 2, 3, 3, 4, 5]
     r  [5, 4, 3, 3, 4, 4, 5]
     d  [6, 5, 4, 4, 3, 4, 5]
     a  [7, 6, 5, 5, 4, 3, 4]
-    y  [8, 7, 6, 5, 5, 4, 3]
+    y  [8, 7, 6, 6, 5, 4, 3]
     ]
     
     수도코드
@@ -124,27 +131,52 @@ const costOfEditedDistance = (str1, str2, i, j) => {
         1-3. 우선 i가 0인 행은 j의 길이만큼 수를 누적해서 기록한다.
         1-4. 모든 행의 j가 0인 경우도 이전 i의 0번째에 1을 더해 행렬을 생성한다.
     
-    2. str1과 str2를 이중루프로 비교하면서 i와 j의 인덱스에 값을 할당한다.
-        2-1. 두 문자가 동일할 경우 이전 인덱스의 값을 그대로 전이한다. [i+1][j+1] = [i][j]
+    2. 구현된 행렬의 규칙을 찾아 값 할당 점화식을 찾는다. 우선 문자가 동일해 비용이 들지않는 경우이다.
+        2-1. i와 j인덱스 각각 문자가 추가되기 이전 비용과 동일하기 때문에 table[i+1][j+1] = table[i][j]가 된다.
+
+    3. 문자가 동일하지 않으면 문자가 추가, 삭제, 변경되는 3가지 방식중 가장 비용이 적게드는 방법을 선택해야 한다.
+        3-1. i < j 경우 i가 j만큼 문자를 추가해야 하므로 table[i+1][j+1] = table[i+1][j] + 1
+        3-2. i > j 경우 i가 j만큼 문자를 삭제해야 하므로 table[i+1][j+1] = table[i][j+1] + 1
+        3-3. 삭제와 추가 두 작업이 필요한 위치에 변경이 가능하면 비용이 1로 처리된다. table[i+1][j+1] = table[i][j] + 1
+        3-4. 즉 가장 작은 비용이 계산되도록 가장 최소비용에서 1을 누적한다.
+
+    4. str1과 str2를 이중루프로 비교하면서 i와 j의 인덱스에 값을 할당하고 루프가 종료되고 table[i][j]를 리턴한다.
         
-    3. 두 문자가 다를 경우 이전의 i와 j의 인덱스가 있는지 판단해야 한다.
-        3-1. 한 쪽만 존재할 경우 
+    시간복잡도
+    i와 j만큼의 저장공간과 연산회수가 사용되므로 O(i * j)의 시간복잡도를 가진다.
+*/
 
-    값의 할당 규칙을 찾아보자
-    [i][j+1] = [i][j] + 1 or [i+1][j] = [i][j] + 1
-    [i+1][j+1] = [i][j]
-    1. 문자가 다를 경우
-       i를 고정으로 j를 하나 씩 탐색하는데 비교하는 문자열이 다르면서 추가되기 때문에 비용이 1씩 누적된다.
-       
+//  공간을 축소한 Tabulation 코드
+const costOfEditedDistance = (str1, str2, i, j) => {
+    const table = Array.from({length: i+1}, (_, index) => {
+        return index 
+        ? new Array(j+1).fill(0).fill(index, 0, 1) 
+        : Array.from({length: j+1}, (_, cost) => cost);
+    });
 
-    1. 두 문자가 같은 경우 
-       문자 s가 만나는 위치 [1][1]은 [0][0]의 값과 같다. 즉 [i+1][j+1] = [i][j]가 된다.
-       이전 문자를 변환하는 비용에서 동일한 문자가 추가되어 비용이 증가되지 않으므로 같은 값이 할당되는 것이다.
-    
-    2. 두 문자가 같은 경우 
-       문자 하나가 추가되면서 
-    
-    
-
-    
+    for (let i=0; i<str1.length; i++)
+        for (let j=0; j<str2.length; j++) {
+            
+            if (str1[i] === str2[j]) {
+                table[i+1][j+1] = table[i][j];
+                
+            } else table[i+1][j+1] = 
+                Math.min(table[i+1][j], table[i][j+1], table[i][j]) + 1;
+        }
+    return table[i][j];
+}
+/*
+    접근방법
+    최소비용 연산을 위해 현재 탐색중인 행과 값을 상태이전할 이전 인덱스 행만 존재하면 된다.
+    [  ''  s  u  n  d  a  y
+    '' [0, 1, 2, 3, 4, 5, 6]
+    s  [1, 0, 1, 2, 3, 4, 5]
+    a  [2, 1, 1, 2, 3, 3, 4] 
+    t  [3, 2, 2, 2, 3, 4, 4]
+    u  [4, 3, 2, 3, 3, 4, 5]
+    r  [5, 4, 3, 3, 4, 4, 5]
+    d  [6, 5, 4, 4, 3, 4, 5]
+    a  [7, 6, 5, 5, 4, 3, 4]
+    y  [8, 7, 6, 6, 5, 4, 3]
+    ]
 */
