@@ -1,9 +1,12 @@
 //  문제요약
+//
 //  1. 입력으로 주어지는 문자열 str1을 str2로 변환하는데 들어가는 최소 작업의 수를 찾아라.
+//
 //  2. 작업의 방법은 총 3가지이며 모든 비용은 동일하다.
 //      2-1. insert : str1 = "ca", str2 = "cat" 문자't'를 삽입
 //      2-2. replace : str1 = "cat", str2 = "cut" 문자 'a'를 'u'로 변환
 //      2-3. remove : str1 = "caty", str2 = "cut" 문자 'y'를 삭제
+//
 //  3. str1 = "sunday", str2 = "saturday"가 변환되는 과정은 다음과 같다.
 //      3-1. 'un'에서 'n'을 'r'로 replace한다.
 //      3-2. 't'와 'a'를 앞쪽에 insert한다.
@@ -42,13 +45,6 @@ const costOfEditedDistance = (str1, str2, i, j) => {
     c, a        0           a, c        4   // caatc => caatc => cat
     c           0           c           2   // catc => catc => cat
     0           c, a, t     0           3   // atc => cat => cat
-    
-    길이가 다른 경우도 따져보자 ten nine
-    insert      replace     remove      cost
-    n, i, n, e  0           t, e, n     7   // nineten => nineten => nine
-    n, i, n     0           t, n        5   // ninten => ninten => nine
-    n, i        n           n           4   // niten => ninen => nine
-    e           n, i        0           3   // tene => nine => nine
 
     위의 예시로 보면 결과적으로 str1에서 최소한의 변경회수로 str2와 동일해지는 경우를 찾아야 한다.
     
@@ -58,9 +54,9 @@ const costOfEditedDistance = (str1, str2, i, j) => {
         1-2. 반대의 경우 str1.length 만큼 remove가 되어야 하므로 탈출 조건을 두 개로 분기해야 한다.
         1-3. 두 문자열의 길이를 i, j라 하면 0인 경우 탈출조건이 되므로 뒤 요소부터 분할해 나가면서 비교해야 한다.
     
-    2. 우선 두 문자열의 마지막 인덱스부터 동일성 여부를 판단한다.
+    2. 우선 편의를 위해 두 문자열의 마지막 인덱스부터 동일성 여부를 판단한다.
         2-1. 문자가 동일할 경우 추가, 삭제, 변경을 할 필요가 없다.
-        2-2. 따라서 현재 비교하는 문자가 동일하면 i와 j를 1차감해 재귀호출한다. 
+        2-2. 따라서 현재 비교하는 문자가 동일하면 두 문자열의 길이인 i와 j를 길이를 1차감해 재귀호출한다.
     
     3. 추가, 삭제, 변경이 되는 경우를 각각 구해야 한다.
         3-1. 추가의 경우 i가 0이 되었을 때 남아있는 j만큼의 길이가 추가되어야 한다. 따라서 i-1으로 재귀호출해야 한다.
@@ -105,17 +101,16 @@ const costOfEditedDistance = (str1, str2, i, j) => {
 }
 /*
     접근방법
-    하나의 최소 분할 단위로 나뉘었을 때 추가, 삭제, 변경에 필요한 비용을 계산해 각 인덱스에 저장할 수 있다.
-    즉 DP를 활용할 수 있으며, 위 재귀에서 한번 계산된 비용을 i와 j를 이용한 행렬을 통해 저장하여 활용할 수 있다.
-
+    하나의 최소 분할 단위로 나뉘었을 때 추가, 삭제, 변경에 필요한 비용을 계산해 행렬의 인덱스에 저장할 수 있다.
     tabulation을 활용하면 bottom up을 활용하므로 최소단위인 str1의 0번째 부터 str2와 조합하여 비용을 할당한다.
+
     한 쪽 문자열이 0일 경우인 최소단위를 구성하기 위해 table을 str1과 str2의 길이 +1을 해서 만든다.
     이제 문자열을 추가, 삭제, 변경하는 3가지 방법으로 테이블에 비용을 직접 할당해 본다.
 
     [  ''  s  u  n  d  a  y
-    '' [0, 1, 2, 3, 4, 5, 6]
-    s  [1, 0, 1, 2, 3, 4, 5]
-    a  [2, 1, 1, 2, 3, 3, 4] 
+    '' [0, 1, 2, 3, 4, 5, 6]    // 중복 문자가 없으면 이전 인덱스에서 1씩 증가한다.
+    s  [1, 0, 1, 2, 3, 4, 5]    // 중복이 존재하면 문자가 추가되기전 [i-1][j-1]에서 값을 상태이전 한다.
+    a  [2, 1, 1, 2, 3, 3, 4]    // 추가, 삭제, 변경 중 가장 비용이 작은 방법을 선택하므로 3가지 루트에서 값을 선택한다.
     t  [3, 2, 2, 2, 3, 4, 4]
     u  [4, 3, 2, 3, 3, 4, 5]
     r  [5, 4, 3, 3, 4, 4, 5]
@@ -148,35 +143,121 @@ const costOfEditedDistance = (str1, str2, i, j) => {
 
 //  공간을 축소한 Tabulation 코드
 const costOfEditedDistance = (str1, str2, i, j) => {
-    const table = Array.from({length: i+1}, (_, index) => {
-        return index 
-        ? new Array(j+1).fill(0).fill(index, 0, 1) 
+    const table = Array.from({length: 2}, (_, index) => {
+        return index
+        ? new Array(j+1).fill(0)
         : Array.from({length: j+1}, (_, cost) => cost);
     });
 
-    for (let i=0; i<str1.length; i++)
+    for (let i=0; i<str1.length; i++) {
+        let ni = (i+1) % 2, pi = i % 2;
+
         for (let j=0; j<str2.length; j++) {
-            
+            table[ni][0] = i + 1;
+
             if (str1[i] === str2[j]) {
-                table[i+1][j+1] = table[i][j];
+                table[ni][j+1] = table[pi][j];
                 
-            } else table[i+1][j+1] = 
-                Math.min(table[i+1][j], table[i][j+1], table[i][j]) + 1;
+            } else table[ni][j+1] = 
+                Math.min(table[ni][j], table[pi][j+1], table[pi][j]) + 1;
         }
-    return table[i][j];
+    }
+    return table[i%2][j];
 }
 /*
     접근방법
-    최소비용 연산을 위해 현재 탐색중인 행과 값을 상태이전할 이전 인덱스 행만 존재하면 된다.
+    비용연산은 최대 두 행의 범위안에서만 발생하므로 전체 행렬이 필요없다.
+    
     [  ''  s  u  n  d  a  y
-    '' [0, 1, 2, 3, 4, 5, 6]
-    s  [1, 0, 1, 2, 3, 4, 5]
-    a  [2, 1, 1, 2, 3, 3, 4] 
-    t  [3, 2, 2, 2, 3, 4, 4]
-    u  [4, 3, 2, 3, 3, 4, 5]
-    r  [5, 4, 3, 3, 4, 4, 5]
-    d  [6, 5, 4, 4, 3, 4, 5]
-    a  [7, 6, 5, 5, 4, 3, 4]
-    y  [8, 7, 6, 6, 5, 4, 3]
+    '' [0, 1, 2, 3, 4, 5, 6] 1번row
+    s  [1, 0, 1, 2, 3, 4, 5] 2번row
+    ]   
+    [  ''  s  u  n  d  a  y
+    a  [2, 1, 1, 2, 3, 3, 4] 3번row
+    s  [1, 0, 1, 2, 3, 4, 5] 2번row
     ]
+
+    ....
+
+    ]
+    [  ''  s  u  n  d  a  y
+    d  [6, 5, 4, 4, 3, 4, 5] 7번row
+    a  [7, 6, 5, 5, 4, 3, 4] 8번row
+    ]
+    [  ''  s  u  n  d  a  y
+    y  [8, 7, 6, 6, 5, 4, 3] 9번row
+    a  [7, 6, 5, 5, 4, 3, 4] 8번row
+    ]
+
+    수도코드
+    1. 위 아래, 두 행을 번갈아가면서 전, 후 행으로 사용하면 되므로 2행의 행렬을 만들면 된다.
+        1-1. 열의 길이 j는 유지하고 첫 행은 빈 문자일 경우의 비용을 계산한다.
+        1-2. 두 번째 행부터 전부 0으로 값을 채워서 행렬을 완성한다.
+    
+    2. 이중루프에서 인덱스 i를 0과 1로 번갈아가면서 전, 후로 사용해야 한다.
+        2-1. 현재 인덱스 ni와 이전 인덱스 pi에 각각 (i+1)%2, i%2를 할당한다.
+        2-2. j=0일 경우 이전 인덱스를 참고할 수 없으므로 i+1을 할당 시키면 된다.
+        2-3. 나머지 로직은 ni와 pi를 각각 [i+1]과 [i]에 활용하면 모든 로직은 이전 코드와 동일하다.
+    
+    3. 리턴위치는 i%2행의 인덱스에 위치한 값을 리턴하면 된다.
+
+    시간복잡도는 동일하지만 행렬의 크기를 2행만 사용하므로 O(i)의 공간만 사용한다.
+*/
+
+//  Memoization 코드
+const Matrix = (i, j) => {
+    return Array.from({length: i+1}, (_, index) => {
+        return index
+        ? new Array(j+1).fill(-1).fill(index, 0, 1)
+        : Array.from({length: j+1}, (_, cost) => cost);
+    });
+}
+const costOfEditedDistance = (str1, str2, i, j, m = Matrix(i, j)) => {
+    if (m[i][j] !== -1) return m[i][j];
+    
+    if (str1[i-1] === str2[j-1]) {
+        return m[i][j] = costOfEditedDistance(str1, str2, i-1, j-1, m);
+    
+    } else {
+        let insert = costOfEditedDistance(str1, str2, i, j-1, m);
+        let remove = costOfEditedDistance(str1, str2, i-1, j, m);
+        let replace = costOfEditedDistance(str1, str2, i-1, j-1, m);
+        return m[i][j] = 1 + Math.min(insert, remove, replace);
+    }
+}
+/*
+    접근방법
+    기존 재귀코드에서 솔루션을 메모할 행렬을 파라미터로 추가한다.
+    재귀호출로 분할될 경우 i와 j의 길이에 해당하는 인덱스에 하위 솔루션이 존재하면 분할할 필요없이 바로 리턴시켜야 한다.
+    따라서, 분할되어 리턴될 위치에 값을 메모이제이션 해야 한다.
+
+    행렬과 재귀호출 과정을 도식화 해본다.
+    [  ''  c  b  e
+    '' [0, 1, 2, 3]    
+    a  [1, 1, 2, 3]
+    b  [2,-1, 1, 2]
+    ]
+    f(ab,cbe)가 재귀로 분할되어 m에 저장되는 과정
+    m[b][e] = 1 + f(a,cbe), m[a][e] = 1 + f('',cbe), m[''][e] = 3
+                                    = 1 + f('',cb), m[''][b] = 2
+                                    = 1 + f(a,cb), m[a][b] = 1 + f('',cb) = 2
+                                                           = 1 + f('',c), m[''][c] = 1
+                                                           = 1 + f(a,c), m[a][c] = 1 + f('',c), m[''][c] = 1
+                                                                                 = 1 + f(a,''), m[a][''] = 1
+                                                                                 = 1 + f('',''), m[''][''] = 0                                                                      
+            = 1 + f(ab, cb), m[b][b] = f(a,c) = 1
+            = 1 + f(a, cb) = 2
+    
+    수도코드
+    1. 파라미터로 memoization을 수행할 m에 행렬을 생성해 할당한다.
+        1-1. i+1, j+1 길이로 첫 행과 첫열에 각각 길이만큼 수를 누적해 생성하고 나머지 값들은 -1로 채운다.
+    
+    2. 탈출조건은 i나 j가 0인 경우이므로 행렬에서 해당 값이 -1인지 체크하고 값을 리턴한다.
+        2-1. 앞서 첫행과 첫열에 값을 할당해 생성했기 때문에 i, j의 길이에 해당하는 위치의 인덱스값을 리턴하면 된다.
+    
+    3. 재귀과정은 기존 재귀호출과 같으며 행렬에 결과를 저장하고 리턴시키며, 이 때 재귀호출시 인자로 m(행렬)을 추가한다.
+
+    tabulation과의 차이
+    Memoization은 필요한 위치의 값만 연산한다. 예를 들어, m[b][c]의 경우 연산하지 않아 값이 -1 그대로이다.
+    Tabultation으로 구현했으면 연산에 필요없는 부분인 m[b][c]도 연산된다.
 */
