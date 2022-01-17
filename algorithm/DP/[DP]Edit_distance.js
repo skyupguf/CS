@@ -1,16 +1,17 @@
-//  문제요약
-//
-//  1. 입력으로 주어지는 문자열 str1을 str2로 변환하는데 들어가는 최소 작업의 수를 찾아라.
-//
-//  2. 작업의 방법은 총 3가지이며 모든 비용은 동일하다.
-//      2-1. insert : str1 = "ca", str2 = "cat" 문자't'를 삽입
-//      2-2. replace : str1 = "cat", str2 = "cut" 문자 'a'를 'u'로 변환
-//      2-3. remove : str1 = "caty", str2 = "cut" 문자 'y'를 삭제
-//
-//  3. str1 = "sunday", str2 = "saturday"가 변환되는 과정은 다음과 같다.
-//      3-1. 'un'에서 'n'을 'r'로 replace한다.
-//      3-2. 't'와 'a'를 앞쪽에 insert한다.
-//      3-3. 총 3번의 최소한의 작업으로 str2를 완성할 수 있다.
+/*
+    문제요약
+    1. 입력으로 주어지는 문자열 str1을 str2로 변환하는데 들어가는 최소 작업의 수를 찾아라.
+
+    2. 작업의 방법은 총 3가지이며 모든 비용은 동일하다.
+        2-1. insert : str1 = "ca", str2 = "cat" 문자't'를 삽입
+        2-2. replace : str1 = "cat", str2 = "cut" 문자 'a'를 'u'로 변환
+        2-3. remove : str1 = "caty", str2 = "cut" 문자 'y'를 삭제
+    
+    3. str1 = "sunday", str2 = "saturday"가 변환되는 과정은 다음과 같다.
+        3-1. 'un'에서 'n'을 'r'로 replace한다.
+        3-2. 't'와 'a'를 앞쪽에 insert한다.
+        3-3. 총 3번의 최소한의 작업으로 str2를 완성할 수 있다.
+*/
 
 //  코드
 const costOfEditedDistance = (str1, str2, i, j) => {
