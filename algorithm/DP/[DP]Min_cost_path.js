@@ -11,18 +11,9 @@
             [1, 5, 3]       [1, 2]에서 [[2, 2]]중 최소거리는 [2, 2]로 최소 비용은 8이 된다.
         ]   
 */
-//  코드
-const measureMinCost = (matrix, m, n) => {
-    if (m < 0 || n < 0) return Number.MAX_VALUE;
-    else if (m === 0 && n === 0) return matrix[m][n];
-    
-    let moveS = measureMinCost(matrix, m-1, n-1);
-    let moveU = measureMinCost(matrix, m-1, n);
-    let moveL = measureMinCost(matrix, m, n-1);
-    
-    return matrix[m][n] + Math.min(moveS, moveU, moveL);
-}
 /*
+    A. 재귀로 접근
+
     <접근방법>
     만일 탐욕법이라면 현재 비용과 비교해서 제일 작은 셀로 이동하면 된다.
     하지만, 전체이동의 경우로 보면 현재 최적의 선택이 최종적으로 최소비용을 보장하지 않는다.
@@ -60,29 +51,25 @@ const measureMinCost = (matrix, m, n) => {
         2-1. 우선 3가지 경로이동을 위한 재귀 호출은 [m-1], [n-1], [m-1][n-1] 이다.
         2-2. 3방향의 각 재귀호출의 결과 중 최소비용을 현재 비용에 누적해 리턴한다.
     
-
+    
     <시간복잡도>
     각 셀마다 3개의 루트가 존재하므로 트리로 구성하면 높이H만큼 대략 O(3^H)의 시간복잡도를 가지는 연산을 하게 된다.
     즉 행, 열이 추가되는 만큼 기하급수적으로 연산이 증가한다.
 */
-
-//  Tabulation 코드
 const measureMinCost = (matrix, m, n) => {
-    let i = 1, j = 1;
-    const cost = Array.from({length: m+1}, () => new Array(n+1).fill(0));
-    cost[0][0] = matrix[0][0];
-
-    while (i <= m) cost[i][0] = cost[i-1][0] + matrix[i][0], i++;
-    while (j <= n) cost[0][j] = cost[0][j-1] + matrix[0][j], j++;
-        
-    for (i=1; i<=m; i++) for (j=1; j<=n; j++) {
-        cost[i][j] = matrix[i][j] + Math.min(
-            cost[i-1][j], cost[i][j-1], cost[i-1][j-1]
-        );
-    }
-    return cost[m][n];
+    if (m < 0 || n < 0) return Number.MAX_VALUE;
+    else if (m === 0 && n === 0) return matrix[m][n];
+    
+    let moveS = measureMinCost(matrix, m-1, n-1);
+    let moveU = measureMinCost(matrix, m-1, n);
+    let moveL = measureMinCost(matrix, m, n-1);
+    
+    return matrix[m][n] + Math.min(moveS, moveU, moveL);
 }
+
 /*
+    B. Tabulation으로 접근
+
     <접근방법>
     경로 트리를 보면 한번 탐색한 셀을 경로에 따라 여러 번 중복 탐색하고 있는 것을 알 수 있다.
     주어진 행렬의 도착셀의 인덱스크기만큼의 행렬을 생성해 각 셀마다 거리 비용을 계산해 할당할 거리비용행렬을 생성한다.
@@ -108,8 +95,23 @@ const measureMinCost = (matrix, m, n) => {
     cost 테이블을 통해 이미 계산된 3가지 방향의 값을 상태전이로 한 번에 탐색할 수 있다.
     따라서, 도착점인 m과 n만큼의 셀만 탐색하면 되므로 O(m * n)의 시간복잡도를 가진다.
 */
+const measureMinCost = (matrix, m, n) => {
+    let i = 1, j = 1;
+    const cost = Array.from({length: m+1}, () => new Array(n+1).fill(0));
+    cost[0][0] = matrix[0][0];
 
-//  원본행렬을 변경해도 되는 경우
+    while (i <= m) cost[i][0] = cost[i-1][0] + matrix[i][0], i++;
+    while (j <= n) cost[0][j] = cost[0][j-1] + matrix[0][j], j++;
+        
+    for (i=1; i<=m; i++) for (j=1; j<=n; j++) {
+        cost[i][j] = matrix[i][j] + Math.min(
+            cost[i-1][j], cost[i][j-1], cost[i-1][j-1]
+        );
+    }
+    return cost[m][n];
+}
+
+//  원본행렬을 변경해도 되는 경우 메모리공간 사용을 줄일 수 있다.
 const measureMinCost = (matrix, m, n) => {
     let i = 1, j = 1;
     while (i <= m) matrix[i][0] += matrix[i-1][0], i++;
@@ -122,12 +124,31 @@ const measureMinCost = (matrix, m, n) => {
     }
     return matrix[m][n];
 }
-/*
-    원본행렬을 유지할 필요가 없으면 이전 값과 현재 값을 한 번만 연산하므로
-    추가로 메모리 공간을 소비할 필요없이 입력받은 matrix인자로만 구현이 가능하다.
-*/
 
-//  Memoization 코드
+/*
+    C. Memoization으로 접근
+
+    <접근방법>
+    각 단계에서 Memoization을 수행할 cost행렬을 생성해서 활용해야 한다.
+    각 부분단계에서 계산된 최소비용은 cost행렬의 셀에 저장되어야 저장된 위치를 재탐색하지 않도록 해당 셀값을 활용한다.
+
+
+    <수도코드>
+    1. 재귀코드에서 메모이제이션을 수행할 행렬 cost를 파라미터로 추가한다.
+        1-1. matrix[0][0], m과 n을 인자로해 m+1, n+1크기의 행렬을 생성하고 [0][0]에 matrix[0][0]값을 할당한다.
+    
+    2. cost[m][n]에서 저장된 비용을 리턴해 탈출조건을 만든다.
+        2-1. 비용이 0인 경우는 없으므로 cost[m][n]이 정수면 해당 값을 리턴한다.
+        2-2. 경로가 없는 -1이 될 경우 기존 재귀코드와 마찬가지로 최소비용이 되지 못하도록 최대값을 리턴한다.
+    
+    3. 3가지 경로로 탐색을 하고 각 재귀호출에 메모이제이션을 수행한 행렬 cost를 인자로 추가한다.
+    
+    4. 탐색한 3가지 경로에서 최소비용과 현재 matrix의 셀값을 더해 cost의 셀에 할당하고 리턴한다.
+
+
+    <에러핸들>
+    1. m 또는 n이 -1이 될 경우 cost에서 인덱스를 찾지못해 에러가 발생하므로 두 탈출 조건의 위치를 변경한다.
+*/
 const Matrix = (s, r, c) => Array.from({length: r+1}, (_, i) => {
     return i ? new Array(c+1).fill(0) : new Array(c+1).fill(0).fill(s, 0, 1)
 });
@@ -142,23 +163,3 @@ const measureMinCost = (matrix, m, n, cost = Matrix(matrix[0][0], m, n)) => {
     
     return cost[m][n] = matrix[m][n] + Math.min(moveS, moveU, moveL);
 }
-/*
-    <접근방법>
-    각 단계에서 Memoization을 수행할 cost행렬을 생성해서 활용해야 한다.
-    각 부분단계에서 계산된 최소비용은 cost행렬의 셀에 저장되어야 저장된 위치를 재탐색하지 않도록 해당 셀값을 활용한다.
-
-    <수도코드>
-    1. 재귀코드에서 메모이제이션을 수행할 행렬 cost를 파라미터로 추가한다.
-        1-1. matrix[0][0], m과 n을 인자로해 m+1, n+1크기의 행렬을 생성하고 [0][0]에 matrix[0][0]값을 할당한다.
-    
-    2. cost[m][n]에서 저장된 비용을 리턴해 탈출조건을 만든다.
-        2-1. 비용이 0인 경우는 없으므로 cost[m][n]이 정수면 해당 값을 리턴한다.
-        2-2. 경로가 없는 -1이 될 경우 기존 재귀코드와 마찬가지로 최소비용이 되지 못하도록 최대값을 리턴한다.
-    
-    3. 3가지 경로로 탐색을 하고 각 재귀호출에 메모이제이션을 수행한 행렬 cost를 인자로 추가한다.
-    
-    4. 탐색한 3가지 경로에서 최소비용과 현재 matrix의 셀값을 더해 cost의 셀에 할당하고 리턴한다.
-
-    <에러핸들>
-    1. m 또는 n이 -1이 될 경우 cost에서 인덱스를 찾지못해 에러가 발생하므로 두 탈출 조건의 위치를 변경한다.
-*/
