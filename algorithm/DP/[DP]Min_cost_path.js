@@ -1,4 +1,5 @@
-/*  문제
+//  문제
+/*
     행렬 matrix와 도착위치[m, n]이 주어지면 [0, 0]에서 [m, n]에 도달하는 최소 경로 비용을 반환하는 함수를 작성하라. 
 
     1. 행렬의 각 셀값은 비용을 나타내며 도착지점까지 거쳐가는 모든 셀의 합계가 경로비용이 된다.
@@ -11,8 +12,8 @@
         ]   
 */
 
-
-/*  풀이
+//  풀이
+/*
     A. 재귀
 
     <접근방법>
@@ -57,7 +58,7 @@
     각 셀마다 3개의 루트가 존재하므로 트리로 구성하면 높이H만큼 대략 O(3^H)의 시간복잡도를 가지는 연산을 하게 된다.
     즉 행, 열이 추가되는 만큼 기하급수적으로 연산이 증가한다.
 */
-//  코드A
+//  코드
 const measureMinCost = (matrix, m, n) => {
     if (m < 0 || n < 0) return Number.MAX_VALUE;
     else if (m === 0 && n === 0) return matrix[m][n];
@@ -68,6 +69,7 @@ const measureMinCost = (matrix, m, n) => {
     
     return matrix[m][n] + Math.min(moveS, moveU, moveL);
 }
+
 
 /*
     B. Tabulation
@@ -97,7 +99,7 @@ const measureMinCost = (matrix, m, n) => {
     cost 테이블을 통해 이미 계산된 3가지 방향의 값을 상태전이로 한 번에 탐색할 수 있다.
     따라서, 도착점인 m과 n만큼의 셀만 탐색하면 되므로 O(m * n)의 시간복잡도를 가진다.
 */
-//  코드B
+//  코드
 const measureMinCost = (matrix, m, n) => {
     let i = 1, j = 1;
     const cost = Array.from({length: m+1}, () => new Array(n+1).fill(0));
@@ -128,6 +130,7 @@ const measureMinCost = (matrix, m, n) => {
     return matrix[m][n];
 }
 
+
 /*
     C. Memoization
 
@@ -152,7 +155,7 @@ const measureMinCost = (matrix, m, n) => {
     <에러핸들>
     1. m 또는 n이 -1이 될 경우 cost에서 인덱스를 찾지못해 에러가 발생하므로 두 탈출 조건의 위치를 변경한다.
 */
-//  코드C
+//  코드
 const Matrix = (s, r, c) => Array.from({length: r+1}, (_, i) => {
     return i ? new Array(c+1).fill(0) : new Array(c+1).fill(0).fill(s, 0, 1)
 });
