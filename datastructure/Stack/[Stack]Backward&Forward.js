@@ -13,7 +13,17 @@
         3-3. actions = [-1, 1], start = "A", return [[], "A", []]
 */
 
+/*  코드  */
+const activateBrowser = (actions, start) => {
+    let now = start, prev = [], next = [];
 
+    actions.forEach(page => {
+        if(page === -1) prev.length ? (next.push(now), now = prev.pop()) : 0;
+        else if(page === 1) next.length ? (prev.push(now), now = next.pop()) : 0;
+        else prev.push(now), next = [], now = page;
+    });
+    return [prev, now, next];
+}
 /*
     <접근방법>
     브라우저의 페이지 이동 로직을 다음과 같이 정리할 수 있다.
@@ -39,19 +49,8 @@
         2-3. 원소가 문자면 prev.push(now), now = actions[i], next = []를 한다.
     
     3. 루프가 종료되면 [prev, now, next] 형태로 리턴한다.
-*/
-/*  코드  */
-const activateBrowser = (actions, start) => {
-    let now = start, prev = [], next = [];
 
-    actions.forEach(page => {
-        if(page === -1) prev.length ? (next.push(now), now = prev.pop()) : 0;
-        else if(page === 1) next.length ? (prev.push(now), now = next.pop()) : 0;
-        else prev.push(now), next = [], now = page;
-    });
-    return [prev, now, next];
-}
-/*
+
     <시간복잡도>
     actions배열을 한번 루프로 종료되므로 O(N)의 시간복잡도를 가진다.
 */
