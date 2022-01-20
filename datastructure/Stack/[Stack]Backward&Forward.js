@@ -40,6 +40,7 @@ const activateBrowser = (actions, start) => {
     위 이동로직을 통해 prev와 next의 페이지는 후입선출로 구현되어야 함을 알 수 있다.
     따라서, 배열의 push, pop을 활용하여 stack자료구조로 구현한다.
 
+
 //  수도코드  //
     1. now, prev, next변수를 선언하고 각각 start, [], []을 할당한다.
 
@@ -50,6 +51,7 @@ const activateBrowser = (actions, start) => {
     
     3. 루프가 종료되면 [prev, now, next] 형태로 리턴한다.
 
+    
 //  시간복잡도  //
     actions배열을 한번 루프로 종료되므로 O(N)의 시간복잡도를 가진다.
 */
