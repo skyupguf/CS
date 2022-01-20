@@ -14,7 +14,7 @@
         3-3. actions = [-1, 1], start = "A", return [[], "A", []]
 */
 
-/*  코드  */
+//  구현코드  //
 const activateBrowser = (actions, start) => {
     let now = start, prev = [], next = [];
 
