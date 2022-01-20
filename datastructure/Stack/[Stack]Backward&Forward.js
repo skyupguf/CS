@@ -1,5 +1,4 @@
-//  문제
-/*
+/*  문제
     아래와 같은 조건들이 주어질 경우 웹 브라우저의 현재 페이지 이동 상태를 구하는 함수를 작성하라.
 
     1. [prev, page, next] 형태의 웹브라우저가 존재한다.
@@ -15,7 +14,6 @@
 */
 
 
-//  풀이
 /*
     <접근방법>
     브라우저의 페이지 이동 로직을 다음과 같이 정리할 수 있다.
@@ -41,12 +39,8 @@
         2-3. 원소가 문자면 prev.push(now), now = actions[i], next = []를 한다.
     
     3. 루프가 종료되면 [prev, now, next] 형태로 리턴한다.
-
-
-    <시간복잡도>
-    actions 원소를 한번 루프 하므로 O(N)
 */
-//  코드
+/*  코드  */
 const activateBrowser = (actions, start) => {
     let now = start, prev = [], next = [];
 
@@ -57,3 +51,7 @@ const activateBrowser = (actions, start) => {
     });
     return [prev, now, next];
 }
+/*
+    <시간복잡도>
+    actions배열을 한번 루프로 종료되므로 O(N)의 시간복잡도를 가진다.
+*/
