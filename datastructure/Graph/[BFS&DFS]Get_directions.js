@@ -17,9 +17,20 @@
 
 /*  코드  */
 const checkDirections = (adjMatrix, from, to) => {
-    const queue = [from];
-    const visited = {};
+    const queue = [from], visited = {};
+    visited[from] = true;
 
+    for (let i=0; i<queue.length; i++) {
+        let row = queue[i];
+        if (row === to) return true;
+
+        for (let col=0; col<adjMatrix.length; col++) {
+            if (adjMatrix[row][col] && !visited[col]) {
+                queue.push(col), visited[col] = true;
+            }
+        }
+    }
+    return false;
 }
 /*
 //  접근방법  //
@@ -27,88 +38,78 @@ const checkDirections = (adjMatrix, from, to) => {
     만일 관계가 간접이라면 출발 정점부터 간선이 연결된 정점을 하나씩 확인해야 한다.
 
     예를 들어, 그래프가 0 -> 1 -> 2 -> 3 으로 이뤄져 있을 때 출발점이 0이고 도착점이 3일 경우 모든 정점을 탐색해야 한다.
+    따라서, 정점을 전체 순회하면서 탐색해야 하며 BFS 또는 DFS를 활용해 탐색하는 방법이 효율적이다.
+
     이 때 그래프를 연결된 간선위주로 먼저 탐색하면 DFS를 현재 정점과의 인접정점을 먼저 탐색하려면 BFS를 사용한다.
     또한, 그래프는 자기순환이나 무방향 간선으로 인한 재방문이 일어날 수 있기 때문에 방문처리를 활용해야 한다.
 
 
 //  수도코드  //
     1. 우선 경로탐색에 유리한 BFS순회로 코드를 구현한다.
-        1-1. 현재 탐색중인 정점을 시작점으로 하기위해 큐를 선언하고 from을 삽입한다.
-        1-2. 한 번 탐색해 큐에 삽입한 정점을 재탐색하지 않도록 방문처리를 위한 객체를 선언한다.
+        1-1. 인접관계를 우선 탐색해야 하기 때문에 queue를 선언하고 시작정점 from을 삽입한다.
+        1-2. 큐에 삽입된 정점은 방문처리가 되어야 하므로 visited변수에 빈객체를 할당하고 visited[from] = true 설정을 한다.
+    
+    2. 탐색이 완료되는 조건은 큐에서 모든 정점을 확인해 큐가 비었을 때 이다.
+        2-1. 루프종료조건이 큐가 비었을 경우이므로 while(queue.length)로 루프를 한다.
+        2-2. shift로 큐를 O(N)으로 구현하지 않으려면 for문으로 인덱스를 이용해 i < queue.length로 종료되도록 한다.
+    
+    3. 이제 큐에 우선순위로 삽입된 정점을 시작으로 간선의 여부를 확인하고 경로를 찾으면 리턴, 아니면 큐에 추가한다.
+        3-1. 우선 추가된 큐의 정점이 to일 경우 경로가 존재하기 때문에 탈출조건으로 queue[i] === to면 true를 리턴한다.
+        3-2. 아니면 이제 현재 정점에서 간선이 존재하는 정점을 탐색해야 하므로 for문으로 이중루프를 한다.
+        3-3. 현재 adjMatrix.length만큼 루프하면서 정점의 간선이 1이고 방문처리가 안된 경우 col을 큐에 push하고 방문처리한다.
+    
+    4. 루프가 종료될 때 까지 true를 리턴하지 못하면 경로가 존재하지 않으므로 false를 리턴한다.
+
+
+//  시간복잡도  //
+    간선이 모두 존재하지만 to가 인접행렬에 존재하지 않는 최악의 경우 인접행렬을 최소한 한 번은 루프하므로 O(N^2)이 된다.
 */
 
-//  리팩토링1(재귀)
-const checkValidRoute = (matrix, from, to) => {
+
+/*  코드2  */
+const checkValidRoute = (adjMatrix, from, to) => {
     const visited = {};
 
-    function useDfs(src) {
+    function DFS (src) {
         if (src === to) return true;
         visited[src] = true;
-        
+
         let check;
-        for (let v=0; v<matrix[src].length; v++) {
-            let edge = matrix[src][v];
-            if (edge && !visited[v]) check = useDfs(v);
+        for (let dst=0; dst<adjMatrix.length; dst++) {
+            if (adjMatrix[src][dst] && !visited[dst]) check = DFS(dst);
         }
         return check ? true : false;
     }
-    return useDfs(from);
+    return DFS(from);
 }
 /*
-    풀이
-    1. 처음 코드는 row재탐색과 행렬복사로 시간 복잡도가 크게 증가한다.
-        1-1. while문은 중간에 탐색이 완료되지 않은 row로 돌아왔을 때 다시 0부터 재탐색하는 반복을 한다.
-        1-2. 방문한 정점에 0을 할당하기 위해 인접행렬을 복사하는데 걸리는 소요시간이 크다.
+//  접근방법  //
+    DFS순회를 통해 간선이 이어진 정점부터 우선 탐색한다.
+    BFS와 달리 간선이 이어진 정점을 만났을 경우 해당 정점으로 이동하고 간선이 존재하지 않을 때까지 탐색해야 한다.
     
-    2. 방문처리할 visited를 object를 할당해 선언하고 재귀호출을 위한 내부함수 useDfs를 선언한다.
-        2-1. 재귀호출이 됐을 때 탈출조건인 src === to 는 함수안 최상단에 배치하고 시작정점 src를 visited에 true로 방문처리한다.
-        2-2. 재귀호출된 리턴값을 할당할 check변수를 빈 상태로 선언하고 src노드인 row를 루프한다.
-        2-3. 간선이 존재하는지 확인하고 방문처리가 되어있지 않을 경우 check에 src를 간선이 존재하는 정점으로 재귀호출하며 할당한다.
-        2-4. check가 undefined거나 false면 false를 아닐경우 true를 리턴한다.
+    이 때, 탐색중인 경로에 더 이상 간선이 존재하지 않을 경우 다른 간선이 존재하는 정점까지 백트래킹 할 수 있어야 한다.
+    백트래킹 후 탐색한 정점을 재탐색하지 않도록 방문처리 하는 것을 잊어선 안된다.
 
-    시간복잡도
-    앞선 코드처럼 인접행렬을 복사하지도 생성하지도 않으며, 인접행렬의 row를 index=0부터 재탐색하지도 않는다.
-    row를 전부 순회하고 false일 경우 최악인 경우 O(N^2)이므로 처음 코드보다 효율적이다.
-*/
 
-//  리팩토링2(큐)
-const checkValidRoute = (matrix, from, to) => {
-    const queue = [from];
-    const visit = new Array(matrix.length).fill(false);
-    visit[from] = true;
-  
-    while (queue.length) {
-        const row = queue.shift();
-        if (row === to) return true;
-  
-        for (let col=0; col<matrix[row].length; col++) {
-            
-            if (matrix[row][col] && !visit[col]) {
-                queue.push(col);
-                visit[col] = true;
-            }
-        }
-    }
-    return false;
-}
-/*
-    풀이
-    1. stack으로 인덱스 초기화를 없애기 위해 재귀를 활용했다면 큐로는 단순루프로도 구현이 가능하다.
-        1-1. 큐를 활용하는 주 원리는 정점 row를 탐색할 때, 간선을 만날 때 마다 해당 row로 이동했다 다시 돌아오지 않는 것이다.
-        1-2. 탐색중인 정점의 row에 존재하는 간선을 먼저 모두 큐에 할당하고 먼저 들어온 정점부터 간선 탐색을 한다.
-        1-3. 시작정점 from의 간선을 시작으로 하면 몇 번째 정점과 연결된 간선을 먼저 탐색하든지 크게 상관이 없기 때문이다.
-        1-4. 즉, 리팩토링1의 경우가 DFS(깊이우선탐색)라면 큐를 이용한 탐색은 BFS(넓이우선탐색)인 것이다.
+//  수도코드  //
+    1. 백트래킹을 위해서 재귀함수를 이용한다.
+        1-1. 우선 재귀호출에 영향을 받지 않도록 전역에 방문처리를 할 객체 visited를 선언해 빈 객체를 할당한다.
+        1-2. 함수 내부에 재귀를 할 함수 DFS를 선언하고 인자로 현재 탐색할 정점 from을 전달한다.
+        1-3. 재귀호출 될 때 마다 탐색할 정점이 갱신되며 현재 탐색하는 정점이 to와 같을 경우 탈출 조건으로 true를 리턴한다.
     
-    2. 큐를 선언하고 시작정점을 push한다, 그리고 방문처리 배열을 생성한다.
-        2-1. 큐의 작업처리가 완료되면 루프를 종료해야 하므로 시작정점인 from을 push한다.
-        2-2. 다만 스택과 달리 아직 방문하지 않은 정점을 큐에 push하기 때문에 정점을 방문처리할 배열 visit을 생성한다.
-        2-3. visit은 각 정점의 수 만큼 원소를 생성하고 false를 할당한 후 시작정점인 visit[from]만 true로 변경한다.
+    2. 루프를 하면서 간선이 존재하는 정점을 만났을 경우 재귀호출을 한다.
+        2-1. 현재 탐색하는 정점 src가 재탐색 되지 않도록 방문처리를 한다.
+        2-2. 이제 현재 src를 row로 각 col에 위치한 dst정점을 루프하면서 간선이 존재하고 방문처리가 안된 경우를 찾는다.
+        2-3. 해당 조건의 정점이 존재하면 바로 dst를 인자로 DFS를 재귀호출 한다.
     
-    3. while루프는 스택구현과 크게 다르지 않고 방문처리만 설정해 준다.
-        3-1. 현재 탐색할 row를 큐에서 꺼내고 우선 to와 비교해서 같으면 true를 리턴시킨다.
-        3-2. row를 루프하면서 간선1이 존재하고 방문처리가 false인 정점일 때의 col을 큐에 push한다.
-        3-3. 큐에 추가된 정점은 visit에서 마찬가지로 true로 방문처리를 해 재방문 또는 자기루프가 되지 않도록 한다.
-    
-    시간복잡도
-    재귀구현과 다르지 않고 to의 위치에 따라, 탐색 속도가 달라진다.
+    3. 재귀호출되는 결과 중 false값을 리턴하기 위해 정점들을 루프하기전 변수를 선언해 활용한다.
+        3-1. for문을 루프를 종료했음에도 간선이 존재하지 않으면 false가 리턴되어야 한다.
+        3-2. for문안에서 간선으로 이어진 정점을 발견하면 재귀호출한 결과를 check 변수에 할당한다.
+        3-3. for문이 종료되도록 탈출조건에 걸리지 않으면 check를 확인하고 true 또는 false를 리턴한다.
+
+    4. 호출한 함수를 리턴한다.
+
+
+//  시간복잡도  //
+    호출로 인한 비용이 소모되는 것 외 시간 복잡도는 BFS와 최악의 경우 동일하다.
 */
