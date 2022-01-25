@@ -1,55 +1,27 @@
-//  문제요약
-//  1. 인자 edges는 방향이 없는 간선들의 목록으로 2차원 배열이다. ex) edges = [[0, 1], [1, 2], [3, 4]]
-//  2. 주어진 간선들은 무향이며 [1, 2] 라면 정점 1과 2 양쪽으로 전부 이동이 가능하다.
-//  3. 간선으로 연결된 정점들을 1그래프라 한다면 주어진 edges로 몇개의 그래프가 생성되는지 함수를 작성하라.
-//  4. edges = [[0, 1], [2, 3], [3, 4], [3, 5]], return 2
-//  5. edges = [[0, 1], [2, 3], [4, 5]], return 3
+/*
+//  문제요약  //
+    2차원 배열 edges에 존재하는 셀은 인접관계인 두 정점을 나타낸다.
+    edges의 모든 정점을 간선으로 이어 그래프를 완성했을 때 간선으로 연결된 그래프의 개수를 구하는 함수를 작성하라.
 
-//  인접행렬 코드
-const countLinkedVertex = (edges) => {
-    let graph = 0
-    const visited = {};
+    1. edges 배열의 정점의 간선들은 무향이며 각 edges를 순회하며 모든 정점을 이으면 아래와 같다.
+        edges = [[0, 1], [1, 2], [3, 4]] => 0 - 1 - 2, 3 - 4 총 2개의 그래프가 완성된다.
 
-    const size = edges.reduce((a, [v1, v2]) => a = Math.max(a, v1, v2), 0) + 1;
-    const matrix = Array.from({length: size}, () => new Array(size).fill(0));
+    2. 테스트 케이스
+        2-1. edges = [[0, 1], [2, 3], [3, 4], [3, 5]], return 2
+        2-2. edges = [[0, 1], [2, 3], [4, 5]], return 3
     
-    edges.forEach(([v1, v2]) => { matrix[v1][v2] = matrix[v2][v1] = 1 });
-    for (let vertex=0; vertex<size; vertex++) {
+    3. 추가로 인접행렬과 인접리스트로 BFS, DFS를 모두 구현해 본다.
+*/
 
-        if (!visited[vertex]) {
-            useBfs(matrix, vertex, visited), graph++;
-         // useDfs(matrix, vertex, visited), graph++;
-        }
-    }
-    return graph;
-}
+/*  코드  */
+const countLinkedGraph = (edges) => {
 
-function useBfs(matrix, src, visited) {
-    const queue = [src];
-    visited[src] = true;
-
-    while (queue.length) {
-        let row = matrix[queue.shift()];
-
-        for (let col=0; col<row.length; col++) {
-            if (row[col] && !visited[col]) {
-                queue.push(col), visited[col] = true;
-            }
-        }
-    }
-}
-
-function useDfs(matrix, src, visited) {
-    let row = matrix[src];
-    visited[src] = true;
-
-    for (let col=0; col<row.length; col++) {
-        if (row[col] && !visited[col]) {
-            useDfs(matrix, col, visited);
-        }
-    }
 }
 /*
+//  접근방법  //
+    정점들의 묶음인 edges를 인접행렬 또는 인접리스트로 만들어 간선의 연결관계를 나타낼 수 있다.
+    행렬과 리스트로 만든 이후 
+
     풀이
     1. 그래프 탐색과 관련된 변수와 인접행렬을 생성한다.
         1-1. 무향간선으로 연결된 정점세트를 카운트할 graph변수를 선언하고 0을 할당, 정점을 방문처리할 visited = {} 선언한다.
@@ -78,6 +50,48 @@ function useDfs(matrix, src, visited) {
     시간복잡도
     정점 탐색은 방문처리로 중복하지 않기 때문에, 인접행렬 생성으로 소요되는 O(N^2)이 최대 시간복잡도이다.
 */
+    // let graph = 0
+    // const visited = {};
+
+    // const size = edges.reduce((a, [v1, v2]) => a = Math.max(a, v1, v2), 0) + 1;
+    // const matrix = Array.from({length: size}, () => new Array(size).fill(0));
+    
+    // edges.forEach(([v1, v2]) => { matrix[v1][v2] = matrix[v2][v1] = 1 });
+    // for (let vertex=0; vertex<size; vertex++) {
+
+    //     if (!visited[vertex]) {
+    //         useBfs(matrix, vertex, visited), graph++;
+    //      // useDfs(matrix, vertex, visited), graph++;
+    //     }
+    // }
+    // return graph;
+
+// function useBfs(matrix, src, visited) {
+//     const queue = [src];
+//     visited[src] = true;
+
+//     while (queue.length) {
+//         let row = matrix[queue.shift()];
+
+//         for (let col=0; col<row.length; col++) {
+//             if (row[col] && !visited[col]) {
+//                 queue.push(col), visited[col] = true;
+//             }
+//         }
+//     }
+// }
+
+// function useDfs(matrix, src, visited) {
+//     let row = matrix[src];
+//     visited[src] = true;
+
+//     for (let col=0; col<row.length; col++) {
+//         if (row[col] && !visited[col]) {
+//             useDfs(matrix, col, visited);
+//         }
+//     }
+// }
+
 
 //  인접리스트 코드
 const countLinkedVertex = (edges) => {
