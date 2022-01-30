@@ -66,31 +66,31 @@ const countLinkedGraph = (edges) => {
     // }
     // return graph;
 
-function useBfs(matrix, src, visited) {
-    const queue = [src];
-    visited[src] = true;
+// function useBfs(matrix, src, visited) {
+//     const queue = [src];
+//     visited[src] = true;
 
-    while (queue.length) {
-        let row = matrix[queue.shift()];
+//     while (queue.length) {
+//         let row = matrix[queue.shift()];
 
-        for (let col=0; col<row.length; col++) {
-            if (row[col] && !visited[col]) {
-                queue.push(col), visited[col] = true;
-            }
-        }
-    }
-}
+//         for (let col=0; col<row.length; col++) {
+//             if (row[col] && !visited[col]) {
+//                 queue.push(col), visited[col] = true;
+//             }
+//         }
+//     }
+// }
 
-function useDfs(matrix, src, visited) {
-    let row = matrix[src];
-    visited[src] = true;
+// function useDfs(matrix, src, visited) {
+//     let row = matrix[src];
+//     visited[src] = true;
 
-    for (let col=0; col<row.length; col++) {
-        if (row[col] && !visited[col]) {
-            useDfs(matrix, col, visited);
-        }
-    }
-}
+//     for (let col=0; col<row.length; col++) {
+//         if (row[col] && !visited[col]) {
+//             useDfs(matrix, col, visited);
+//         }
+//     }
+// }
 
 
 //  인접리스트 코드
