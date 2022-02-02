@@ -50,47 +50,47 @@ const countLinkedGraph = (edges) => {
     시간복잡도
     정점 탐색은 방문처리로 중복하지 않기 때문에, 인접행렬 생성으로 소요되는 O(N^2)이 최대 시간복잡도이다.
 */
-    // let graph = 0
-    // const visited = {};
+    let graph = 0
+    const visited = {};
 
-    // const size = edges.reduce((a, [v1, v2]) => a = Math.max(a, v1, v2), 0) + 1;
-    // const matrix = Array.from({length: size}, () => new Array(size).fill(0));
+    const size = edges.reduce((a, [v1, v2]) => a = Math.max(a, v1, v2), 0) + 1;
+    const matrix = Array.from({length: size}, () => new Array(size).fill(0));
     
-    // edges.forEach(([v1, v2]) => { matrix[v1][v2] = matrix[v2][v1] = 1 });
-    // for (let vertex=0; vertex<size; vertex++) {
+    edges.forEach(([v1, v2]) => { matrix[v1][v2] = matrix[v2][v1] = 1 });
+    for (let vertex=0; vertex<size; vertex++) {
 
-    //     if (!visited[vertex]) {
-    //         useBfs(matrix, vertex, visited), graph++;
-    //      // useDfs(matrix, vertex, visited), graph++;
-    //     }
-    // }
-    // return graph;
+        if (!visited[vertex]) {
+            useBfs(matrix, vertex, visited), graph++;
+         // useDfs(matrix, vertex, visited), graph++;
+        }
+    }
+    return graph;
 
-// function useBfs(matrix, src, visited) {
-//     const queue = [src];
-//     visited[src] = true;
+function useBfs(matrix, src, visited) {
+    const queue = [src];
+    visited[src] = true;
 
-//     while (queue.length) {
-//         let row = matrix[queue.shift()];
+    while (queue.length) {
+        let row = matrix[queue.shift()];
 
-//         for (let col=0; col<row.length; col++) {
-//             if (row[col] && !visited[col]) {
-//                 queue.push(col), visited[col] = true;
-//             }
-//         }
-//     }
-// }
+        for (let col=0; col<row.length; col++) {
+            if (row[col] && !visited[col]) {
+                queue.push(col), visited[col] = true;
+            }
+        }
+    }
+}
 
-// function useDfs(matrix, src, visited) {
-//     let row = matrix[src];
-//     visited[src] = true;
+function useDfs(matrix, src, visited) {
+    let row = matrix[src];
+    visited[src] = true;
 
-//     for (let col=0; col<row.length; col++) {
-//         if (row[col] && !visited[col]) {
-//             useDfs(matrix, col, visited);
-//         }
-//     }
-// }
+    for (let col=0; col<row.length; col++) {
+        if (row[col] && !visited[col]) {
+            useDfs(matrix, col, visited);
+        }
+    }
+}
 
 
 //  인접리스트 코드
