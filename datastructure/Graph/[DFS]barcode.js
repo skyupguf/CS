@@ -1,38 +1,40 @@
-//  문제요약
-//  1. 1, 2, 3으로만 이루어진 수열 바코드를 만들어야 한다. 
-//  2. 바코드에서 인접한 두 개의 부분 수열이 동일하다면 제작할 수 없다.
-//  3. 부분수열이란, 주어진 수열에서 연속된 모든 구간을 말한다. 수열 123의 부분수열은 1, 2, 3, 12, 23, 123 이다.
-//  4. 인접한 두 부분수열이란, 첫번째 부분수열과 두번째 부분수열이 연속된 경우를 말한다.
-//  5. 1234의 경우 [1, 2], [2, 3], [3, 4], [12, 34], 부분수열이 동일한 경우이기 때문에 길이가 같은 경우만 해당된다.
-//  6. 만들 수 있는 바코드 : 1312, 3, 231213
-//  7. 만들 수 없는 바코드 : '11'2, 12'3131'2, '2323'12
-//  8. 입력 len은 1~50사이 자연수이며 len의 길이에서 가장 작은 바코드를 만들어서 문자열로 리턴하라.
-//  9. len = 3, return "121" / len = 7, return "1213121" / len = 20, return "12131231321231213123"
+/*
+//  문제요약  //
+    1~50사이의 자연수인 입력 len만큼의 길이의 바코드를 숫자 1, 2, 3으로 조합하여 만들고자 한다.
+    인접한 부분수열이 동일할 경우를 제외하고 len의 수의 길이를 가진 가장 작은 바코드를 만드는 함수를 구현하라.
+    
+    1. 부분수열은 주어진 수열에서 연속되는 모든 구간을 말한다. 123의 부분수열은 1, 2, 3, 12, 23, 123 이다.
+        len = 4일 경우 인접한 부분수열이 같은 경우는 '11'12, '1212', 13'22' 등 다양하다.
+        이런 경우를 제외하고 가장 작은 바코드를 구하면 1213이 된다.
+    
+    2. 테스트 케이스
+        2-1. len = 3, return "121"
+        2-2. len = 7, return "1213121"
+        2-3. len = 20, return "12131231321231213123"
+*/
+
+/*  코드  */
+const functionName = () => {
+
+}
+/*
+//  접근방법  //
+    
+    
+
+//  수도코드  //
+    
+    
+
+//  시간복잡도  //
+    
+*/
+
+
 
 //  코드
-const checkValid = (str) => {
-    for (let i=1; i<=str.length/2; i++) {
-        let subSequence1 = str.slice(-i);
-        let subSequence2 = str.slice(str.length-i*2, -i);
-        if (subSequence1 === subSequence2) return false;
-    }
-    return true;
-}
-
-const leastBarcode = (len) => {    
-    function Dfs (barcode) {
-        if (barcode.length === len) return barcode;
-        
-        for (let num=1; num<4; num++) {
-            let now = barcode + `${num}`;
-            
-            if (checkValid(now)) {
-                const result = Dfs(now);
-                if (result) return result;
-            }
-        } return;
-    }
-    return Dfs('1');
+const checkValid = () => {
+    
 }
 /*
     풀이
@@ -74,3 +76,52 @@ const leastBarcode = (len) => {
     시간복잡도
     len이 정점의 길이라면 123의 num은 각각의 간선에 해당 되므로 한번 탐색시 최대 O(len + num)이 된다. 
 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const checkValid = (str) => {
+    for (let i=1; i<=str.length/2; i++) {
+        let subSequence1 = str.slice(-i);
+        let subSequence2 = str.slice(str.length-i*2, -i);
+        if (subSequence1 === subSequence2) return false;
+    }
+    return true;
+}
+
+const leastBarcode = (len) => {    
+    function Dfs (barcode) {
+        if (barcode.length === len) return barcode;
+        
+        for (let num=1; num<4; num++) {
+            let now = barcode + `${num}`;
+            
+            if (checkValid(now)) {
+                const result = Dfs(now);
+                if (result) return result;
+            }
+        } return;
+    }
+    return Dfs('1');
+}
