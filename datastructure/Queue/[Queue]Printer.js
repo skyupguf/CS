@@ -77,7 +77,7 @@ const calPrintingTime = (bufferSize, capacities, documents) => {
 */
 
 /*  리팩토링  */
-const calPrintingTime = (bufferSize, capacities, documents) => {
+const calPrintingTime1 = (bufferSize, capacities, documents) => {
     const workQueue = [[documents[0], bufferSize]];
     let timeLap = 1, docIndex = 1, totalVolume = documents[0];
 
@@ -95,7 +95,7 @@ const calPrintingTime = (bufferSize, capacities, documents) => {
     return timeLap;
 }
 /*  리팩토링2  */
-const calPrintingTime = (bufferSize, capacities, documents) => {
+const calPrintingTime2 = (bufferSize, capacities, documents) => {
     let totalVolume = documents[0];
     let timeLap = 1, docIndex = 1, waitingPage = 1;
     const workQueue = [[documents[0], bufferSize]];
