@@ -1,31 +1,35 @@
-//  문제요약
-//  1. Tree를 구현하라.
-//  2. 맴버 변수 : 입력값을 저장할 데이터 value, 하위 노드를 저장할 children배열
-//  3. 메서드
-//      3-1. 입력받은 value를 Tree에 계층적으로 추가할 수 있어야 한다.
-//      3-2. 트리에 포함된 데이터를 찾을 수 있어야 한다.
+/*
+//  문제요약  //
+    트리구조를 구현하기
 
-//  코드
-class Tree {
-    constructor(data) {
+    1. 멤버 변수
+        1-1. 노드의 기능을 모두 지닌 Node클래스(value, child)
+        1-2. 트리구조를 구현할 Tree클래스(root)
+    
+    2. 메서드
+        2-1. 노드를 생성하고 특정 부모노드에 자식으로 추가할 수 있어야 한다.
+        2-2. 특정노드의 존재여부를 확인할 수 있어야 한다.
+*/
+
+/*  코드  */
+class Node {
+    constructor (data) {
         this.value = data;
         this.child = [];
     }
-
-    addChildNode(data) {
-        const childNode = new Tree(data);
-        this.child.push(childNode);
-    }
-
-    checkNode(data) {
-        if (this.value === data) return true;
-        for (let i=0; i<this.child.length; i++) {
-            if (this.child[i].checkNode(data)) return true;
-        }
-        return false;
-    }
 }
 /*
+//  접근방법  //
+    노드를 생성하는 class에는 값과 다른 자식노드를 추가할 변수들이 필요하다.
+    트리를 구현하는 class에는 
+    
+
+//  수도코드  //
+    
+    
+
+//  시간복잡도  //
+
     풀이
     1. 멤버변수로 현재 노드의 값을 가리킬 value와 자식노드를 추가할 배열 child를 빈배열로 초기화 한다.
     
@@ -48,3 +52,23 @@ class Tree {
     시간복잡도
     checkNode로 노드 value를 탐색할 때 child배열의 모든 노드를 재귀호출하고 루프를 하기 때문에 최악의 경우 O(N!)
 */
+//  코드
+class Tree {
+    constructor(data) {
+        this.value = data;
+        this.child = [];
+    }
+
+    addChildNode(data) {
+        const childNode = new Tree(data);
+        this.child.push(childNode);
+    }
+
+    checkNode(data) {
+        if (this.value === data) return true;
+        for (let i=0; i<this.child.length; i++) {
+            if (this.child[i].checkNode(data)) return true;
+        }
+        return false;
+    }
+}
