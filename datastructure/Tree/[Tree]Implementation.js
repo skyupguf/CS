@@ -71,22 +71,22 @@ class Tree {
     checkNode로 노드 value를 탐색할 때 child배열의 모든 노드를 재귀호출하고 루프를 하기 때문에 최악의 경우 O(N!)
 */
 //  코드
-class Tree {
-    constructor(data) {
-        this.value = data;
-        this.child = [];
-    }
+// class Tree {
+//     constructor(data) {
+//         this.value = data;
+//         this.child = [];
+//     }
 
-    addChildNode(data) {
-        const childNode = new Tree(data);
-        this.child.push(childNode);
-    }
+//     addChildNode(data) {
+//         const childNode = new Tree(data);
+//         this.child.push(childNode);
+//     }
 
-    checkNode(data) {
-        if (this.value === data) return true;
-        for (let i=0; i<this.child.length; i++) {
-            if (this.child[i].checkNode(data)) return true;
-        }
-        return false;
-    }
-}
+//     checkNode(data) {
+//         if (this.value === data) return true;
+//         for (let i=0; i<this.child.length; i++) {
+//             if (this.child[i].checkNode(data)) return true;
+//         }
+//         return false;
+//     }
+// }
