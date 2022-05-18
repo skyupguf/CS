@@ -23,7 +23,7 @@ class Stack {
         return this.storage[index];
     }
     push(element) {
-        if(this.size() >= this.max) return new Error("스택이 가득찼습니다.");
+        if(this.size() >= this.mdax) return new Error("스택이 가득찼습니다.");
         this.storage[this.top] = element;
         this.top++;
     }
