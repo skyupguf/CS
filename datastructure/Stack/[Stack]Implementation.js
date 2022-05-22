@@ -34,7 +34,7 @@ class Stack {
         return temp;
     }
 }
-/*
+/* 
     풀이
     1. class를 이용해 사용자 정의 데이터 타입으로 구현한다, constructor로 멤버변수 storage와 top을 정의 한다.
     2. size메서드를 정의 했을 때 현재 스택의 크기 이므로 길이인 top을 리턴한다.
