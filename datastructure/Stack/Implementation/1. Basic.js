@@ -16,11 +16,11 @@ class Stack {
     constructor (size) {
         this.storage = {};
         this.top = 0;
-        this.max = size || MAX_SAFE_INTEGER;
+        this.size = size || MAX_SAFE_INTEGER;
     }
     
     push (data) {
-        if (this.top >= this.max) return new Error('stack overflow');
+        if (this.top >= this.size) return new Error('stack overflow');
         this.storage[this.top] = data;
         this.top++;
     }
@@ -46,10 +46,10 @@ class Stack {
     1. 멤버 변수를 선언하고 각 변수에 맞는 타입을 할당한다.
         1-1. 인덱스를 key로 data를 value로 저장할 빈 객체를 storage 변수에 할당한다.
         1-2. 스택의 최상단 인덱스를 가리킬 변수 top에 현재 인덱스인 0을 할당한다.
-        1-3. 스택을 생성할 때 입력인자 size를 스택의 크기로 할당할 변수 max를 선언하고 size가 undefined일 경우 정수 최대값을 할당한다.
+        1-3. 스택을 생성할 때 입력인자 size를 스택의 크기로 할당할 변수를 선언하고 size가 undefined일 경우 정수 최대값을 할당한다.
 
     2. 인자로 전달받는 data를 스택의 마지막 인덱스에 추가하는 push(data)메서드를 생성한다.
-        2-1. 데이터 추가전 top이 max이상인지 확인해 오버플로우 처리를 한다.
+        2-1. 데이터 추가전 top이 size이상인지 확인해 오버플로우 처리를 한다.
         2-2. storage의 비어있는 top에 data를 할당한다.
         2-3. top 인덱스를 1누적해 비어있는 최상단 위치로 갱신한다.
     
