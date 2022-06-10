@@ -16,7 +16,7 @@ class Stack {
     constructor (size) {
         this.storage = {};
         this.top = 0;
-        this.size = size || MAX_SAFE_INTEGER;
+        this.size = size || Number.MAX_SAFE_INTEGER;
     }
     
     push (data) {
@@ -32,7 +32,7 @@ class Stack {
         return temp;
     }
     
-    top () {
+    last () {
         return this.storage[this.top-1];
     }
 
@@ -62,7 +62,11 @@ class Stack {
         4-1. top()메서드를 생성하고 현재 스택의 최상단인 top-1을 키로 가진 storage의 값을 리턴한다.
         4-2. peek(index)메서드를 생성하고 index가 양의 정수인지, top이상인지 판단하여 예외처리와 리턴값을 분기한다.
 
-        
+
+//  에러핸들  //
+    1. 멥버변수와 동일한 명칭인 top으로 메서드를 생성시 콘솔에서 메서드가 작동하지 않아 top() -> last() 로 변경        
+
+    
 //  시간복잡도  //
     인덱스를 key로 data를 value로 저장하기 때문에 모든 메서드의 연산은 O(1)으로 이루어진다.
 */
