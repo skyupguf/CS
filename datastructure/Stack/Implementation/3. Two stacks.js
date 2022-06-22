@@ -12,7 +12,8 @@ class Two_stack {
         this.top = 0;
         this.size = size || Number.MAX_SAFE_INTEGER;
     }
-
+    
+    add()
 
 }
 /*
