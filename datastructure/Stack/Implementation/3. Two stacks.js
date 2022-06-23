@@ -13,8 +13,9 @@ class Two_stack {
         this.size = size || Number.MAX_SAFE_INTEGER;
     }
     
-    add()
+    push()
 
+    pop()
 }
 /*
 //  접근방법  //
