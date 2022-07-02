@@ -6,7 +6,7 @@
 */
 
 /*  코드  */
-class Two_stack {
+class Two_stack { 
     constructor (size) {
         this.stack = {};
         this.top = 0;
