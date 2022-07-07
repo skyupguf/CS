@@ -46,6 +46,7 @@ class Mid_stack {
         const node = new Node(data);
         if (!this.check) {
             this.top = this.mid = node;
+
         } else {
             node.prev = this.top;
             this.top = this.top.next = node;
@@ -70,6 +71,7 @@ class Mid_stack {
         const data = this.top.data;
         if (this.check === 1) {
             this.top = this.mid = null;
+            
         } else {
             this.top = this.top.prev;
             this.top.next = null;
