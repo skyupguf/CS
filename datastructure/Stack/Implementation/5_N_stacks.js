@@ -38,40 +38,76 @@ class N_stacks {
     constructor (size, n) {
         this.index = 0;
         this.size = size;
-        this.stack = new Array(size).fill(null);//pop이 일어나도 데이터를 추출하는게 아닌 변경을 하는 것이므로 고정된 크기의 배열을 만든다.
-        this.tops = new Array(n).fill(-1);//n개의 스택에 맞춰 배열을 생성하고 인덱스 시작인 0보다 작은 -1로 초기화한다.
-        //m번째 스택의 이전 top값들이 stack에서 어디에 위치해 있는지 기록하는 용도이다.
-        //또한 현재 스택에서 비어있는 위치를 표시하기 위해 index를 시작점 0으로 다음 인덱스를 가리키기 위해 1부터 size까지의 값으로 채운다.
+        this.stack = new Array(size).fill(null);
+        this.tops = new Array(n).fill(-1);
         this.record = new Array(size).fill().map((_, i) => i+1);
     }
-    
+/*
+    1. stack에 삽입하기 위한 index와 size를 설정하는 기본적인 멤버변수를 설정한다.
+
+    2. 스택과, 탑, 이전 탑을 기록을 위한 배열을 생성한다.
+        2-1. stack은 pop이 일어나도 데이터를 추출하는게 아닌 변경을 하는 것이므로 고정된 크기의 배열을 만든다.
+        2-2. tops는 n개의 스택에 맞춰 배열을 생성하고 인덱스 시작인 0보다 작은 -1로 초기화한다.
+        2-3. record는 m번째 스택의 이전 top값들이 stack에서 어디에 위치해 있는지 기록하는 용도이다.
+        2-4. record는 또한 현재 스택에서 비어있는 위치를 index와 교환하기 위해 0이 할당된 index의 다음인 1부터 size까지의 값으로 채운다.
+*/
     push (m, data) {
-        //정해진 스택의 수에 m이 해당되는지 우선 확인한다.
-        if (m < 1 || m > this.tops.length) return new Error('check number of stacks');
-        //index가 record에 존재하는 가장 큰 수와 교환되면 스택이 가득차게 되므로 size와 동일해지면 오버플로우가 된다.
         if (this.index >= this.size) return new Error('stack overflow');
-        //stack 배열에서 비어있는 위치의 인덱스가 할당된 index를 변수 i에 할당한다.
-        const i = this.index;
-        //index에 stack의 다음 비어있는 위치를 표시하고 있는 record[i]를 할당한다.
-        this.index = this.record[i];
-        //stack에 데이터를 삽입한다.
-        this.stack[i] = data;
-        //m번째 top을 데이터가 삽입된 인덱스로 변경하기전 현재 top을 record에 기록하고 변경한다.
-        this.record[i] = this.tops[m-1];
-        this.tops[m-1] = i;
-    }
-
-    pop (m) {
-        //우선 m이 존재하는지 확인하고 m번째 top을 확인해 언더플로우 처리를 해준다.
-        if (m < 1 || m > this.tops.length) return new Error('check number of stacks');
-        if (this.tops[m-1] === -1) return new Error('stack underflow');
+        if (m < 1 || m > this.tops.length) return new Error('stack does not exist');
         
+        if (Number.isInteger(m)) {
+            const i = this.index;
+            this.stack[i] = data;
+            this.index = this.record[i];
+            this.record[i] = this.tops[m-1];
+            this.tops[m-1] = i;
+        }
     }
+/*
+    3. 모든 예외처리를 해준다.
+        3-1. 정해진 스택의 범위에 m이 해당되는지 우선 확인한다.
+        3-2. index가 record에 존재하는 가장 큰 수와 교환되면 스택이 가득차게 되므로 size와 동일해지면 오버플로우가 된다.
+    
+    4. 이제 각 배열을 수정해서 데이터 삽입과정을 설계한다.
+        4-1. stack에 데이터를 삽입하는 위치를 표시한 index를 변수 i에 할당하고 stack[i]에 데이터를 삽입한다.
+        4-2. index에는 stack의 다음 비어있는 인덱스가 기록되어 있는 record[i]를 할당한다.
+        4-3. record[i]에는 m스택의 이전 top을 기록하기 위해 tops[m-1]을 할당한다.
+        4-4. tops[m-1]에는 현재 m번재 스택의 top값이 되는 i를 할당한다.
+*/
+    pop (m) {
+        if (this.tops[m-1] === -1) return new Error('stack underflow');
+        if (m < 1 || m > this.tops.length) return new Error('stack does not exist');
+        
+        let data;
+        if (Number.isInteger(m)) {
+            const i = this.tops[m-1];
+            data = this.stack[i];
+            this.stack[i] = null;
+            this.tops[m-1] = this.record[i];
+            this.record[i] = this.index;
+            this.index = i;
+        }
+        return data;
+    }
+/*
+    5. 우선 m이 존재하는지 확인하고 tops에서 m번째의 top을 확인해 언더플로우 처리를 해준다.
+    
+    6. 데이터를 추출하는 과정을 설계한다.
+        6-1. 추출하려는 데이터가 존재하는 m번째 스택의 top을 변수 i에 할당한다. 
+        6-2. 추출하려는 데이터를 stack[i]에서 가져와 data변수에 할당하고 stack[i]는 null을 할당한다.
 
-    top (sNum) {
-        //
+    7. 이제 m스택의 top을 이전 top으로 갱신하고 index에 할당될 위치를 record와 i로 교환한다.
+        7-1. tops[m-1]에 이전 top을 할당하기 위해 record[i]를 할당해 준다.
+        7-2. record[i]에는 다다음에 데이터가 삽입될 위치를 가리킬 index를 할당한다.
+        7-3. index에는 현재 pop이 일어난 위치인 i를 할당해 다음 번 push때 i의 위치에 데이터가 들어가도록 한다.
+*/
+    top (m) {
+        let data;
+        if (Number.isInteger(m)) data = this.stack[this.tops[m-1]];
+        return data;
     }
 }
     
-//  시간복잡도  //
-//  
+//  복잡도  //
+//  보조공간 O(N)이 추가로 필요하며, 처음 배열을 생성할 때 O(N)의 시간 복잡도가 소요된다.
+//  스택의 생성외에 모든 메서드는 O(1)에서 이뤄진다.
