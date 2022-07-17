@@ -74,7 +74,9 @@ const recursiveSort = (s, e) => {
         return;
 
     } else {
-
+        let bigger = s.pop();
+        recursiveSort(s, e);
+        s.push(bigger);
     }
 }
 
@@ -82,6 +84,7 @@ const sortStack = (arr) => {
     const element = arr.pop();
     if (arr.length > 1) sortStack(arr);
     recursiveSort(arr, element);
+    return arr;
 }
 /*
     1. arr의 요소는 배열길이가 1이 될 때까지 pop해야 한다.
@@ -96,8 +99,11 @@ const sortStack = (arr) => {
     
     3. 위 조건에 해당되지 않는 경우 재귀호출로 basecase까지 도달해야 한다.
         3-1. 예를들어, s = [3, 7] e = 1 이면 1이 빈 배열의 가장 앞에 push되기 위해서 두 번의 재귀호출이 있어야 한다.
-        3-2. 
+        3-2. 이 경우 요소 7을 pop하고 다시 3과 1을 비교해야 하므로 recursiveSort(s, e)로 재귀호출한다.
+        3-3. 재귀호출값이 리턴된 값에서 pop을 해놓은 7을 push해준다.
+
+    4. 리턴될 때 결과 값을 표시하고자 하면 arr을 리턴시켜준다.
 */
     
 //  시간복잡도  //
-//  
+//  루프와 재귀모두 이미 정렬된 배열이면 요소 하나당 모든 요소를 탐색 비교하게 된다. 따라서 O(N^2)의 복잡도가 된다.
