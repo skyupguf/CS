@@ -16,22 +16,28 @@
     재귀로 구현하기 위해 basecase와 탈출조건을 구해야 한다.
     이 문제는 분할정복이 필요하지 않으므로 추출하려는 중간값에 도달하면 값을 추출하고 탈출시키면 된다.
     
-    중간값은 배열길이/2를 했을 때, 홀수일 경우 반내림한 수, 짝수일 경우 문제에서 요구하는대로 -1을 한 수가 된다.
+    중간값은 배열길이/2를 했을 때, 홀수일 경우 반올리해야 한다.
     해당 길이에 도달했을 때, 요소를 제거하고 함수를 탈출 하도록 설계한다.
 */
 
 /*  코드  */
-const deleteMidElement = (arr, n = parseInt(arr.length/2)) => {//추출할 요소에 도달하면 탈출해야 하므로 해당 수를 저장할 인자가 필요하다.
-    //배열 길이가 n-1과 동일해 지면 해당 요소를 추출하고 리턴시킨다.
-    if (arr.length === n-1) {
+const removeMidElement = (arr, fix) => {
+    if (arr.length === fix) {
         arr.pop();
         return;
     }
-    //arr이 짝수일 경우 한 칸 앞의 요소를 추출해야 하므로 n-1이 되어야 한다.
-    if (!arr.length % 2) n--;
+    const store = arr.pop();
+    removeMidElement(arr, fix);
+    arr.push(store);
+}
+
+const removeMidStack = (arr) => {
+    const mid = Math.ceil(arr.length/2);
+    removeMidElement(arr, mid);
+    return arr;
 }
 /*
-
+    1. 배열의 중간요소를 제거하기 위해 배열의 중간길이와 원래길이가 필요하다.
+    2. 배열이 fix에 도달했을 때 해당위치의 요소를 pop해야하며 함수의 탈출 조건이 된다.
+    3. fix에 도달할 때 까지 마지막 요소를 pop하여 저장해 둔다.
 */
-//  시간복잡도  //
-//  
