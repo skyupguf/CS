@@ -47,4 +47,3 @@ public class CountingSort {
         bw.close();
     }
 }
-// System.out.println()의 연산 속도가 bufferedReader와 어떤 성능차이가 존재하는지 알아보자.
