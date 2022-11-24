@@ -1,4 +1,4 @@
-package b_Practice;
+package Practice;
 
 // Practice2
 // Palindrome 연결 리스트

@@ -1,4 +1,4 @@
-package b_Practice;
+package Practice;
 
 // Practice3
 // 연결 리스트 부분 뒤집기

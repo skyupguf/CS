@@ -1,4 +1,4 @@
-package a_Implement;
+package Implement;
 
 
 // 단순 연결 리스트 (simple ver.) 기본 구조 구현
@@ -96,7 +96,7 @@ class LinkedList {
 }
 
 
-public class Implement01 {
+public class Implement01Single {
 
     public static void main(String[] args) {
 

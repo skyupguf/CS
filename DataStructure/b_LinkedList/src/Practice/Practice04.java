@@ -1,4 +1,4 @@
-package b_Practice;
+package Practice;
 
 // Practice4
 // 연결 리스트 배열 사용 연습

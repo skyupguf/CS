@@ -1,4 +1,4 @@
-package a_Implement;
+package Implement;
 
 
 // 원형 연결 리스트 (Circular Linked List) 구현
@@ -92,7 +92,7 @@ class CircularLinkedList {
 
 }
 
-public class Implement04 {
+public class Implement04Circle {
     public static void main(String[] args) {
         // Test code
         CircularLinkedList myList = new CircularLinkedList(new NodeBi(1, null, null));

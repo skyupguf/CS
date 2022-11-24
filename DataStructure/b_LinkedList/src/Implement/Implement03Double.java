@@ -1,4 +1,4 @@
-package a_Implement;
+package Implement;
 
 
 // 양방향 연결 리스트 (Doubly Linked List) 구현
@@ -115,7 +115,7 @@ class DoublyLinkedList extends LinkedList {
 
 
 
-public class Implement03 {
+public class Implement03Double {
     public static void main(String[] args) {
 
 //      Test code

@@ -1,4 +1,4 @@
-package a_Implement;
+package Implement;
 
 
 // 단순 연결 리스트 구현 완성
@@ -59,7 +59,7 @@ class LinkedList2 extends LinkedList {
 }
 
 
-public class Implement02 {
+public class Implement02Single {
     public static void main(String[] args) {
 
 //      Test code

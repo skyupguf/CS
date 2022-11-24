@@ -1,4 +1,4 @@
-package b_Practice;
+package Practice;
 
 // Practice1
 // 단방향 연결 리스트에서 중복 데이터를 찾아 삭제하세요.
