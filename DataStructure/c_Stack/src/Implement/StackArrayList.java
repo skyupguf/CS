@@ -1,67 +1,52 @@
 package Implement;
 
-// Practice2
-// 배열을 이용한 기본 스택 직접 구현
+// Practice1
+// ArrayList 를 이용한 스택 구현
 
-class MyStack2 {
-    int[] arr;
-    int top = -1;
+import java.util.ArrayList;
 
-    MyStack2(int size) {
-        arr = new int[size];
+class MyStack1 {
+    ArrayList list;
+
+    MyStack1() {
+        this.list = new ArrayList();
     }
 
     boolean isEmpty() {
-        return this.top == -1;
-    }
-
-    boolean isFull() {
-        return this.top+1 == this.arr.length;
+        return list.size() == 0;
     }
 
     void push(int data) {
-        if (this.isFull()) {
-            System.out.println("Stack overflow!");
-            return;
-        }
-        this.arr[++this.top] = data;
+        this.list.add(data);
     }
 
     Integer pop() {
         if (this.isEmpty()) {
-            System.out.println("Stack is empty!");
+            System.out.println("Stack is empty");
             return null;
         }
-        return this.arr[this.top--];
+        return (int) this.list.remove(list.size() - 1);
     }
 
     Integer peek() {
-        if (this.isEmpty()) {
-            System.out.println("Stack is empty!");
-            return null;
-        }
-        return this.arr[this.top];
+        return (int) this.list.get(list.size() - 1);
     }
 
-    void printStack() {
-        for (int i = 0; i <= top; i++) {
-            System.out.print(this.arr[i] + " ");
-        }
-        System.out.println();
+    public void printStack() {
+        System.out.println(this.list);
     }
 }
 
-public class Implement02Array {
+public class StackArrayList {
     public static void main(String[] args) {
         // Test code
-        MyStack2 myStack = new MyStack2(5);
+        MyStack1 myStack = new MyStack1();
         System.out.println(myStack.isEmpty());
         myStack.push(1);
         myStack.push(2);
         myStack.push(3);
         myStack.push(4);
         myStack.push(5);
-        myStack.push(6);
         myStack.printStack();               // 1, 2, 3, 4, 5
 
         System.out.println(myStack.peek()); // 5
