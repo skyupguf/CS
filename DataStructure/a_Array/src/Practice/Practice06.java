@@ -1,4 +1,4 @@
-// Practice6
+package Practice;// Practice6
 // 배열 arr 에서 중복 값을 제거한 새 배열을 만드시오.
 
 // 입출력 예시)

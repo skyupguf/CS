@@ -1,4 +1,4 @@
-// Practice5
+package Practice;// Practice5
 // 배열 arr 의 값을 오름차순으로 출력
 
 // 입출력 예시)

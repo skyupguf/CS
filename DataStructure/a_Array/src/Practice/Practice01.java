@@ -1,4 +1,4 @@
-// Practice1
+package Practice;// Practice1
 // 배열 arr 의 모든 데이터에 대해서,
 // 짝수 데이터들의 평균과 홀수 데이터들의 평균을 출력하세요.
 
