@@ -1,4 +1,4 @@
-// 선형 자료구조 - 배열
+package Implement;// 선형 자료구조 - 배열
 
 import java.util.ArrayList;
 import java.util.Arrays;
