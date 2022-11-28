@@ -13,35 +13,39 @@
 * 카운트가 완료되면 배열을 루프하면서 카운트된 수만큼 인덱스를 출력하면 된다.
 * 입력받은 수 만큼의 배열 공간을 추가해야 하므로 당연히 공간을 더 많이 쓰게 된다.
 * */
-import java.util.LinkedList;
-import java.util.Queue;
 
-public class Main {
+import java.io.*;
 
-    void solution(int delay, int capacity, int[] times) {
-        Queue<Integer> queue = new LinkedList();
-        int time = 0;
-        int i = 0;
-        int cnt = 0;
-        int inputSize = 0;
+public class CountingSort {
 
-        while (i != times.length) {
-            if (queue.peek() == time) {
-                queue.remove();
-            }
-            if (queue.size() < capacity && times[i] != 0) {
-                inputSize += times[i];
-                queue.add(inputSize);
-            } else if (queue.size() >= capacity && times[i] != 0) {
-                cnt++;
-            }
-            i++;
-            time++;
+    static void SortingArray(BufferedReader br, BufferedWriter bw, int[] arr) throws IOException {
+        int num = 0;
+        int N = Integer.parseInt(br.readLine());
+
+        for (int i = 0; i < N; i++) {
+            num = Integer.parseInt(br.readLine());
+            arr[num] += 1;
         }
-        System.out.println(cnt);
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] != 0) {
+                for (int j = 0; j < arr[i]; j++) {
+                    bw.write(i+"\n");
+                }
+            }
+        }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
+        int[] countArray = new int[10001];
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        SortingArray(br, bw, countArray);
+
+        bw.flush();
+        bw.close();
     }
 }
