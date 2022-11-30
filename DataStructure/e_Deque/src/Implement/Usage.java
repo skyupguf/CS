@@ -33,10 +33,15 @@ public class Usage {
         System.out.println(deque);
         deque.clear();
 
-        // poll 과 remove 의 차이
+        // null 리턴
         System.out.println(deque.pollLast());
-        System.out.println(deque.removeLast());
-        // remove 는 예외처리를 해줘야 한다.
+        System.out.println(deque.peekFirst());
+
+
+        // 예외처리가 필요
+        //  System.out.println(deque.getFirst());
+        //  System.out.println(deque.removeLast());
+
 
     }
 }
