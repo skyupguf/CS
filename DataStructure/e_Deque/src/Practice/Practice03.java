@@ -51,7 +51,20 @@ class MyDeque {
     }
 
     public void addMiddle(int data) {
+        if (this.isFull()) {
+            System.out.println("Deque is full!");
+            return;
+        }
+        int elements = (this.rear - this.front);
+        elements = elements < 0 ? elements + this.arr.length : elements;
+        int mid = (this.rear - elements/2) % this.arr.length + 1;
 
+        int target = (this.rear + 1) % this.arr.length;
+        for (int i = target; i > mid; i = (i-1+this.arr.length)%this.arr.length) {
+            this.arr[i] = this.arr[(i-1+this.arr.length)%this.arr.length];
+        }
+        this.arr[mid] = data;
+        this.rear = (this.rear + 1) % this.arr.length;
     }
 
     public Integer removeFirst() {

@@ -23,13 +23,23 @@ class MyDeque2 {
     }
 
     public void increaseSize() {
+        int[] dequeTmp = this.arr.clone();
+        this.arr = new int[(this.arr.length-1)*2+1];
 
+        int src = (this.front + 1) % dequeTmp.length;
+        int dst = (this.rear + 1) % dequeTmp.length;
+
+        int j = 0;
+        for (int i = src; i != dst; i = (i+1)%dequeTmp.length) {
+            this.arr[j++] = dequeTmp[i];
+        }
+        this.front = this.arr.length-1;
+        this.rear = j - 1;
     }
 
     public void addFirst(int data) {
         if (this.isFull()) {
-            System.out.println("Deque is full!");
-            return;
+            this.increaseSize();
         }
 
         this.arr[front] = data;
@@ -38,8 +48,7 @@ class MyDeque2 {
 
     public void addLast(int data) {
         if (this.isFull()) {
-            System.out.println("Deque is full!");
-            return;
+            this.increaseSize();
         }
 
         this.rear = (this.rear + 1) % this.arr.length;
