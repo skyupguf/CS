@@ -8,19 +8,19 @@ class MyDeque2 {
     int front = 0;
     int rear = 0;
 
-    MyDeque2(int size) {
-        arr = new int[size+1];
+    MyDeque2 (int size) {
+        this.arr = new int[size+1];
     }
 
-    boolean isEmpty() {
+    boolean isEmpty () {
         return this.front == this.rear;
     }
 
-    boolean isFull() {
-        return (this.rear+1) % this.arr.length == this.front;
+    boolean isFull () {
+        return this.front == (this.rear + 1) % this.arr.length;
     }
 
-    void addFirst(int data) {
+    void addFirst (int data) {
         if (this.isFull()) {
             System.out.println("Deque is full!");
             return;
@@ -29,7 +29,7 @@ class MyDeque2 {
         this.front = (this.front - 1 + this.arr.length) % this.arr.length;
     }
 
-    void addLast(int data) {
+    void addLast (int data) {
         if (this.isFull()) {
             System.out.println("Deque is full!");
             return;
@@ -40,7 +40,7 @@ class MyDeque2 {
 
     Integer removeFirst() {
         if (this.isEmpty()) {
-            System.out.println("Deque is empty");
+            System.out.println("Deque is empty!");
             return null;
         }
         this.front = (this.front + 1) % this.arr.length;
@@ -49,25 +49,23 @@ class MyDeque2 {
 
     Integer removeLast() {
         if (this.isEmpty()) {
-            System.out.println("Deque is empty");
+            System.out.println("Deque is empty!");
             return null;
         }
         int data = this.arr[this.rear];
-        this.rear = (this.rear -1 + this.arr.length) % this.arr.length;
+        this.rear = (this.rear - 1 + this.arr.length) % this.arr.length;
         return data;
     }
 
     void printDeque() {
-        int start = (this.front + 1) % this.arr.length;
-        int end = (this.rear + 1) % this.arr.length;
+        int src = (this.front + 1) % this.arr.length;
+        int dst = (this.rear + 1) % this.arr.length;
 
-        for (int i = start; i != end; i = (i+1) % this.arr.length){
+        for (int i = src; i != dst; i = (i+1) % this.arr.length) {
             System.out.print(this.arr[i] + " ");
         }
         System.out.println();
-
     }
-
 }
 
 public class DequeArray {
