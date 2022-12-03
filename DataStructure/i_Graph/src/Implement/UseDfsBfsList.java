@@ -26,7 +26,7 @@ class MyGraphList2 extends MyGraphList {
 
             Node cur = this.adjList[curId];
             while (cur != null) {
-                if (visited[cur.id] == false) {
+                if (!visited[cur.id]) {
                     stack.push(cur.id);
                     visited[cur.id] = true;
                 }
@@ -49,7 +49,7 @@ class MyGraphList2 extends MyGraphList {
 
             Node cur = this.adjList[curId];
             while (cur != null) {
-                if (visited[cur.id] == false) {
+                if (!visited[cur.id]) {
                     queue.offer(cur.id);
                     visited[cur.id] = true;
                 }

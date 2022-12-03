@@ -19,7 +19,7 @@ import java.io.*;
 public class CountingSort {
 
     static void SortingArray(BufferedReader br, BufferedWriter bw, int[] arr) throws IOException {
-        int num = 0;
+        int num;
         int N = Integer.parseInt(br.readLine());
 
         for (int i = 0; i < N; i++) {
