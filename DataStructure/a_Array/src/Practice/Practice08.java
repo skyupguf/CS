@@ -5,8 +5,17 @@ import java.util.Arrays;
 public class Practice08 {
 
     public static int[] solution(int[] arr){
-        int[] arrOrigin = new int[arr.length];
-        return arrOrigin;
+        int[] answer = new int[arr.length];
+
+        int idx = 0;
+        for (int i = 0; i < arr.length; i++) {
+            while (answer[idx] != 0) {
+                idx = (idx + 1) % arr.length;
+            }
+            answer[idx] = arr[i];
+            idx = (arr[i] + i) % arr.length;
+        }
+        return answer;
     }
 
     public static int[] modification(int[] arr) {

@@ -22,9 +22,7 @@ class MyArray {
         int[] arrDup = this.arr.clone();
         this.arr = new int[this.arr.length+1];
 
-        for (int i = 0; i < index; i++) {
-            this.arr[i] = arrDup[i];
-        }
+        System.arraycopy(arrDup, 0, this.arr, 0, index);
 
         for (int i = index+1; i < this.arr.length; i++) {
             this.arr[i] = arrDup[i-1];

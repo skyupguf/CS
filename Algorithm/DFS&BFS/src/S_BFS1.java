@@ -72,7 +72,7 @@ public class S_BFS1 {
         for (int i = 1; i <= V; i++) {
             Collections.sort(adjList[i]);
         }
-
+        System.out.println(Arrays.toString(adjList));
         count = new int[V+1];
         visited = new int[V+1];
         Bfs(S);

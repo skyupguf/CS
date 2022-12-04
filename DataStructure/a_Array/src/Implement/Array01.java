@@ -32,7 +32,7 @@ public class Array01 {
 
 //      ArrayList - 1차원, 2차원
         System.out.println("== ArrayList ==");
-        ArrayList list1 = new ArrayList(Arrays.asList(1, 2, 3));
+        ArrayList<Integer> list1 = new ArrayList<>(Arrays.asList(1, 2, 3));
         System.out.println("list1 = " + list1);
         list1.add(4);
         list1.add(5);
@@ -42,9 +42,9 @@ public class Array01 {
         list1.remove(Integer.valueOf(2));
         System.out.println("list1 = " + list1);
 
-        ArrayList list2d = new ArrayList();
-        ArrayList list1d1 = new ArrayList(Arrays.asList(1, 2, 3));
-        ArrayList list1d2 = new ArrayList(Arrays.asList(4, 5, 6));
+        ArrayList<ArrayList<Integer>> list2d = new ArrayList<>();
+        ArrayList<Integer> list1d1 = new ArrayList<>(Arrays.asList(1, 2, 3));
+        ArrayList<Integer> list1d2 = new ArrayList<>(Arrays.asList(4, 5, 6));
         list2d.add(list1d1);
         list2d.add(list1d2);
         System.out.println("list1d1 = " + list1d1);
