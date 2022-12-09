@@ -18,31 +18,29 @@ package Practice;
 public class Practice02 {
     public static void solution(String[] dictionary, String sentence) {
         Trie trie = new Trie();
-        for (String str : dictionary) {
-            trie.insert(str);
+        for (String word : dictionary) {
+            trie.insert(word);
         }
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder result = new StringBuilder();
         for (String word : sentence.split(" ")) {
             Node currentNode = trie.root;
-            StringBuilder currentSb = new StringBuilder();
 
-            for (char c : word.toCharArray()) {
-                currentSb.append(c);
-                if (currentNode.child.get(c) != null) {
-                    if (currentNode.child.get(c).isTerminal) {
-                        break;
-                    }
-                    currentNode = currentNode.child.get(c);
+            StringBuilder stringBuilder = new StringBuilder();
+            for (char character : word.toCharArray()) {
+                if (currentNode.child.get(character) != null) {
+                    currentNode = currentNode.child.get(character);
+                    stringBuilder.append(character);
+                    if (currentNode.isTerminal) { break; }
                 } else {
-                    currentSb = new StringBuilder(word);
+                    stringBuilder = new StringBuilder(word);
                     break;
                 }
             }
-            sb.append(currentSb);
-            sb.append(" ");
+            result.append(stringBuilder);
+            result.append(" ");
         }
-        System.out.println(sb);
+        System.out.println(result);
     }
 
 

@@ -115,17 +115,16 @@ class Trie {
 public class Practice01 {
     public static boolean solution(String[] strs, String prefix) {
         Trie trie = new Trie();
-
         for (String str : strs) {
             trie.insert(str);
         }
-
         Node currentNode = trie.root;
-        for (char word : prefix.toCharArray()) {
-            if (!currentNode.child.containsKey(word)) {
+        for (char character : prefix.toCharArray()) {
+            if (currentNode.child.get(character) != null) {
+                currentNode = currentNode.child.get(character);
+            } else {
                 return false;
             }
-            currentNode = currentNode.child.get(word);
         }
         return true;
     }

@@ -11,9 +11,9 @@ package Practice;
 
 
 public class Practice03 {
-    public static void solution(String[] strs, String[] targets) {
+    public static void solution(String[] strings, String[] targets) {
         Trie trie = new Trie();
-        for (String str : strs) {
+        for (String str : strings) {
             trie.insert(str);
         }
 
@@ -25,22 +25,7 @@ public class Practice03 {
     }
 
     public static boolean examineWord(Node node, String target, int i, boolean flag){
-        if (i < target.length()) {
-            if (node.child.containsKey(target.charAt(i))) {
-                if (examineWord(node.child.get(target.charAt(i)), target, i+1, flag)) {
-                    return true;
-                }
-            }
-            if (!flag) {
-                for (char c : node.child.keySet()) {
-                    if (c != target.charAt(i) && examineWord(node.child.get(c), target, i+1, true)) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-        return flag && node.isTerminal;
+
     }
 
     public static void main(String[] args) {
