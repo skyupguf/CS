@@ -11,7 +11,10 @@ package Practice;
 
 
 public class Practice03 {
-    public static void solution(String[] strings, String[] targets) {
+    static String[] strings;
+    static String[] targets;
+
+    static void solution() {
         Trie trie = new Trie();
         for (String str : strings) {
             trie.insert(str);
@@ -24,14 +27,41 @@ public class Practice03 {
         System.out.println();
     }
 
-    public static boolean examineWord(Node node, String target, int i, boolean flag){
+    //  false 조건
+    //      1. 모든 단어가 같은 경우
+    //      2. 2개이상 단어가 다른 경우
+    //      3. 해당 단어가 없는 경우
+    //  true 조건
+    //      1. 1개의 단어만 다른 경우 : flag 가 true 고 terminal 도 true 여야 한다.
+    //  재귀호출을 조건으로 이용한 이유
+    //      바로 리턴하면 백트래킹 이후 자식이 여러개일 경우 다른 노드들을 탐색할 수 없게 된다.
+    static boolean examineWord (Node node, String target, int index, boolean flag) {
+        if (index == target.length()) {
+            return flag && node.isTerminal;
+        }
 
+        if (node.child.get(target.charAt(index)) != null) {
+            if (examineWord(node.child.get(target.charAt(index)), target, index + 1, flag)) {
+                return true;
+            }
+        }
+
+        if (!flag) {
+            for (char character : node.child.keySet()) {
+                if (character != target.charAt(index) &&
+                        examineWord(node.child.get(character), target, index + 1, true)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
+
 
     public static void main(String[] args) {
         // Test code
-        String[] strs = {"apple", "banana", "kiwi"};
-        String[] targets = {"applk", "bpple", "apple", "banan", "kiww"};
-        solution(strs, targets);    // true, true, false, false, true
+        strings = new String[]{"apple", "banana", "kiwi"};
+        targets = new String[]{"applk", "bpple", "apple", "banan", "kiww", "aiwi"};
+        solution();          // true,    true,    false,   false,   true,   true
     }
 }
