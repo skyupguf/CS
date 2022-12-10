@@ -2,14 +2,13 @@ package Practice;
 
 /*
 *   트라이 구조로 문자열을 삽입한다.
-*   키 셋을 루프하면서 자동완성 분기를 찾는다.
-*       1. 루트에서 자식노드의 키로 진입할 때 해당 자식노드로 진입할 때 count+1
-*       2. 자식노드가 존재할 때 키 셋을 루프, 자식노드의 키로 진입할 때 count+1
+*   키 셋을 루프하면서 분기점을 찾으면 된다.
+*       1. 루트노드에서 시작은 분기 상관없이 무조건 count+1
+*       2. 분기
 *       3. 터미널인 노드에 자식노드가 존재할 때, 자식노드 진입 시 count+1
 *       4. 터미널을 만난 노드의 count 를 list 에 추가
 * */
 
-import java.util.ArrayList;
 
 public class Practice05 {
 
@@ -23,15 +22,33 @@ public class Practice05 {
 
         double total = 0;
         for (String word : words) {
-            total += countPressKey(word, 0, trie.root);
+            total += countPressKey(trie.root, word, 0);
         }
 
         return total / words.length;
     }
 
-    public static double countPressKey(String string, double count, Node node) {
+    public static double countPressKey (Node node, String string, double count) {
+        if (node == null || string == null || string.length() == 0) {
+            return count;
+        }
 
-        return 0;
+        for (int i = 0; i < string.length(); i++) {
+
+            if (i == 0) {
+                count++;
+            } else if (node.child.keySet().size() > 1) {
+                count++;
+            } else if (node.isTerminal) {
+                count++;
+            }
+            if (node.child.get(string.charAt(i)) != null) {
+                node = node.child.get(string.charAt(i));
+            } else {
+                return count = 0;
+            }
+        }
+        return count;
     }
 
     public static void main(String[] args) {
