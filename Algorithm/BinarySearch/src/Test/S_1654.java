@@ -1,3 +1,4 @@
+package Test;
 /**
  * 랜선 자르기 ( https://www.acmicpc.net/problem/1654 )
  *
@@ -39,7 +40,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 
-public class S_CutCable {
+public class S_1654 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         long[] cables = new long[sc.nextInt()];
