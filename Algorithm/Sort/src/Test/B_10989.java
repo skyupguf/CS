@@ -1,6 +1,6 @@
 package Test;
 /**
- * 수 정렬하기 3
+ * 수 정렬하기 3 (https://www.acmicpc.net/problem/10989)
  *  첫째 줄에 수의 개수 N(1 ≤ N ≤ 10,000,000)이 주어진다.
  *  둘째 줄부터 N개의 줄에는 수가 주어진다. 이 수는 10,000보다 작거나 같은 자연수이다.
  *  입력 받은 수들을 O(N)의 연산안에 오름차순 정렬하여 한줄에 하나씩 출력하라.
@@ -17,7 +17,7 @@ package Test;
 
 import java.io.*;
 
-public class CountingSort {
+public class B_10989 {
 
     static void SortingArray(BufferedReader br, BufferedWriter bw, int[] arr) throws IOException {
         int num;
