@@ -34,9 +34,8 @@ import java.util.StringTokenizer;
 public class S_24092 {
     static long[] A;
     static long[] B;
-
     //  해당 변수값의 이전 인덱스까지 일치하는지 확인이 된 값, 모두 일치할 경우 -1이다.
-    static int check = -1;
+    static int check;
 
     public static void quickSort (int left, int right) {
         if (left >= right) { return; }
@@ -63,13 +62,12 @@ public class S_24092 {
         long temp = A[i];
         A[i] = A[j];
         A[j] = temp;
-
         //  i와 j 위치에서 스왑이 일어날 경우 표시해둔 check 인지 확인되면 배열 B와 비교해 본다.
-        if (check == i || check == j) { arrayCheck(); }
+        if (check == i || check == j) { compare(); }
     }
 
-    public static void arrayCheck () {
-        for (int i = 0; i < A.length; i++) {
+    public static void compare () {
+        for (int i = check; i < A.length; i++) {
             if (A[i] != B[i]) {
                 check = i;
                 break;
@@ -86,19 +84,16 @@ public class S_24092 {
         A = new long[N];
         B = new long[N];
 
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        StringTokenizer stA = new StringTokenizer(br.readLine(), " ");
+        StringTokenizer stB = new StringTokenizer(br.readLine(), " ");
+
         for (int i = 0; i < N; i++) {
-            A[i] = Integer.parseInt(st.nextToken());
+            A[i] = Integer.parseInt(stA.nextToken());
+            B[i] = Integer.parseInt(stB.nextToken());
         }
 
-        st = new StringTokenizer(br.readLine(), " ");
-        for (int i = 0; i < N; i++) {
-            B[i] = Integer.parseInt(st.nextToken());
-        }
-
-        arrayCheck();
+        compare();
         if (check != -1) { quickSort(0, A.length - 1); }
-
         bw.write(check == -1 ? '1' : '0');
         bw.flush();
         bw.close();
