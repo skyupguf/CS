@@ -15,31 +15,23 @@ import java.util.Arrays;
 
 public class Practice04 {
     public static int solution(int[] nums) {
-        if (nums == null || nums.length == 0) { return 0; }
-
-        //  왼쪽에서 부터 가장 큰 수를 찾아가면서 다음 수와 비교해 클 경우 해당 수가 위치할 인덱스가 된다.
         int max = -1;
-        int end = -1;
-
+        int last = -1;
         for (int i = 0; i < nums.length; i++) {
             max = Math.max(max, nums[i]);
             if (max > nums[i]) {
-                end = i;
+                last = i;
             }
         }
-
-        //  오른쪽에서 부터 가장 작은 수를 찾아가면서 이전 수와 비교해 작으면 해당 수가 위치할 인덱스가 된다.
         int min = Integer.MAX_VALUE;
-        int start = 0;
-
+        int first = 0;
         for (int i = nums.length - 1; i >= 0; i--) {
             min = Math.min(min, nums[i]);
             if (min < nums[i]) {
-                start = i;
+                first = i;
             }
         }
-
-        return end - start + 1;
+        return last - first + 1;
     }
 
     public static void main(String[] args) {
@@ -54,6 +46,9 @@ public class Practice04 {
         System.out.println(solution(nums));
 
         nums = new int[]{1, 2, 3, 4, 5};        //  0
+        System.out.println(solution(nums));
+
+        nums = new int[]{2, 4, 3, 8, 5, 7, 6};  //  6
         System.out.println(solution(nums));
     }
 }
