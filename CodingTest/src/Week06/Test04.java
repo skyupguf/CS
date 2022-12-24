@@ -25,6 +25,8 @@ package Week06;
 * */
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 
 public class Test04 {
@@ -71,6 +73,19 @@ public class Test04 {
     public static int[] solution2 (int[] arr, int k) {
         int[] result = new int[arr.length - k + 1];
 
+        PriorityQueue<Integer> window = new PriorityQueue<>(Comparator.reverseOrder());
+        int end = Math.min(k, arr.length);
+
+        for (int i = 0; i < end; i++) {
+            window.offer(arr[i]);
+        }
+        result[0] = window.peek();
+
+        for (int i = 1; i < result.length; i++) {
+            window.remove(arr[i-1]);
+            window.offer(arr[i+end-1]);
+            result[i] = window.peek();
+        }
 
         return result;
     }
