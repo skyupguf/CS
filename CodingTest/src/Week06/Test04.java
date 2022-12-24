@@ -1,10 +1,36 @@
 package Week06;
+/*
+*   슬라이딩 윈도우 최댓값은 연속된 k개의 값의 최댓값을 한칸씩 이동하면서 구하는 기법이다.
+*   예를 들어, 주어진 입력이 아래와 같다고 하자.
+--------------------------------------------------------------------------
+    arr = [1, 3, 0, 2, 1, 2]
+    k=3인 슬라이딩 윈도우와 그 최댓값은 아래와 같이 계산된다.
+
+    [1, 3, 0, 2, 1, 4]
+    [1, 3, 0]           -> 3
+       [3, 0, 2]        -> 3
+          [0, 2, 1]     -> 2
+             [2, 1, 4]  -> 4
+
+    result = [3, 3, 2, 4]
+--------------------------------------------------------------------------
+*   슬라이딩 윈도우 최댓값 알고리즘을 작성하라.
+
+    입력
+    0 < len(arr) <= 100000
+    0 < k <= 10000
+
+    출력
+    슬라이딩 윈도우 최댓값이 담긴 정수 배열
+* */
+
+import java.util.Arrays;
+
 
 public class Test04 {
-    public static void main(String[] args) {
-        int k = 3;
-        int[] arr = {4, 2, 6, 4, 2, 3};
-        int[] result = new int[arr.length-k+1];
+
+    public static int[] solution (int[] arr, int k) {
+        int[] result = new int[arr.length - k + 1];
 
         int max = Integer.MIN_VALUE;
         int maxP = 0;
@@ -39,8 +65,20 @@ public class Test04 {
             start++;
             end++;
         }
-        for (int i : result) {
-            System.out.println(i);
-        }
+        return result;
+    }
+    // 리팩토링
+    public static int[] solution2 (int[] arr, int k) {
+        int[] result = new int[arr.length - k + 1];
+
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int k = 3;
+        int[] arr = {4, 2, 6, 4, 2, 3};
+        System.out.println(Arrays.toString(solution(arr, k)));
+        System.out.println(Arrays.toString(solution2(arr, k)));
     }
 }
