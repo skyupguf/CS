@@ -78,14 +78,12 @@ public class S_1992 {
 
         // 한 번의 4사분면으로 나눠서 모두 체크되면 마지막에 닫는 괄호로 쿼드트리 압축 문자열을 완성한다.
         result.append(")");
-
     }
 
     static boolean compressCheck (int row, int col, int size) {
         int standard = quadTree[row][col];
 
         for (int i = row; i < row + size; i++) {
-
             for (int j = col; j < col + size; j++) {
 
                 if (standard != quadTree[i][j]) {
