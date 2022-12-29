@@ -8,18 +8,53 @@ package Practice;
 // 입력 n: 3
 // 출력: 233, 239, 293, 311, 313, 317, 373, 379, 593, 599, 719, 733, 739, 797
 
-
 import java.util.ArrayList;
 
+
 public class Practice03 {
-    public static ArrayList<Integer> result;
+    static ArrayList<Integer> result;
 
-    public static ArrayList<Integer> solution(int n) {
+
+    static ArrayList<Integer> solution(int n) {
         result = new ArrayList<>();
+        int[] primeArray = {2, 3, 5, 7};
 
-
+        for (int prime : primeArray) {
+            findPrimeNum(prime, 1, n);
+        }
         return result;
     }
+
+
+    static void findPrimeNum(int prime, int pos, int len) {
+        if (pos >= len) {
+            result.add(prime);
+            return;
+        }
+
+        for (int i = 0; i < 10; i++) {
+
+            if (i % 2 != 0 || i % 5 != 0) {
+                int primeCandidate = prime * 10 + i;
+
+                if(checkPrimeNum(primeCandidate)) {
+                    findPrimeNum(primeCandidate, pos + 1, len);
+                }
+            }
+        }
+    }
+
+
+    static boolean checkPrimeNum(int num) {
+        for (int i = 2; i <= Math.sqrt(num); i++) {
+
+            if (num % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     public static void main(String[] args) {
         // Test code

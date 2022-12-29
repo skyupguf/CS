@@ -8,10 +8,10 @@ package Practice;
 // m: 2
 // 출력: [1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2]
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.Arrays;
+import java.io.IOException;
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
 
 
 public class Practice02 {
@@ -48,7 +48,9 @@ public class Practice02 {
     public static void main(String[] args) throws IOException {
         // Test code
         solution(3, 2);
-        System.out.println();
+        bw.write("\n");
         solution(4, 3);
+        bw.flush();
+        bw.close();
     }
 }
