@@ -1,46 +1,40 @@
 package Week07;
+//  빠른 과반수 검증
+/*
+*   투표 결과가 후보 기호를 담은 배열 votes 로 주어진다. 과반수 투표 결과를 출력하는 프로그램을 작성하라.
 
+    입력
+    - 0 < votes.length <= 100000
+        votes = {1, 4, 2, 2, 2, 3, 2, 2, 1}
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Comparator;
-
+    출력
+        2
+* */
 
 public class Test02 {
-    static Map<Integer, Integer> voteMap = new HashMap<>();
-
-
     static int solution (int[] votes) {
-        for (int vote : votes) {
-            voteMap.merge(vote, 1, Integer::sum);
-        }
+        int candidate = 0;
+        int count = 0;
 
-        List<Entry<Integer, Integer>> entries = new ArrayList<>(voteMap.entrySet());
-
-        entries.sort(new Comparator<Entry<Integer, Integer>>() {
-            public int compare(Entry<Integer, Integer> obj1, Entry<Integer, Integer> obj2) {
-                return obj2.getValue().compareTo(obj1.getValue());
+        for (int sign : votes) {
+            if (count == 0) {
+                candidate = sign;
+                ++count;
+            } else if (candidate == sign) {
+                ++count;
+            } else {
+                --count;
             }
-        });
-
-        int result = 0;
-        for (Entry<Integer, Integer> entry : entries) {
-            result = entry.getKey();
-            break;
         }
-
-        return result;
+        return candidate;
     }
 
 
     public static void main(String[] args) {
-        int[] votes = {4, 3, 2, 3, 3, 3, 3, 1, 2, 2, 3};
+        int[] votes = {1, 4, 2, 2, 2, 3, 2, 2, 1};  // 2
         System.out.println(solution(votes));
 
-        votes = new int[]{1, 4, 2, 2, 2, 3, 2, 2, 1};
+        votes = new int[]{4, 3, 2, 3, 3, 3, 3, 1, 2, 2, 3}; // 3
         System.out.println(solution(votes));
     }
 }
