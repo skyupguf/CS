@@ -11,22 +11,34 @@ package Test;
     입출력 예시
     1. Input : 1, Output : 9
     2. Input : 2, Output : 17
-    3. Input : 3, Output :
+    3. Input : 3, Output : 32
+    4. Input : 4, Output : 61
+    5. Input : 5, Output : 116
 
 *   풀이
-*   N = 1 일 경우 1, 2, 3, 4, 5, 6, 7, 8, 9
-*   N = 2 일 경우 01은 불가능 10 / 12, 21 / 23, 32 / 34, 43 / 45, 54 / 56, 65 / 67, 76 / 78, 87 / 89, 98
-*   N = 3 101 / 121, 210, 212 / 123, 232, 321, 323 / 234, 343, 432, 434 /..... 789, 898, 987, 989
-*   N = 4 1010 / 1012, 1210, 1212, 2101, 2121 / 1232, 2123, 2321, 2323, 3210, 3212, 3232
-*         1234, 2343, 3234, 3432, 3434, 4321, 4323, 4343....
-        0   1   2   3   4   5   6   7   8   9
-    0   0   0   0   0   0   0   0   0   0   0
-    1   0   1   2   3   4   5   6   7   8   9
-    2   0   1   3   5   7   9   11  13  15  17
-    3   0   1   4   8   12  16  20  24  28  32
-    4   0   1   6   13  21  29  37  45  53  61
+*   N = 1 부터 증가할 때 마다 다음과 같이 수를 만들 수 있다.
+*   0   1   2   3   4   5   6   7   8   9
+*
+*   N = 2
+*   10  12  21  32  43  54  65  76  87  98
+*           23  34  45  56  67  78  89
+*
+*   N = 3
+*   101 210 121 232 343 454 565 676 787 898
+*           123 234 345 456 567 678 789 987
+*           321 323 432 543 654 765 876 989
+*                   434 545 656 767 878
+
+        0   1   2   3   4   5   6   7   8   9   10
+    0   0   0   0   0   0   0   0   0   0   0   0
+    1   0   1   1   1   1   1   1   1   1   1   0
+    2   1   1   2   2   2   2   2   2   2   1   0
+    3   1   1   3   4   4   4   4   4   4   3   0
+    4   1   1   5   7   8   8   8   8   8   8
+    5   1   1   7  13  15  16  16  16  16  16
 
 *   점화식을 세워보면
+*   i가 2일 때부터 j가 1에서 시작해 dp[i][j] = dp[i-1][j-1] + dp[i-1][j]가 된다.
 *
 * */
 
@@ -36,29 +48,36 @@ public class S_10844 {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-        long[][] dp = new long[N+1][10];
+//        int N = Integer.parseInt(br.readLine());
+        int n = 5;
+//        int[][] dp = new int[N+1][10];
 
-        for (int i = 1; i < 10; i++) {
+//        for (int i = 0; i < 10; i++) {
+//            dp[1][i] = i;
+//        }
+//
+//        for (int i = 2; i <= N; i++) {
+//            for (int j = 1; j < 10; j++) {
+//                dp[i][j] = (dp[i-1][j-1] + dp[i-1][j]) % 1000000000;
+//            }
+//        }
+//        System.out.println(dp[N][9]);
+        long[][] dp = new long[n+1][11];
+        for (int i = 1; i <= 9; i++) {
             dp[1][i] = 1;
         }
 
-        for (int i = 2; i <= N; i++) {
-            for (int j = 0; j < 10; j++) {
-
-                if (j == 0) {
-                    dp[i][j] = dp[i - 1][j + 1] % 1000000000;
-                } else if (j == 9) {
-                    dp[i][j] = dp[i - 1][j - 1] % 1000000000;
-                } else {
-                    dp[i][j] = (dp[i - 1][j - 1] + dp[i - 1][j + 1]) % 1000000000;
-                }
+        for (int i = 2; i <= n; i++) {
+            dp[i][0] = dp[i - 1][1];
+            for (int j = 1; j < 10; j++) {
+                dp[i][j] = (dp[i - 1][j - 1] + dp[i - 1][j + 1]) % 1000000000;
             }
         }
-        long result = 0;
+
+        long sum = 0;
         for (int i = 0; i < 10; i++) {
-            result += dp[N][i];
+            sum += dp[n][i];
         }
-        System.out.println(result);
+        System.out.println(sum % 1000000000);
     }
 }
