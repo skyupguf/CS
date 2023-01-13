@@ -1,13 +1,10 @@
 package Week08;
-//  쿼드트리
+//
 /*
 *
 * */
 
-import sun.reflect.generics.tree.Tree;
-
 import java.util.Arrays;
-import java.util.Map;
 import java.util.TreeMap;
 
 public class Test01 {
