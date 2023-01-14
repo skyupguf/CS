@@ -8,28 +8,6 @@ import java.util.PriorityQueue;
 
 public class Dijkstra {
 
-    static ArrayList<ArrayList<Node>> graph;
-    static class Node {
-
-    }
-
-
-    static void createGraph(int v, int[][] data) {
-
-    }
-
-
-    // 일반 다익스트라 구현
-    static void dijkstra(int v, int src) {
-
-    }
-
-
-    // 우선순위 큐를 활용한 다익스트라 구현
-    static void priorityDijkstra(int v, int src) {
-
-    }
-
 
     public static void main(String[] args) {
         // Test code
