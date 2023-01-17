@@ -73,6 +73,7 @@ public class G_4386 {
                 dst[i][j] = calDist(i, j);
             }
         }
+
         System.out.println(prim());
     }
 }
